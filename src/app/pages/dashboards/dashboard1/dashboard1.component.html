@@ -1,0 +1,245 @@
+<mat-card class="cardWithShadow overflow-hidden">
+  <!-- ------------------------------------------------------ -->
+  <!-- Toggle mobile -->
+  <!-- ------------------------------------------------------ -->
+  <mat-card-header class="bg-primary text-white p-10 d-block d-lg-none">
+    <mat-card-title class="m-b-0">
+      <div class="d-flex align-items-center">
+        <button (click)="mailnav.toggle()" mat-icon-button>
+          <mat-icon>short_text</mat-icon>
+        </button>
+        <div class="mat-subheading-1 m-b-0 m-l-16">Inbox</div>
+      </div>
+    </mat-card-title>
+  </mat-card-header>
+  <!-- ------------------------------------------------------ -->
+  <!-- Desktop App -->
+  <!-- ------------------------------------------------------ -->
+  <mat-sidenav-container class="email-box" style="height: calc(100vh - 182px)" [ngClass]="{ 'side-panel-opened': sidePanelOpened, 'side-panel-closed': !sidePanelOpened }">
+    <!-- ------------------------------------------------------ -->
+    <!-- Sidebar Email -->
+    <!-- ------------------------------------------------------ -->
+    <mat-sidenav #mailnav [mode]="isOver() ? 'over' : 'side'" [opened]="!isOver()" (open)="sidePanelOpened = true" (close)="sidePanelOpened = false" class="mail-sidebar">
+      <ng-scrollbar style="height: calc(100% - 10px)" class="position-relative">
+        <div class="p-16 p-b-0">
+          <button mat-flat-button (click)="openDialog()" color="accent" class="w-100 btn-block"> Compose </button>
+        </div>
+
+        <!-- [class.bg-light-primary]="selectedMailbox === 'New Lead'" (click)="mailboxesChanged('Assign Leads')" -->
+        <!-- <div class="p-16">
+          <div (click)="mailboxesChanged('New Lead')">
+            <div class="d-flex align-items-center inbox-list rounded p-16 cursor-pointer">
+              <i-tabler name="mail" class="m-r-12 icon-18"></i-tabler>
+              <span class="f-w-400 f-s-14">New Lead</span>
+            </div>
+          </div>
+          <div (click)="mailboxesChanged('Assigned')">
+            <div class="d-flex align-items-center inbox-list rounded p-16 cursor-pointer">
+              <i-tabler name="send" class="m-r-12 icon-18"></i-tabler>
+              <span class="f-w-400 f-s-14">Assigned</span>
+            </div>
+          </div>
+          <div >
+            <div class="d-flex align-items-center inbox-list rounded p-16 cursor-pointer">
+              <i-tabler name="note" class="m-r-12 icon-18"></i-tabler>
+              <span class="f-w-400 f-s-14">Connect Leads</span>
+            </div>
+          </div>
+          <div>
+            <div class="d-flex align-items-center inbox-list rounded p-16 cursor-pointer">
+              <i-tabler name="flag" class="m-r-12 icon-18"></i-tabler>
+              <span class="f-w-400 f-s-14">Cold Lead</span>
+            </div>
+          </div>
+        </div> -->
+        <div class="p-16">
+
+          <div *ngFor="let mail of mailboxes" (click)="mailboxesChanged(mail.name)">
+            <div class="d-flex align-items-center inbox-list rounded p-16 cursor-pointer" [class.bg-light-primary]="mail.active">
+              <i-tabler name="{{ mail.icon }}" class="m-r-12 icon-18"></i-tabler>
+              <span class="f-w-400 f-s-14">{{ mail.name }}</span>
+              <div class="m-l-auto d-sm-flex align-items-center gap-4">
+                <ng-container *ngIf="mail.name === 'New Lead' || mail.name === 'Assigned Lead' || mail.name === 'Connected Lead' || mail.name === 'Cold Lead' || mail.name === 'Warm Lead' || mail.name === 'Hot Lead' || mail.name === 'Meeting Schdulede' || mail.name === 'Meeting Complate' || mail.name === 'Low-Buget' || mail.name === 'No-Answer' || mail.name === 'Not-Responding' || mail.name === 'Incorrect Detail' || mail.name === 'Agent' || mail.name === 'Junk'">
+                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500">
+                     {{
+                      {
+                        'New Lead': Newleads,
+                        'Assigned Lead': Assignleads,
+                        'Connected Lead': Connectedleads,
+                        'Cold Lead': Coldleads,
+                        'Warm Lead': Warmleads,
+                        'Hot Lead': Hotleads,
+                        'Meeting Schdulede': MeetingSchduledeleads,
+                        'Meeting Complate': MeetingComplate,
+                        'Low-Buget': NoAnswer,
+                        'No-Answer': LowBuget,
+                        'Not-Responding': NotResponding,
+                        'Incorrect Detail': IncorrectDetail,
+                        'Agent': Agent,
+                        'Junk': Junk
+                      }[mail.name]?.length || 0
+                    }} 
+                  </span>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <!-- <div *ngFor="let mail of mailboxes" (click)="mailboxesChanged(mail.name)">
+            <div class="d-flex align-items-center inbox-list rounded p-16 cursor-pointer" [class.bg-light-primary]="mail.active">
+              <i-tabler name="{{ mail.icon }}" class="m-r-12 icon-18"></i-tabler>
+              <span class="f-w-400 f-s-14">{{ mail.name }}</span>
+              <div class="m-l-auto  d-sm-flex align-items-center gap-4">
+                <span class="d-flex align-items-center gap-4">
+                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'New Lead'"> {{ Newleads?.length || 0 }} </span>
+                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Assigned Lead'"> {{ Assignleads?.length || 0 }} </span>
+                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Connected Lead'"> {{ Connectedleads?.length || 0 }} </span>
+                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Cold Lead'"> {{ Coldleads?.length || 0 }} </span>
+                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Warm Lead'"> {{ Warmleads?.length || 0 }} </span>
+                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Hot Lead'"> {{ Hotleads?.length || 0 }} </span>
+                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Meeting Schdulede'"> {{ MeetingSchduledeleads?.length || 0 }} </span>
+                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Meeting Complate'"> {{ MeetingComplate?.length || 0 }} </span>
+                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Low-Buget'"> {{ NoAnswer?.length || 0 }} </span>
+                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'No-Answer'"> {{ LowBuget?.length || 0 }} </span>
+                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Not-Responding'"> {{ NotResponding?.length || 0 }} </span>
+                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Incorrect Detail'"> {{ IncorrectDetail?.length || 0 }} </span>
+                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Agent'"> {{ Agent?.length || 0 }} </span>
+                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Junk'"> {{ Junk?.length || 0 }} </span>
+                </span>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </ng-scrollbar>
+    </mat-sidenav>
+    <!-- ------------------------------------------------------ -->
+    <!-- Email Listing and Details-->
+    <!-- ------------------------------------------------------ -->
+    <div class="p-x-15 w-100 h-100">
+      <div class="row h-100">
+        <div class="col-lg-4 b-r-1 p-0">
+          <div class="p-x-20 p-y-4 d-flex align-items-center">
+              <h5 class="f-w-500 mat-subtitle-1 f-s-16 m-0">{{ ms.topLable }}</h5>
+              <div class="m-l-auto"> <pagination-controls (pageChange)="p = $event" previousLabel="" nextLabel="" class="mail-pagination"> </pagination-controls> </div>
+          </div>
+          <mat-divider></mat-divider>
+          <div class="position-relative">
+              <div *ngFor="let lead of ms.leadList | paginate : { itemsPerPage: 10, currentPage: p }; let i = index" (click)="mailSelected(lead)">
+                  <div class="mail-list p-y-20 p-x-16 p-l-10 cursor-pointer">
+                      <div class="d-flex align-items-start w-100">
+                          <mat-radio-button></mat-radio-button>
+                          <div class="m-l-10 w-100">
+                              <div>
+                                  <div class="d-flex align-items-center w-100">
+                                      <h5 class="m-0 f-w-600 mat-subtitle-1 f-s-16">{{ lead.customer_name | slice : 0 : 15 || 'Lead ID Can not found' }}</h5>
+                                  </div>
+                                  <span class="mat-body-1"> {{ lead.lead_title | slice : 0 : 45 }} </span>
+                                  <div class="d-flex justify-content-center m-t-8">
+                                      <span class="m-r-8 d-flex"> <i-tabler name="star" class="icon-18"></i-tabler> </span>
+                                      <span class="d-flex"> <i-tabler name="alert-circle" class="icon-18 text-error"></i-tabler></span>
+                                      <div class="m-l-auto text-end">
+                                        <!-- {{ lead.assigned_at | date : "dd-MMM" }} -->
+                                          <span class="f-s-12 text-nowrap"> {{ formatDateOrToday(lead.assigned_at) }}</span>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                  <mat-divider></mat-divider>
+              </div>
+          </div>
+      </div>
+        <!-- ------------------------------------------------------ -->
+        <!-- Details of Email  -->
+        <!-- ------------------------------------------------------ -->
+        <div class="col-lg-8 detail-part p-0" [class.movetodetail]="ms.addClass">
+          <div *ngIf="ms.selectedLead === null" class="h-100 welcome-app">
+              <div class="d-flex align-items-center justify-content-center h-100 w-100">
+                  <div>
+                      <h3 class="mat-subtitle-1 f-w-600">Please Select Any Lead which lead your want see info</h3>
+                      <img src="/assets/images/breadcrumb/emailSv.png" width="250px" />
+                  </div>
+              </div>
+          </div>
+          <div *ngIf="ms.selectedLead !== null" class="w-100">
+              <!-- <app-maildetail></app-maildetail>    [matMenuTriggerFor]="menu" -->
+              <div class="w-100 position-relative">
+                  <div class="d-flex align-items-center p-x-16 p-y-8"> <button mat-icon-button (click)="removeClass()" class="d-block d-lg-none"><mat-icon>arrow_back</mat-icon></button>
+                      <button mat-icon-button [matMenuTriggerFor]="menu"><i-tabler name="arrow-badge-right" class="icon-20"></i-tabler></button>
+                  </div>
+                  <mat-menu #menu="matMenu" class="cardWithShadow">
+                    <!-- <button mat-menu-item class="p-l-0">
+                      <span>  <mat-checkbox color="primary" [checked]="true" >Personal</mat-checkbox></span>
+                      <span> <mat-checkbox>Personal</mat-checkbox> </span>
+                    </button>
+                    <button mat-menu-item class="p-l-0">
+                      <span> <mat-checkbox color="primary" [checked]="true" >Work</mat-checkbox></span>
+                      <span> <mat-checkbox color="primary">Work</mat-checkbox> </span>
+                    </button> -->
+                  </mat-menu>
+                  <mat-divider></mat-divider>
+                  <div *ngIf="ms.selectedLead" class="position-relative" style="height: calc(100vh - 247px)">
+                    <div class="p-24">
+                      <div class="d-flex align-items-center">
+                        <img src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-image-182145777.jpg" class="rounded-circle" alt="userimg" width="40px" height="40px" />
+                        <div class="m-l-10">
+                          <h5 class="m-0 f-w-600 f-s-16 mat-subtitle-1"> {{ leadInfo.customer_name || 'Can Not Find Customer Name' }} </h5>
+                          <span class="f-s-14"> {{ leadInfo.customer_email || 'Can Not Find Customer Name' }} </span>
+                        </div>
+                        <div class="m-l-auto d-none d-sm-flex align-items-center gap-4">
+                          <span class="d-flex align-items-center gap-4">
+                            <span class="bg-accent rounded-pill f-s-12 p-x-8 p-y-4 text-white f-w-500"> Details of your lead </span>
+                          </span>
+                        </div>
+                      </div>  
+                      <br>
+                      <div class="d-flex align-items-center">
+                        <div class="m-l-10">
+                          <span class="f-s-14" style="cursor: pointer;"> {{ leadInfo.customer_phone || 'Unknow' }} </span>  &nbsp; &nbsp;
+                          <span class="f-s-14" style="cursor: pointer;"> {{ leadInfo.customer_phone2 || 'Unknow' }} </span>
+                        </div>
+                        <div class="m-l-auto d-none d-sm-flex align-items-center gap-4">
+                          <span class="d-flex align-items-center gap-4">
+                            <span> Responsible User : {{ leadInfo.agent.client_user_name || 'Unknow' }} </span>
+                          </span>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="p-24">
+                      <div class="mat-subtitle-1">
+                        {{ leadInfo.lead_title | slice : 0 : 14 || 'Lead Title Can not found' }} 
+                      </div>
+                      <div class="p-t-10">
+                        {{ leadInfo.lead_title | slice : 0 : 45 || 'Lead Title Can not found' }}
+                      </div>
+                    </div>
+                    <div class="p-24">
+                      <div class="m-t-10">
+                        <form [formGroup]="updateleadform" (ngSubmit)="updateLeadStaus($event)" id="updateleadform">
+                          <mat-form-field class="w-100" appearance="outline">
+                            <mat-label>Status</mat-label>
+                            <input type="hidden" [(ngModel)]="leadInfo.lead_id" formControlName="lead_id"/>
+                            <input type="text" placeholder="Pick one" aria-label="Status" matInput [matAutocomplete]="auto" formControlName="lead_status"/>
+                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayLeadLabel">
+                              <mat-option *ngFor="let lead of leadoptions" [value]="lead">
+                                {{ lead.label }}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field>
+                          <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Type your comments here</mat-label>
+                            <textarea matInput rows="5" formControlName="lead_comment"></textarea>
+                          </mat-form-field>
+                          <button mat-flat-button color="accent" class="m-l-10" type="submit" > Send </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-container>
+</mat-card>
