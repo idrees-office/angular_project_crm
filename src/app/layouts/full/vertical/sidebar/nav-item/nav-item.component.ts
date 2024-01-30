@@ -1,12 +1,4 @@
-import {
-  Component,
-  HostBinding,
-  Input,
-  OnInit,
-  OnChanges,
-  Output,
-  EventEmitter,
-} from '@angular/core';
+import { Component, HostBinding, Input, OnInit, OnChanges, Output, EventEmitter} from '@angular/core';
 import { NavItem } from './nav-item';
 import { Router } from '@angular/router';
 import { NavService } from '../../../../../services/nav.service';
@@ -33,7 +25,7 @@ import { CommonModule } from '@angular/common';
     ]),
   ],
 })
-export class AppNavItemComponent implements OnChanges {
+export class AppNavItemComponent implements OnChanges, OnInit {
   @Output() toggleMobileLink: any = new EventEmitter<void>();
   @Output() notify: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -43,12 +35,26 @@ export class AppNavItemComponent implements OnChanges {
   @HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
   @Input() item: NavItem | any;
   @Input() depth: any;
-
+  
+  userData:any;
+  user:any;
+  role:any;
   constructor(public navService: NavService, public router: Router) {
     if (this.depth === undefined) {
       this.depth = 0;
     }
   }
+
+  ngOnInit(): void {
+
+    this.userData    = localStorage.getItem('userData');
+    this.user        = JSON.parse(this.userData);
+    this.role        = this.user.client_user_role;
+    const id         = this.user.client_user_id;
+  }
+
+
+  
 
   ngOnChanges() {
     this.navService.currentUrl.subscribe((url: string) => {
@@ -83,6 +89,9 @@ export class AppNavItemComponent implements OnChanges {
   }
 
   onSubItemSelected(item: NavItem) {
+
+    console.log(item);
+
     if (!item.children || !item.children.length){
       if (this.expanded && window.innerWidth < 1024) {
         this.notify.emit();

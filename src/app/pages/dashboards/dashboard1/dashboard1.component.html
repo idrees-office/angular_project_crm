@@ -21,9 +21,9 @@
     <!-- ------------------------------------------------------ -->
     <mat-sidenav #mailnav [mode]="isOver() ? 'over' : 'side'" [opened]="!isOver()" (open)="sidePanelOpened = true" (close)="sidePanelOpened = false" class="mail-sidebar">
       <ng-scrollbar style="height: calc(100% - 10px)" class="position-relative">
-        <div class="p-16 p-b-0">
+        <!-- <div class="p-16 p-b-0">
           <button mat-flat-button (click)="openDialog()" color="accent" class="w-100 btn-block"> Compose </button>
-        </div>
+        </div> -->
 
         <!-- [class.bg-light-primary]="selectedMailbox === 'New Lead'" (click)="mailboxesChanged('Assign Leads')" -->
         <!-- <div class="p-16">
@@ -53,7 +53,6 @@
           </div>
         </div> -->
         <div class="p-16">
-
           <div *ngFor="let mail of mailboxes" (click)="mailboxesChanged(mail.name)">
             <div class="d-flex align-items-center inbox-list rounded p-16 cursor-pointer" [class.bg-light-primary]="mail.active">
               <i-tabler name="{{ mail.icon }}" class="m-r-12 icon-18"></i-tabler>
@@ -84,30 +83,6 @@
               </div>
             </div>
           </div>
-          <!-- <div *ngFor="let mail of mailboxes" (click)="mailboxesChanged(mail.name)">
-            <div class="d-flex align-items-center inbox-list rounded p-16 cursor-pointer" [class.bg-light-primary]="mail.active">
-              <i-tabler name="{{ mail.icon }}" class="m-r-12 icon-18"></i-tabler>
-              <span class="f-w-400 f-s-14">{{ mail.name }}</span>
-              <div class="m-l-auto  d-sm-flex align-items-center gap-4">
-                <span class="d-flex align-items-center gap-4">
-                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'New Lead'"> {{ Newleads?.length || 0 }} </span>
-                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Assigned Lead'"> {{ Assignleads?.length || 0 }} </span>
-                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Connected Lead'"> {{ Connectedleads?.length || 0 }} </span>
-                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Cold Lead'"> {{ Coldleads?.length || 0 }} </span>
-                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Warm Lead'"> {{ Warmleads?.length || 0 }} </span>
-                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Hot Lead'"> {{ Hotleads?.length || 0 }} </span>
-                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Meeting Schdulede'"> {{ MeetingSchduledeleads?.length || 0 }} </span>
-                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Meeting Complate'"> {{ MeetingComplate?.length || 0 }} </span>
-                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Low-Buget'"> {{ NoAnswer?.length || 0 }} </span>
-                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'No-Answer'"> {{ LowBuget?.length || 0 }} </span>
-                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Not-Responding'"> {{ NotResponding?.length || 0 }} </span>
-                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Incorrect Detail'"> {{ IncorrectDetail?.length || 0 }} </span>
-                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Agent'"> {{ Agent?.length || 0 }} </span>
-                  <span class="bg-accent rounded-pill p-x-6 text-white f-w-500" *ngIf="mail.name === 'Junk'"> {{ Junk?.length || 0 }} </span>
-                </span>
-              </div>
-            </div>
-          </div> -->
         </div>
       </ng-scrollbar>
     </mat-sidenav>
@@ -137,8 +112,7 @@
                                       <span class="m-r-8 d-flex"> <i-tabler name="star" class="icon-18"></i-tabler> </span>
                                       <span class="d-flex"> <i-tabler name="alert-circle" class="icon-18 text-error"></i-tabler></span>
                                       <div class="m-l-auto text-end">
-                                        <!-- {{ lead.assigned_at | date : "dd-MMM" }} -->
-                                          <span class="f-s-12 text-nowrap"> {{ formatDateOrToday(lead.assigned_at) }}</span>
+                                          <span class="f-s-12 text-nowrap"> {{ formatDateOrToday(lead.assigned_at) }} </span>
                                       </div>
                                   </div>
                               </div>
@@ -156,8 +130,7 @@
           <div *ngIf="ms.selectedLead === null" class="h-100 welcome-app">
               <div class="d-flex align-items-center justify-content-center h-100 w-100">
                   <div>
-                      <h3 class="mat-subtitle-1 f-w-600">Please Select Any Lead which lead your want see info</h3>
-                      <img src="/assets/images/breadcrumb/emailSv.png" width="250px" />
+                      <h3 class="mat-subtitle-1 f-w-600">Please Select Any Lead which lead your want see info</h3> <img src="/assets/images/breadcrumb/emailSv.png" width="250px" />
                   </div>
               </div>
           </div>
@@ -200,10 +173,10 @@
                         </div>
                         <div class="m-l-auto d-none d-sm-flex align-items-center gap-4">
                           <span class="d-flex align-items-center gap-4">
-                            <span> Responsible User : {{ leadInfo.agent.client_user_name || 'Unknow' }} </span>
+                            <span> Responsible User : {{ leadInfo.agent?.client_user_name || 'Unknow' }} </span>
+                            <span> Responsible User : {{ leadInfo.agent?.client_user_id || 'Unknow' }} </span>
                           </span>
                         </div>
-
                       </div>
                     </div>
                     <div class="p-24">
@@ -215,8 +188,24 @@
                       </div>
                     </div>
                     <div class="p-24">
+                      <div class="p-t-5">    
+                        <div class="" *ngFor="let comments of leadInfo.comments">
+                          <div *ngIf="comments.lead_status == 1">
+                            <small>{{formatDateOrToday(comments.created_at)}}</small> &nbsp;
+                            <strong>{{comments.agent.client_user_name}}</strong> &nbsp;
+                            <small>Created New Lead</small>
+                        </div>
+                        <div *ngIf="comments.lead_status == 2" class="maindiv">
+                            <small>{{formatDateOrToday(comments.created_at)}}</small> &nbsp;
+                            <strong *ngIf="comments.lead_status == 1">&nbsp;{{comments.agent.client_user_name}}</strong> &nbsp;
+                            Assign to <strong>{{comments.agent.client_user_name}}</strong>
+                        </div>
+                        </div>                                                               
+                      </div>                    
+                    </div>
+                    <div class="p-24">
                       <div class="m-t-10">
-                        <form [formGroup]="updateleadform" (ngSubmit)="updateLeadStaus($event)" id="updateleadform">
+                        <form [formGroup]="updateleadform" (ngSubmit)="updateLeadStaus($event,leadInfo.agent?.client_user_id)" id="updateleadform">
                           <mat-form-field class="w-100" appearance="outline">
                             <mat-label>Status</mat-label>
                             <input type="hidden" [(ngModel)]="leadInfo.lead_id" formControlName="lead_id"/>

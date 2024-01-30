@@ -25,8 +25,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
-    // AppTopCardsComponent,
-    AppDashboard1Component
+    AppDashboard1Component,
+    AppDashboard2Component,
+
   ],
   imports: [
     CommonModule,
@@ -49,8 +50,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatTabsModule,
     NgScrollbarModule,
     NgxPaginationModule,
-    MatAutocompleteModule
-  
+    MatAutocompleteModule,
+    
+
   ]
 })
 

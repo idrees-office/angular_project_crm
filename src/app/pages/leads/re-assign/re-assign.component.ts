@@ -11,9 +11,6 @@ import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
-
-
-
 export interface Lead {
   lead_id: any;
   agent_name: any;
@@ -24,7 +21,6 @@ export interface Lead {
   // Add any other properties you need for leads
 }
 
-
 @Component({
   selector: 'app-re-assign',
   templateUrl: './re-assign.component.html',
@@ -32,6 +28,7 @@ export interface Lead {
 })
 
 export class ReAssignComponent implements OnInit {
+
   // reassign
   // 'client_user_email', 'client_user_designation', 'imagePath'  
   displayedColumns: string[] = ['lead_id', 'lead_title', 'agent_name', 'customer_name', 'customer_phone', 'reassign', 'actions'];
@@ -116,7 +113,6 @@ export class ReAssignComponent implements OnInit {
 
 
   onOptionSelected(e: MatAutocompleteSelectedEvent, leads:any){
-
     Swal.fire({
       html: `Are you sure want to Re-assign?`,
       showCloseButton: true,
@@ -125,7 +121,6 @@ export class ReAssignComponent implements OnInit {
       cancelButtonText: `No`,
     }).then((result) => {
       if(result.isConfirmed){
-
         this.reassignLeadSelectedAgent = e.option.value;
         const leadid = leads.lead_id
         if(this.reassignLeadSelectedAgent != '' && leadid != ''){
@@ -140,8 +135,6 @@ export class ReAssignComponent implements OnInit {
           },(error:any) => {
               console.log(error);
           });
-
-
         }else{
           alert('SomeThing Wrong')
         }
@@ -265,7 +258,7 @@ export interface LeadsApi {
 export class ExampleHttpDatabase {
   constructor(private _httpClient: HttpClient) {}
   getLeads(sort: string, order: string, page: number): Observable<LeadsApi> {
-    const baseUrl = 'http://127.0.0.1:8000/api'; 
+    const baseUrl = 'http://10.99.1.32:8000/api'; 
     const leadsUrl = `${baseUrl}/leads/lead-list`;
     // Adjust query parameters based on your backend API
     const requestUrl = `${leadsUrl}?sort=${sort}&order=${order}&page=${page + 1}`;
@@ -277,12 +270,6 @@ export class ExampleHttpDatabase {
       }))
     );
   }
-
-
-
-  
-
- 
 
 }
 

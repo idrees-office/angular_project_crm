@@ -19,9 +19,10 @@ export class LeadsService {
   moveleadurl         = environment.baseUrl + "/leads/move_lead";
   reassignleadurl     = environment.baseUrl + "/leads/reassign_lead";
   moveleadsurl        = environment.baseUrl + "/leads/move_lead_status";
-  bulkleadtoassignurl = environment.baseUrl + "/leads/bulklead_to_assignlead";
   deleteleadsurl      = environment.baseUrl + "/leads/delete_leads";
   getUrl              = environment.baseUrl+'/leads/lead-list';
+  assignlead          = environment.baseUrl+'/leads/assign-lead';
+
   constructor(private http: HttpClient) {}
 
   getAgentInfo() {
@@ -39,14 +40,9 @@ export class LeadsService {
     return this.http.get(this.getUrl);
   }
 
-  // GetAgentAndAdminWiseLeads(id:any, role:any) {
-  //   return this.http.get(this.getallleads+'/'+id+'/'+role);
-  // } id:any, role:any
-
   GetAgentAndAdminWiseLeads() {
     return this.http.get(this.getallleads);
   }
-
 
   moveLead(source: any[], destination: any[], index: number) {
     destination.push(...source.splice(index, 1));
@@ -72,9 +68,7 @@ export class LeadsService {
   move(id: any) {
     return this.http.get(this.moveleadsurl + "/" + id);
   }
-  BulkLeadtoAssign(postData: any) {
-    return this.http.post(this.bulkleadtoassignurl, postData);
-  }
+  
   getresponsibleUser (id:any){
     return this.http.get(this.getagentnamebyid + "/" + id);
   }
@@ -82,6 +76,10 @@ export class LeadsService {
   DeleteLead(id:any){
     return this.http.get(this.deleteleadsurl+"/"+id);
   } 
+
+  AssignLeads(postData:any){
+    return this.http.post(this.assignlead, postData);
+  }
 
 
 

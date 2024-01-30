@@ -18,7 +18,7 @@ export interface Option {
     }
     export class LeadStatus {
       public static leads: LeadsOption[] = [
-        { 'lead_status' : '1', 'label' :  'New Leads'},
+        // { 'lead_status' : '1', 'label' :  'New Leads'},
         { 'lead_status' : '2', 'label' :  'Assigned Leads'},
         { 'lead_status' : '3', 'label' :  'Connected Leads'},
         { 'lead_status' : '4', 'label' :  'Cold Leads'},

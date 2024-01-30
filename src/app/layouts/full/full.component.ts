@@ -22,6 +22,7 @@ import { AppBreadcrumbComponent } from './shared/breadcrumb/breadcrumb.component
 import { CustomizerComponent } from './shared/customizer/customizer.component';
 import { AuthService } from 'src/app/services/auth.service';
 
+
 const MOBILE_VIEW = 'screen and (max-width: 768px)';
 const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
 const MONITOR_VIEW = 'screen and (min-width: 1024px)';
@@ -35,6 +36,8 @@ interface apps {
   subtitle: string;
   link: string;
 }
+
+
 
 interface quicklinks {
   id: number;
@@ -66,6 +69,9 @@ interface quicklinks {
 export class FullComponent implements OnInit {
 
   navItems = navItems;
+  
+
+  
 
   @ViewChild('leftsidenav')
   public sidenav: MatSidenav;
@@ -190,13 +196,7 @@ export class FullComponent implements OnInit {
     },
   ];
 
-  constructor(
-    private settings: CoreService,
-    private mediaMatcher: MediaMatcher,
-    private router: Router,
-    private breakpointObserver: BreakpointObserver,
-    private navService: NavService,
-    private _AuthService : AuthService
+  constructor(private settings: CoreService,private mediaMatcher: MediaMatcher,private router: Router,private breakpointObserver: BreakpointObserver,private navService: NavService,private _AuthService : AuthService
   ) {
     this.htmlElement = document.querySelector('html')!;
     this.layoutChangesSubscription = this.breakpointObserver
@@ -228,6 +228,8 @@ export class FullComponent implements OnInit {
   LoginUserEmail   : any;
   LoginUserDesignation : any;
   public currentUser: any;
+  role: any;
+
 
   ngOnInit(): void {
     this.currentUser = JSON.parse(localStorage.getItem('userData') || '{}');
@@ -236,11 +238,21 @@ export class FullComponent implements OnInit {
       this.LoginUserName  = this.currentUser.client_user_name;
       this.LoginUserEmail  = this.currentUser.client_user_email;
       this.LoginUserDesignation  = this.currentUser.client_user_designation;
-      // console.log(this.LoginUserId);
-      // console.log(this.LoginUserName);
+
     }
+
+
+    // console.log(navItems);
+
   }
 
+
+  // isVisibleForRole(){
+  //   console.log(this.role);
+  // }
+
+
+  
 
   logout(e:Event){
     e.preventDefault();
@@ -250,7 +262,6 @@ export class FullComponent implements OnInit {
       this._AuthService.logoutFunction(fd).subscribe((res:any) => {
         console.log(res);
       })
-      
       localStorage.removeItem('isLoggedin');
       localStorage.removeItem('userData');
       if (!localStorage.getItem('isLoggedin')) {
@@ -262,7 +273,6 @@ export class FullComponent implements OnInit {
   ngOnDestroy() {
     this.layoutChangesSubscription.unsubscribe();
   }
-
   toggleCollapsed() {
     this.isContentWidthFixed = false;
     this.options.sidenavCollapsed = !this.options.sidenavCollapsed;

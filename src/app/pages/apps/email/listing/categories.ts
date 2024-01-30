@@ -8,13 +8,15 @@ export interface Category {
 }
 
 export const mailbox = [
-  {
-    id: 1,
-    name: 'New Lead',
-    icon: 'mail',
-    count: 0,
-    active: true,
-  },
+
+  // {
+  //   id: 1,
+  //   name: 'New Lead',
+  //   icon: 'mail',
+  //   count: 0,
+  //   active: true,
+  // },
+
   {
     id: 2,
     name: 'Assigned Lead',

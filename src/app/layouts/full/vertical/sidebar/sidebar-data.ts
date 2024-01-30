@@ -8,6 +8,7 @@ export const navItems: NavItem[] = [
     displayName: 'Dashboard',
     iconName: 'aperture',
     route: '/dashboards/dashboard1',
+    role: 1
   },
   // {
   //   displayName: 'Dashboard2',
@@ -28,12 +29,24 @@ export const navItems: NavItem[] = [
         iconName: 'point',
         route: 'leads/create-lead',
       },
+
+      {
+        displayName: 'Assign Leads',
+        iconName: 'point',
+        route: '/dashboards/dashboard2',
+      },
+
+
       {
         displayName: 'Re-Assign',
         iconName: 'point',
         route: 'leads/re-assign',
       },
+
+
+
     ],
+    role:2
   },
 
    
@@ -56,24 +69,24 @@ export const navItems: NavItem[] = [
   // },
 
 
-  {
-    navCap: 'Auth',
-  },
-  {
-    displayName: 'Login',
-    iconName: 'login',
-    route: '/authentication',
-    children: [
-      {
-        displayName: 'Side Login',
-        iconName: 'point',
-        route: '/authentication/side-login',
-      },
-      {
-        displayName: 'Boxed Login',
-        iconName: 'point',
-        route: '/authentication/boxed-login',
-      },
-    ],
-  },
+  // {
+  //   navCap: 'Auth',
+  // },
+  // {
+  //   displayName: 'Login',
+  //   iconName: 'login',
+  //   route: '/authentication',
+  //   children: [
+  //     {
+  //       displayName: 'Side Login',
+  //       iconName: 'point',
+  //       route: '/authentication/side-login',
+  //     },
+  //     {
+  //       displayName: 'Boxed Login',
+  //       iconName: 'point',
+  //       route: '/authentication/boxed-login',
+  //     },
+  //   ],
+  // },
 ];

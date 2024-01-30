@@ -18,30 +18,15 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ListingDialogDataExampleDialogComponent } from '../../apps/email/listing/listing.component';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
-
-// components
-// import { AppTopCardsComponent } from '../../../components/dashboard1/top-cards/top-cards.component';
-// import { AppRevenueUpdatesComponent } from '../../../components/dashboard1/revenue-updates/revenue-updates.component';
-// import { AppYearlyBreakupComponent } from '../../../components/dashboard1/yearly-breakup/yearly-breakup.component';
-// import { AppMonthlyEarningsComponent } from '../../../components/dashboard1/monthly-earnings/monthly-earnings.component';
-// import { AppEmployeeSalaryComponent } from '../../../components/dashboard1/employee-salary/employee-salary.component';
-// import { AppCustomersComponent } from '../../../components/dashboard1/customers/customers.component';
-// import { AppProductsComponent } from '../../../components/dashboard2/products/products.component';
-// import { AppSocialCardComponent } from '../../../components/dashboard1/social-card/social-card.component';
-// import { AppSellingProductComponent } from '../../../components/dashboard1/selling-product/selling-product.component';
-// import { AppWeeklyStatsComponent } from '../../../components/dashboard1/weekly-stats/weekly-stats.component';
-// import { AppTopProjectsComponent } from '../../../components/dashboard1/top-projects/top-projects.component';
-// import { AppProjectsComponent } from '../../../components/dashboard1/projects/projects.component';
-
 export const _filter = (opt: string[], value: string): string[] => {
   const filterValue = value.toLowerCase();
-
   return opt.filter((item) => item.toLowerCase().includes(filterValue));
 };
 
 
 @Component({
   selector: 'app-dashboard1',
+
   // imports: [
   //   TablerIconsModule,
   //   AppTopCardsComponent,
@@ -57,14 +42,11 @@ export const _filter = (opt: string[], value: string): string[] => {
   //   AppTopProjectsComponent,
   //   AppProjectsComponent
   // ],
+
   templateUrl: './dashboard1.component.html',
   styleUrls: ['./dashboard1.component.scss'],
 
 })
-
-
-
-
 
 export class AppDashboard1Component implements OnInit {
   allLeads              : any[] = [];
@@ -99,8 +81,7 @@ export class AppDashboard1Component implements OnInit {
   newLeadId             : any;
   agentName             : any;
   sidePanelOpened       = true;
-
-  displayMode = 'default';
+  displayMode           = 'default';
   p = 1;
   hide:any;
 
@@ -110,11 +91,10 @@ export class AppDashboard1Component implements OnInit {
   // firstControl = new FormControl();
 
   constructor(private leadsService:LeadsService,private fb:FormBuilder, private mailService:mailService, public ms: mailGlobalVariable, private router:Router,public dialog: MatDialog) {  }
-
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 960px)`);
-  mailboxes : Category[]    = mailbox;
-  filters   : Category[]    = filter;
-  labels    : Category[]    = label;
+  mailboxes     : Category[]    = mailbox;
+  filters       : Category[]    = filter;
+  labels        : Category[]    = label;
   selectedIndex : string;
 
   isOver(): boolean {
@@ -129,17 +109,18 @@ export class AppDashboard1Component implements OnInit {
     });
 
     this.leadoptions = LeadStatus.leads;
+    this.userData    = localStorage.getItem('userData');
+    this.user        = JSON.parse(this.userData);
+    this.role        = this.user.client_user_role;
+    const id         = this.user.client_user_id;
 
-    this.userData = localStorage.getItem('userData');
-    this.user = JSON.parse(this.userData);
-    this.role = this.user.client_user_role;
-    const id = this.user.client_user_id;
 
-    if (this.role == 1) {
+
+  if (this.role == 1) {
       if (this.ms.type == '' || this.ms.type === '') {
-          await this.mailboxesChanged('New Lead');
+          await this.mailboxesChanged('Assigned Lead');
       } else {
-          await this.mailboxesChanged('New Lead');
+          await this.mailboxesChanged('Assigned Lead');
       }
   } else if (this.role == 2) {
    
@@ -150,18 +131,16 @@ export class AppDashboard1Component implements OnInit {
   }
     this.Newleads = 0;
   }
-  
-  }
+}
 
   displayLeadLabel(lead: any): string {
     return lead ? lead.label : '';
   }
-  
+
   updateLeadStatus(event: MatAutocompleteSelectedEvent): void {
     const selectedLead: any = event.option.value;
     this.leadInfo = selectedLead;
   }
-
 
   async loadAllLeads() {
     this.userData = localStorage.getItem('userData');
@@ -281,6 +260,7 @@ export class AppDashboard1Component implements OnInit {
       } 
     }
   }
+
   filterLeads(leadStatus: number) {
     if (leadStatus === 1) {
       this.Newleads = this.allLeads.filter((lead) => lead.lead_status == 1);
@@ -313,7 +293,6 @@ export class AppDashboard1Component implements OnInit {
     }
   }
 
-
   // getLead() {
   //   this.leadsService.getallleadsdata().subscribe(
   //     (res: any) => {
@@ -330,7 +309,7 @@ export class AppDashboard1Component implements OnInit {
   //   );
   // }
 
-  getAgentName(id: any) {
+  getAgentName(id: any){
     this.leadsService.AgentNameById(id).subscribe(
       (res: any) => {
         if (res && res.length > 0) { 
@@ -365,7 +344,6 @@ export class AppDashboard1Component implements OnInit {
 
     }
   }
-
 
   // sendButtonClick(): void {
   //   this.ms.replyShow = false;
@@ -536,15 +514,17 @@ export class AppDashboard1Component implements OnInit {
   }
 
 
-
-  async updateLeadStaus(event: Event): Promise<void> {
+  async updateLeadStaus(event: Event, agent_id:any): Promise<void> {
     event.preventDefault();
+    
     if (this.updateleadform.valid) {
         const filed = this.updateleadform.value;
         var fd = new FormData();
         fd.append('lead_status', filed.lead_status.lead_status)
         fd.append('lead_id', filed.lead_id)
         fd.append('lead_comment', filed.lead_comment)
+
+        fd.append('agent_id', agent_id);
 
         this.leadsService.UpdateSingLead(fd).subscribe(async (res: any) => {
             if (res.status === "success") {
@@ -556,7 +536,7 @@ export class AppDashboard1Component implements OnInit {
                 });
                 this.updateleadform.reset();
                 this.ms.selectedLead = null;  // Hide
-                const leadTypes: { [key: string]: string } = {    // Reload again
+                const leadTypes: { [key: string]: string } = {    
                   'newleads': 'New Lead',
                   'assignedleads': 'Assigned Lead',
                   'connectedleads': 'Connected Lead',
@@ -583,6 +563,10 @@ export class AppDashboard1Component implements OnInit {
     }
 }
 
+// History(id:any){
+//   // alert(id);
+// console.log(id);
+// }
 // loadDataAfterUpdate(){
 // }
 
@@ -610,6 +594,9 @@ private formatTime12Hour(date: Date): string {
 private isSameDate(date1: Date, date2: Date): boolean {
   return (date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate());
 }
+
+
+
 
   get f(){ return this.updateleadform.controls; }
 

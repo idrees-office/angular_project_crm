@@ -17,13 +17,18 @@ export class CreateLeadComponent implements OnInit {
   selectedAgentName:any;
   filteredAgents = [];
   agentIdControl = new FormControl();
+  userData    : any;
+  user        : any;
+  loginuserId : any;
+  role : any;
+
   
   constructor(private LeadsService:LeadsService, private router:Router, private fb:FormBuilder){}
 
   ngOnInit(): void {
     this.leadForm        = this.fb.group({
       lead_title         : new FormControl('',[Validators.required]),
-      agent_id           : new FormControl(''),
+      // agent_id           : new FormControl(''),
       customer_name      : new FormControl('',[Validators.required, Validators.minLength(4)]),
       customer_phone     : new FormControl('',[Validators.required, Validators.pattern(/^\+(?:[0-9] ?){6,14}[0-9]$/)]),
       customer_phone2    : new FormControl('',[Validators.required, Validators.pattern(/^\+(?:[0-9] ?){6,14}[0-9]$/)]),
@@ -31,21 +36,37 @@ export class CreateLeadComponent implements OnInit {
       customer_position  : new FormControl(''),
       lead_comments      : new FormControl(''),
     })
-    this.agents();
+
+    // this.agents();
+    // LoginUser
+    this.userData = localStorage.getItem('userData');
+    this.user = JSON.parse(this.userData);
+    this.loginuserId = this.user.client_user_id;
+    this.role = this.user.client_user_role;
+    // console.log(this.role);
+    // console.log(this.loginuserId);
   }
-  agents(){
-    this.LeadsService.getAgentInfo().subscribe((res:any)=>{ 
-      this.allAgents = res;
-    },(error:any) => {
-      console.log(error);
-    })
-  } 
+
+  // agents(){
+  //   this.LeadsService.getAgentInfo().subscribe((res:any)=>{ 
+  //     this.allAgents = res;
+  //   },(error:any) => {
+  //     console.log(error);
+  //   })
+  // } 
 
   submitForm(event:any){
     if(this.leadForm.invalid){ return }
     if(this.leadForm.valid){
       const formdata = new FormData();
       const filed    = this.leadForm.value;
+      
+      if(this.role == 1 || this.role === 1){
+        formdata.append('login_user_id', this.loginuserId);
+      }else{
+        formdata.append('login_user_id', 'empty');
+      }
+      
       formdata.append('lead_title', filed.lead_title);
       formdata.append('agent_id', filed.agent_id);
       formdata.append('customer_name', filed.customer_name);
@@ -53,15 +74,13 @@ export class CreateLeadComponent implements OnInit {
       formdata.append('customer_email', filed.customer_email);
       formdata.append('customer_position', filed.customer_position);
       formdata.append('customer_phone2', filed.customer_phone2);
+      formdata.append('lead_comments', filed.lead_comments);
       // formdata.append('agent_name', this.selectedAgentName);
       this.LeadsService.createLead(formdata).subscribe((res:any) => {
-
-        console.log(formdata);
-
         if(res.status === "success"){
-          Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true, title: `Lead Assign Successfully`, icon: 'success' });
+          Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true, title: `Create Lead Successfully`, icon: 'success' });
           this.leadForm.reset();
-          this.router.navigate(['/dashboards/dashboard1']);
+          this.router.navigate(['/dashboards/dashboard2']);
         }
       })
     }
@@ -90,21 +109,14 @@ export class CreateLeadComponent implements OnInit {
 
   filterAgents(event: Event) {
     const searchText = (event.target as HTMLInputElement).value;
-  
     if (typeof searchText !== 'string') {
       // For example, you might want to convert non-string types to string or return early.
       return;
     }
-  
     this.allAgents = this.allAgents.filter((agent: any) =>
       agent.client_user_name.toLowerCase().includes(searchText.toLowerCase())
     );
   }
-  
-
- 
-
-  
 
   get f(){
     return this.leadForm.controls;
