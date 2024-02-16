@@ -10,8 +10,9 @@ export class AuthService {
   loginUrl    = environment.baseUrl+'/auth/login';
   // emailurl = environment.baseUrl+'/auth/check_email';
   logouturl = environment.baseUrl+'/auth/logout';
-
   forgetpasswordUrl = environment.baseUrl+'/auth/forget_password';
+  get = environment.baseUrl+'/auth/send-reset-link-email';  // first Get Recode from db through Email
+
 
   constructor(private http:HttpClient) { }
   register(postData:any){
@@ -32,6 +33,11 @@ export class AuthService {
   
   logoutFunction(postData:any){
     return this.http.post(this.logouturl,postData);
+  }
+
+
+  sendResetLink(postData:any){
+    return this.http.post(this.get,postData);
   }
 
   

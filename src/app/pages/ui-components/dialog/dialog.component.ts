@@ -50,8 +50,6 @@ export class AppDialogComponent {
 
   constructor(public dialog: MatDialog) {}
 
-
-  
   // 1
   openDialog(
     enterAnimationDuration: string,

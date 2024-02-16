@@ -11,10 +11,6 @@ import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
-
-
-
-
 export interface Lead {
   lead_id: any;
   agent_name: any;
@@ -35,6 +31,7 @@ export interface Lead {
 
 export class AppDashboard2Component implements OnInit {
 
+
   displayedColumns: string[] = ['lead_id', 'lead_title', 'customer_name', 'customer_phone', 'reassign', 'actions'];
   exampleDatabase: ExampleHttpDatabase | null = null;
   leadsData: Lead[] = [];
@@ -44,6 +41,11 @@ export class AppDashboard2Component implements OnInit {
   isRateLimitReached = false;
   reassignLeadSelectedAgent: any;
   allAgents:any;
+  userData:any;
+  user:any;
+  loginuserId:any;
+  role:any;
+
   @ViewChild(MatPaginator) paginator: MatPaginator ;
   @ViewChild(MatSort) sort: MatSort ;
   constructor(private _httpClient: HttpClient, private _LeadsService:LeadsService) {}
@@ -67,10 +69,12 @@ export class AppDashboard2Component implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.userData = localStorage.getItem('userData');
-    // this.user = JSON.parse(this.userData);
-    // this.loginuserId = this.user.client_user_id;
-    // this.role = this.user.client_user_role;
+    this.userData = localStorage.getItem('userData');
+    this.user = JSON.parse(this.userData);
+    this.loginuserId = this.user.client_user_id;
+    this.role = this.user.client_user_role;
+
+
     this.agents();
   }
   Delete(e:Event, lead_id:any){
@@ -112,7 +116,7 @@ export class AppDashboard2Component implements OnInit {
         });
     }
   }
-  
+
   agents(){
     this._LeadsService.getAgentInfo().subscribe((res:any)=>{
         this.allAgents = res;
@@ -120,7 +124,6 @@ export class AppDashboard2Component implements OnInit {
       console.log(error);
     })
   }
-
 
   onOptionSelected(e: MatAutocompleteSelectedEvent, leads:any){
     Swal.fire({
@@ -137,6 +140,9 @@ export class AppDashboard2Component implements OnInit {
           var fd = new FormData();
           fd.append('agent_id',this.reassignLeadSelectedAgent.client_user_id);
           fd.append('lead_id',leadid);
+          if(this.loginuserId){
+            fd.append('login_user_id',this.loginuserId);
+          }
           this._LeadsService.AssignLeads(fd).subscribe((res:any) =>{
             if(res.status === "success"){
               Swal.fire({ title: 'Success', html: 'Lead Re-assigned Successfully', timer: 2000, showConfirmButton: false, });
@@ -168,7 +174,7 @@ export class ExampleHttpDatabase {
   constructor(private _httpClient: HttpClient) {}
   getLeads(sort: string, order: string, page: number): Observable<LeadsApi> {
     // const baseUrl = 'http://127.0.0.1:8000/api'; 
-    const baseUrl = 'http://10.99.1.32:8000/api'; 
+    const baseUrl = 'http://127.0.0.1:8000/api'; 
     const leadsUrl = `${baseUrl}/leads/get-new-lead`;
     // Adjust query parameters based on your backend API
     const requestUrl = `${leadsUrl}?sort=${sort}&order=${order}&page=${page + 1}`;

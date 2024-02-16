@@ -8,7 +8,6 @@ export const navItems: NavItem[] = [
     displayName: 'Dashboard',
     iconName: 'aperture',
     route: '/dashboards/dashboard1',
-    role: 1
   },
   // {
   //   displayName: 'Dashboard2',
@@ -33,10 +32,8 @@ export const navItems: NavItem[] = [
       {
         displayName: 'Assign Leads',
         iconName: 'point',
-        route: '/dashboards/dashboard2',
+        route: 'dashboards/dashboard2',
       },
-
-
       {
         displayName: 'Re-Assign',
         iconName: 'point',
@@ -46,7 +43,6 @@ export const navItems: NavItem[] = [
 
 
     ],
-    role:2
   },
 
    

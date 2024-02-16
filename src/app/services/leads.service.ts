@@ -22,9 +22,9 @@ export class LeadsService {
   deleteleadsurl      = environment.baseUrl + "/leads/delete_leads";
   getUrl              = environment.baseUrl+'/leads/lead-list';
   assignlead          = environment.baseUrl+'/leads/assign-lead';
+  leadnotification          = environment.baseUrl+'/leads/lead-notifcation';
 
   constructor(private http: HttpClient) {}
-
   getAgentInfo() {
     return this.http.get(this.getagenturl);
   }
@@ -79,6 +79,13 @@ export class LeadsService {
 
   AssignLeads(postData:any){
     return this.http.post(this.assignlead, postData);
+  }
+
+
+  LeadNotoficationAgentWise(id:any){
+    return this.http.get(this.leadnotification+"/"+id);
+
+    
   }
 
 

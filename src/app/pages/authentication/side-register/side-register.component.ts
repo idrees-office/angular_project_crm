@@ -17,16 +17,14 @@ import Swal from 'sweetalert2';
 export class AppSideRegisterComponent  implements OnInit{
   options = this.settings.getOptions();
   rgisterForm:FormGroup;
-
   constructor(private settings: CoreService, private router: Router, private fb:FormBuilder, private auth:AuthService) {}
-
   ngOnInit(): void {
 
     this.rgisterForm = this.fb.group({
       client_user_name : new FormControl('', [ Validators.required, Validators.minLength(6)]),
       client_user_email: new FormControl('', [Validators.required,Validators.email]),
-      password: new FormControl('', [Validators.required]),
-      confirm_password: new FormControl('', [Validators.required]),
+      password         : new FormControl('', [Validators.required]),
+      confirm_password : new FormControl('', [Validators.required]),
     },{
       validator: ConfirmedValidator('password', 'confirm_password'),
     }

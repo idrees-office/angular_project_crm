@@ -1,6 +1,10 @@
 import { Routes } from '@angular/router';
 import { CreateLeadComponent } from './create-lead/create-lead.component';
 import { ReAssignComponent } from './re-assign/re-assign.component';
+import { AssignLeadComponent } from './assign-lead/assign-lead.component';
+import { MyLeadComponent } from './my-lead/my-lead.component';
+
+
 
 export const LeadsRoutes: Routes = [
   {
@@ -18,6 +22,17 @@ export const LeadsRoutes: Routes = [
         },
       },
       {
+        path: 'assign-lead',
+        component: AssignLeadComponent,
+        data: {
+          title: 'Assign Leads',
+          urls: [
+            { title: 'Dashboard', url: '/leads/assign-lead' },
+            { title: 'Assign Leads' },
+          ],
+        },
+      },
+      {
         path: 're-assign',
         component: ReAssignComponent,
         data: {
@@ -28,6 +43,19 @@ export const LeadsRoutes: Routes = [
           ],
         },
       },
+
+      {
+        path: 'my-lead',
+        component: MyLeadComponent,
+        data: {
+          title: 'My Leads',
+          urls: [
+            { title: 'Dashboard', url: '/leads/my-lead' },
+            { title: 'My Leads' },
+          ],
+        },
+      },
+
 
     ],
   },

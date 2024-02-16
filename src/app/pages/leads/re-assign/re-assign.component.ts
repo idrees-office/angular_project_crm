@@ -28,7 +28,6 @@ export interface Lead {
 })
 
 export class ReAssignComponent implements OnInit {
-
   // reassign
   // 'client_user_email', 'client_user_designation', 'imagePath'  
   displayedColumns: string[] = ['lead_id', 'lead_title', 'agent_name', 'customer_name', 'customer_phone', 'reassign', 'actions'];
@@ -40,6 +39,10 @@ export class ReAssignComponent implements OnInit {
   isRateLimitReached = false;
   reassignLeadSelectedAgent: any;
   allAgents:any;
+  userData:any;
+  user:any;
+  loginuserId:any;
+  role:any;
   @ViewChild(MatPaginator) paginator: MatPaginator ;
   @ViewChild(MatSort) sort: MatSort ;
   constructor(private _httpClient: HttpClient, private _LeadsService:LeadsService) {}
@@ -62,6 +65,11 @@ export class ReAssignComponent implements OnInit {
     }
   }
   ngOnInit(): void {
+    this.userData = localStorage.getItem('userData');
+    this.user = JSON.parse(this.userData);
+    this.loginuserId = this.user.client_user_id;
+    this.role = this.user.client_user_role;
+
     this.agents();
   }
   Delete(e:Event, lead_id:any){
@@ -125,6 +133,9 @@ export class ReAssignComponent implements OnInit {
         const leadid = leads.lead_id
         if(this.reassignLeadSelectedAgent != '' && leadid != ''){
           var fd = new FormData();
+          if(this.loginuserId){
+            fd.append('login_user_id',this.loginuserId);
+          }
           fd.append('agent_id',this.reassignLeadSelectedAgent.client_user_id);
           fd.append('lead_id',leadid);
           this._LeadsService.ReAssignLeads(fd).subscribe((res:any) =>{
@@ -258,7 +269,8 @@ export interface LeadsApi {
 export class ExampleHttpDatabase {
   constructor(private _httpClient: HttpClient) {}
   getLeads(sort: string, order: string, page: number): Observable<LeadsApi> {
-    const baseUrl = 'http://10.99.1.32:8000/api'; 
+    // const baseUrl = 'http://127.0.0.1:8000/api'; 
+    const baseUrl = 'http://10.99.1.76:8000/api'; 
     const leadsUrl = `${baseUrl}/leads/lead-list`;
     // Adjust query parameters based on your backend API
     const requestUrl = `${leadsUrl}?sort=${sort}&order=${order}&page=${page + 1}`;

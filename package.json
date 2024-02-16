@@ -34,6 +34,7 @@
     "ngx-permissions": "^13.0.1",
     "ngx-scrollbar": "^11.0.0",
     "rxjs": "~7.5.0",
+    "rxjs-websockets": "^9.0.0",
     "sass": "^1.57.1",
     "sweetalert2": "^11.10.3",
     "tslib": "^2.3.0",

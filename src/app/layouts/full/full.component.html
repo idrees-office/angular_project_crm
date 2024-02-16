@@ -23,13 +23,9 @@
     <div class="flex-layout">
       <app-sidebar></app-sidebar>
       <ng-scrollbar class="position-relative" style="height: 100%">
-
-        <mat-nav-list class="sidebar-list">
-          <!-- <app-nav-item *ngFor="let item of navItems" [item]="item" (notify)="sidenav.toggle()"></app-nav-item> -->
-          <app-nav-item *ngFor="let item of navItems" [item]="item" (notify)="sidenav.toggle()"> Home</app-nav-item>
-
+         <mat-nav-list class="sidebar-list">
+          <app-nav-item *ngFor="let item of navItems" [item]="item" (notify)="sidenav.toggle()"></app-nav-item>
         </mat-nav-list>
-        
       </ng-scrollbar>
       <div class="p-24 m-t-auto profile-bar">
         <div class="bg-light-accent d-flex align-items-center rounded p-16">
@@ -130,30 +126,17 @@
     <div class="d-flex justify-content-between align-items-center">
       <div class="branding">
         <a href="/" *ngIf="options.theme === 'light'">
-          <img
-            src="./assets/images/logos/dark-logo.svg"
-            class="align-middle m-2"
-            alt="logo"
-          />
+          <img src="./assets/images/logos/logo.svg" class="align-middle m-2" alt="logo"/>
         </a>
         <a href="/" *ngIf="options.theme === 'dark'">
-          <img
-            src="./assets/images/logos/light-logo.svg"
-            class="align-middle m-2"
-            alt="logo"
-          />
+          <img src="./assets/images/logos/logo.svg" class="align-middle m-2" alt="logo"/>
         </a>
       </div>
-      <button
-        mat-icon-button
-        (click)="filterNavRight.toggle()"
-        class="d-flex justify-content-center"
-      >
+      <button mat-icon-button (click)="filterNavRight.toggle()" class="d-flex justify-content-center">
         <i-tabler name="x" class="icon-18 d-flex"></i-tabler>
       </button>
     </div>
-
-    <mat-accordion>
+     <mat-accordion>
       <mat-expansion-panel class="shadow-none">
         <mat-expansion-panel-header>
           <mat-panel-title class="f-s-16 f-w-500"> Apps </mat-panel-title>
@@ -183,7 +166,6 @@
         </div>
       </mat-expansion-panel>
     </mat-accordion>
-
     <div class="p-x-24">
       <a
         [routerLink]="['/apps/calendar']"

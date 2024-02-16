@@ -15,27 +15,20 @@ const routes: Routes = [
         redirectTo: '/dashboards/dashboard1',
         pathMatch: 'full',
       },
+      { path: 'starter',loadChildren: () => import('./pages/pages.module').then((m) => m.PagesModule),},
       {
-        path: 'starter',
-        loadChildren: () =>
-          import('./pages/pages.module').then((m) => m.PagesModule),
+        path: 'dashboards', loadChildren: () => import('./pages/dashboards/dashboards.module').then((m) => m.DashboardsModule),
       },
+      { path: 'leads', loadChildren: () => import('./pages/leads/leads.module').then((m) => m.LeadsModule), },
       {
-        path: 'dashboards',
-        loadChildren: () =>
-          import('./pages/dashboards/dashboards.module').then(
-            (m) => m.DashboardsModule
-          ),
+        path: 'excel', loadChildren: () => import('./pages/excel/excel.module').then((m) => m.ExcelModule),
       },
 
       {
-        path: 'leads',
-        loadChildren: () =>
-          import('./pages/leads/leads.module').then(
-            (m) => m.LeadsModule
-          ),
+        path: 'sale', loadChildren: () => import('./pages/sale/sale.module').then((m) => m.SaleModule),
       },
-      
+
+
       {
         path: 'ui-components',
         loadChildren: () =>

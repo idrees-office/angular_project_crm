@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import { error } from 'console';
 import { debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { LeadStatus, LeadsOption } from 'src/app/core/status';
+import { LeadStatus, LeadsOption, LeadStatusDropdown, LeadsOptionDropdown } from 'src/app/core/status';
 import { mailboxList } from '../../apps/email/email-data';
 import { Category, filter, label, mailbox } from '../../apps/email/listing/categories';
 import { mailGlobalVariable, mailService } from '../../apps/email/email.service';
@@ -17,32 +17,37 @@ import { Leadbox, Mailbox } from '../../apps/email/email';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ListingDialogDataExampleDialogComponent } from '../../apps/email/listing/listing.component';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { WebsocketService } from 'src/app/services/websocket.service';
+import { Location } from '@angular/common';
+import { MatAutocompleteActivatedEvent } from '@angular/material/autocomplete';
+import { format, isToday, isYesterday } from 'date-fns';
 
-export const _filter = (opt: string[], value: string): string[] => {
-  const filterValue = value.toLowerCase();
-  return opt.filter((item) => item.toLowerCase().includes(filterValue));
-};
+
+export interface productsData {
+  id: number;
+  imagePath: string;
+  uname: string;
+  position: string;
+  productName: string;
+  budget: number;
+  priority: string;
+}
+
+const PRODUCT_DATA: productsData[] = [
+  {
+    id: 1,
+    imagePath: 'assets/images/profile/user-1.jpg',
+    uname: 'Sunil Joshi',
+    position: 'Web Designer',
+    productName: 'Elite Admin',
+    budget: 3.9,
+    priority: 'low'
+  },
+]
 
 
 @Component({
   selector: 'app-dashboard1',
-
-  // imports: [
-  //   TablerIconsModule,
-  //   AppTopCardsComponent,
-  //   AppRevenueUpdatesComponent,
-  //   AppYearlyBreakupComponent,
-  //   AppMonthlyEarningsComponent,
-  //   AppEmployeeSalaryComponent,
-  //   AppCustomersComponent,
-  //   AppProductsComponent,
-  //   AppSocialCardComponent,
-  //   AppSellingProductComponent,
-  //   AppWeeklyStatsComponent,
-  //   AppTopProjectsComponent,
-  //   AppProjectsComponent
-  // ],
-
   templateUrl: './dashboard1.component.html',
   styleUrls: ['./dashboard1.component.scss'],
 
@@ -68,6 +73,7 @@ export class AppDashboard1Component implements OnInit {
   userData              : any;
   user                  : any;
   role                  : any;
+  loginUserId           : any
   sidebarVisible        = false;
   allAgents             : any;
   isNextDisabled        : any;
@@ -78,19 +84,30 @@ export class AppDashboard1Component implements OnInit {
   leadInfo              : any = {};
   updateleadform        : FormGroup;
   leadoptions           : LeadsOption[] = [];
+  leadoptions2          : LeadsOptionDropdown[] = [];
   newLeadId             : any;
   agentName             : any;
   sidePanelOpened       = true;
   displayMode           = 'default';
-  p = 1;
-  hide:any;
+  p                     = 1;
+  hide                  : any;
+  currentselectdstatus  : any; 
+  stateCtrl         = new FormControl('');
+  filteredStates: Observable<LeadsOptionDropdown[]>;
 
-  // firstoption: string[] = ['One', 'Two', 'Three'];
-  // filteredOptions: Observable<string[]>;
-  // firstControl = new FormControl('');
-  // firstControl = new FormControl();
+  constructor(private leadsService:LeadsService,private fb:FormBuilder, private mailService:mailService, public ms: mailGlobalVariable, private router:Router,public dialog: MatDialog, private _Location :Location) { 
 
-  constructor(private leadsService:LeadsService,private fb:FormBuilder, private mailService:mailService, public ms: mailGlobalVariable, private router:Router,public dialog: MatDialog) {  }
+    this.filteredStates = this.stateCtrl.valueChanges.pipe(startWith(''), map((state) => (state ? this._filterStates(state) : this.leadoptions2.slice())));
+
+   }
+
+   private _filterStates(value: string): LeadsOption[] {
+    const filterValue = value.toLowerCase();
+
+    return this.leadoptions2.filter((leadoptions2) =>
+    leadoptions2.label.toLowerCase().includes(filterValue)
+    );
+  }
   private mediaMatcher: MediaQueryList = matchMedia(`(max-width: 960px)`);
   mailboxes     : Category[]    = mailbox;
   filters       : Category[]    = filter;
@@ -102,20 +119,21 @@ export class AppDashboard1Component implements OnInit {
   }
   
   async ngOnInit(): Promise<void> {
+
+      // console.log(this.leadoptions2);
+
     this.updateleadform = this.fb.group({
       lead_status  : new FormControl('', [Validators.required]),
       lead_id      : new FormControl(''),
       lead_comment : new FormControl('',[Validators.required]),
     });
 
-    this.leadoptions = LeadStatus.leads;
-    this.userData    = localStorage.getItem('userData');
-    this.user        = JSON.parse(this.userData);
-    this.role        = this.user.client_user_role;
-    const id         = this.user.client_user_id;
-
-
-
+    this.leadoptions  = LeadStatus.leads;
+    this.leadoptions2 = LeadStatusDropdown.leadsoption;
+    this.userData     = localStorage.getItem('userData');
+    this.user         = JSON.parse(this.userData);
+    this.role         = this.user.client_user_role;
+    this.loginUserId  = this.user.client_user_id;
   if (this.role == 1) {
       if (this.ms.type == '' || this.ms.type === '') {
           await this.mailboxesChanged('Assigned Lead');
@@ -123,31 +141,43 @@ export class AppDashboard1Component implements OnInit {
           await this.mailboxesChanged('Assigned Lead');
       }
   } else if (this.role == 2) {
-   
     if (this.ms.type == '' || this.ms.type === '') {
       await this.mailboxesChanged('Assigned Lead');
   } else {
       await this.mailboxesChanged('Assigned Lead');
   }
-    this.Newleads = 0;
+    this.Newleads = 0;  
   }
-}
+  
+  // this._WebsocketService.connect().subscribe(
+  //   (message) => {
+  //     // Handle incoming messages
+  //     console.log(message);
+  //   },
+  //   (error) => {
+  //     // Handle errors
+  //   },
+  //   () => {
+  //     // Handle WebSocket close
+  //   }
+  // );
+  
+ }
 
-  displayLeadLabel(lead: any): string {
-    return lead ? lead.label : '';
-  }
-
-  updateLeadStatus(event: MatAutocompleteSelectedEvent): void {
-    const selectedLead: any = event.option.value;
-    this.leadInfo = selectedLead;
-  }
+  //  private _filter(value: any): string[] {
+  //   const filterValue = value.toLowerCase();
+  //   return this.firstoption.filter((option) => option.toLowerCase().includes(filterValue));
+  // }
+  // updateLeadStatus(event: MatAutocompleteSelectedEvent): void {
+  //   const selectedLead: any = event.option.value;
+  //   this.leadInfo = selectedLead;
+  // }
 
   async loadAllLeads() {
     this.userData = localStorage.getItem('userData');
     this.user = JSON.parse(this.userData);
     this.role = this.user.client_user_role;
     const agent_id = this.user.client_user_id;
-    // id, this.role
     try {
       const res: any = await this.leadsService.GetAgentAndAdminWiseLeads().toPromise();
       this.allLeads       = res;
@@ -175,57 +205,10 @@ export class AppDashboard1Component implements OnInit {
           this.filterLeads(leadStatus);
         });
       }
-      // leadsstatus.forEach(status => {
-      //   switch (status) {
-      //      case 1:
-      //       this.Newleads.push(...this.allLeads.filter(lead => lead.lead_status == status));
-      //       break;
-      //      case 2:
-      //       this.Assignleads.push(...this.allLeads.filter(lead => lead.lead_status == status));
-      //       break;
-      //       case 3:
-      //         this.Connectedleads.push(...this.allLeads.filter(lead => lead.lead_status == status));
-      //      break;
-      //      case 4:
-      //         this.Coldleads.push(...this.allLeads.filter(lead => lead.lead_status == status));
-      //      break;
-      //      case 5:
-      //         this.Warmleads.push(...this.allLeads.filter(lead => lead.lead_status == status));
-      //      break;
-      //      case 6:
-      //         this.Hotleads.push(...this.allLeads.filter(lead => lead.lead_status == status));
-      //      break;
-      //      case 7:
-      //         this.MeetingSchduledeleads.push(...this.allLeads.filter(lead => lead.lead_status == status));
-      //      break;
-      //      case 8:
-      //         this.MeetingComplate.push(...this.allLeads.filter(lead => lead.lead_status == status));
-      //      break;
-      //      case 9:
-      //         this.NoAnswer.push(...this.allLeads.filter(lead => lead.lead_status == status));
-      //      break;
-      //      case 10:
-      //       this.LowBuget.push(...this.allLeads.filter(lead => lead.lead_status == status));
-      //      break;
-      //      case 11:
-      //       this.NotResponding.push(...this.allLeads.filter(lead => lead.lead_status == status));
-      //      break;
-      //      case 12:
-      //       this.IncorrectDetail.push(...this.allLeads.filter(lead => lead.lead_status == status));
-      //      break;
-      //      case 13:
-      //       this.Agent.push(...this.allLeads.filter(lead => lead.lead_status == status));
-      //      break;
-      //      case 14:
-      //       this.Junk.push(...this.allLeads.filter(lead => lead.lead_status == status));
-      //      break;
-      //   }
-      // });
     } catch (error) {
       console.error('Error fetching leads:', error);
     }
   }
-
 
   fetchLeadsForAgent(leadStatus: number,agent_id: any){
     if (agent_id) {
@@ -260,7 +243,7 @@ export class AppDashboard1Component implements OnInit {
       } 
     }
   }
-
+  
   filterLeads(leadStatus: number) {
     if (leadStatus === 1) {
       this.Newleads = this.allLeads.filter((lead) => lead.lead_status == 1);
@@ -293,21 +276,15 @@ export class AppDashboard1Component implements OnInit {
     }
   }
 
-  // getLead() {
-  //   this.leadsService.getallleadsdata().subscribe(
-  //     (res: any) => {
-  //       if (res && res.length > 0) { 
-  //         this.allLeads = res;
-  //       } else {
-  //         console.log('Could Not find Any User');
-  //       }
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching agent name:', error);
-  //       console.log('An error occurred while fetching agent name');
-  //     }
-  //   );
-  // }
+  leadUser(data: any): boolean {
+    var indexofArray = data[2];
+    var leadInfoArry = data[0];
+    var currecntRecord = data[1];
+    if(currecntRecord.user_id == null && indexofArray > 0){
+      return false;
+    }  
+    return true;
+  }
 
   getAgentName(id: any){
     this.leadsService.AgentNameById(id).subscribe(
@@ -327,14 +304,12 @@ export class AppDashboard1Component implements OnInit {
 
   mailSelected(lead: Leadbox): void {
     this.ms.selectedLead = null;
-
     this.ms.selectedLead = lead;
     this.selectedIndex = lead.lead_id;
     this.ms.selectedLead.seen = true;
     lead.seen = true;
     this.ms.addClass = true;
     this.leadInfo = lead;
-
   }
 
   zeroforNewLead(){
@@ -345,16 +320,12 @@ export class AppDashboard1Component implements OnInit {
     }
   }
 
-  // sendButtonClick(): void {
-  //   this.ms.replyShow = false;
-  // }
   removeClass(): void {
     this.ms.addClass = false;
   }
-
+  
   async mailboxesChanged(type: any): Promise<void> {
     if (this.role == 2 && type === 'New Lead') {
-      // Do nothing or show a message indicating that the user cannot access this option
       Swal.fire({ title: 'Sorry', html: 'You do not have permission to access New leads', timer: 2000, showConfirmButton: false,})
       return;
     }
@@ -366,8 +337,6 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'New Lead';
         this.mailActiveClass(type);
         this.ms.type = 'newleads';
-          
-        // this.router.navigate(['dashboards/dashboard1/new-leads']);
         break;
       case 'Assigned Lead':
         this.ms.selectedLead = null;
@@ -376,7 +345,6 @@ export class AppDashboard1Component implements OnInit {
         this.mailActiveClass(type);
         this.ms.type = 'assignedleads';
        this.zeroforNewLead()
-        // this.router.navigate(['dashboards/dashboard1/assigned-leads']);
         break;
       case 'Connected Lead':
         this.ms.selectedLead = null;
@@ -385,7 +353,6 @@ export class AppDashboard1Component implements OnInit {
         this.mailActiveClass(type);
         this.ms.type = 'connectedleads';
         this.zeroforNewLead()
-        // this.router.navigate(['dashboards/dashboard1/connected-leads']);
         break;
       case 'Cold Lead':
         this.ms.selectedLead = null;
@@ -394,7 +361,6 @@ export class AppDashboard1Component implements OnInit {
         this.mailActiveClass(type);
         this.ms.type = 'connectedleads';
         this.zeroforNewLead()
-        // this.router.navigate(['dashboards/dashboard1/connected-leads']);
         break;
       case 'Warm Lead':
         this.ms.selectedLead = null;
@@ -403,7 +369,6 @@ export class AppDashboard1Component implements OnInit {
         this.mailActiveClass(type);
         this.ms.type = 'warmleads';
         this.zeroforNewLead()
-        // this.router.navigate(['dashboards/dashboard1/warm-leads']);
         break;
       case 'Hot Lead':
         this.ms.selectedLead = null;
@@ -412,7 +377,6 @@ export class AppDashboard1Component implements OnInit {
         this.mailActiveClass(type);
         this.ms.type = 'hotleads';
         this.zeroforNewLead()
-        // this.router.navigate(['dashboards/dashboard1/hot-leads']);
         break;
       case 'Meeting Schdulede':
         this.ms.selectedLead = null;
@@ -421,35 +385,31 @@ export class AppDashboard1Component implements OnInit {
           this.mailActiveClass(type);
           this.ms.type = 'meetingschdulede';
           this.zeroforNewLead()
-          // this.router.navigate(['dashboards/dashboard1/meeting-schdulede']);
         break;
       case 'Meeting Complate':
         this.ms.selectedLead = null;
-          this.ms.leadList = this.MeetingSchduledeleads;
+          this.ms.leadList = this.MeetingComplate;
           this.ms.topLable = 'Meeting Complate';
           this.mailActiveClass(type);
           this.ms.type = 'meetingschdulede';
           this.zeroforNewLead()
-          // this.router.navigate(['dashboards/dashboard1/meeting-schdulede']);
         break;
-      case 'Low-Buget':
+        case 'No-Answer':
           this.ms.selectedLead = null;
-          this.ms.leadList = this.LowBuget;
-          this.ms.topLable = 'Low-Buget';
-          this.mailActiveClass(type);
-          this.ms.type = 'lowbuget';
-          this.zeroforNewLead()
-          // this.router.navigate(['dashboards/dashboard1/low-buget']);
-        break;
-      case 'No-Answer':
-        this.ms.selectedLead = null;
-          this.ms.leadList = this.NoAnswer;
-          this.ms.topLable = 'No-Answer';
-          this.mailActiveClass(type);
-          this.ms.type = 'noanswer';
-          this.zeroforNewLead()
-          // this.router.navigate(['dashboards/dashboard1/no-answer']);
-        break;
+            this.ms.leadList = this.NoAnswer;
+            this.ms.topLable = 'No-Answer';
+            this.mailActiveClass(type);
+            this.ms.type = 'noanswer';
+            this.zeroforNewLead()
+          break;
+        case 'Low-Buget':
+            this.ms.selectedLead = null;
+            this.ms.leadList = this.LowBuget;
+            this.ms.topLable = 'Low-Buget';
+            this.mailActiveClass(type);
+            this.ms.type = 'lowbuget';
+            this.zeroforNewLead()
+          break;
       case 'Not-Responding':
         this.ms.selectedLead = null;
           this.ms.leadList = this.NotResponding;
@@ -457,7 +417,6 @@ export class AppDashboard1Component implements OnInit {
           this.mailActiveClass(type);
           this.ms.type = 'notresponding';
           this.zeroforNewLead()
-          // this.router.navigate(['dashboards/dashboard1/not-responding']);
         break;  
       case 'Incorrect Detail':
         this.ms.selectedLead = null;
@@ -466,7 +425,6 @@ export class AppDashboard1Component implements OnInit {
           this.mailActiveClass(type);
           this.ms.type = 'incorrectdetail';
           this.zeroforNewLead()
-          // this.router.navigate(['dashboards/dashboard1/incorrect-detail']);
         break;
       case 'Agent':
           this.ms.selectedLead = null;
@@ -475,7 +433,6 @@ export class AppDashboard1Component implements OnInit {
           this.mailActiveClass(type);
           this.ms.type = 'agent';
           this.zeroforNewLead()
-          // this.router.navigate(['dashboards/dashboard1/agent']);
         break;
       case 'Junk':
         this.ms.selectedLead = null;
@@ -484,7 +441,6 @@ export class AppDashboard1Component implements OnInit {
           this.mailActiveClass(type);
           this.ms.type = 'junk';
           this.zeroforNewLead()
-          // this.router.navigate(['dashboards/dashboard1/junk']);
         break;
       default:
         // Handle the default case if necessary
@@ -492,15 +448,11 @@ export class AppDashboard1Component implements OnInit {
     }
   }
   mailActiveClass(type: string): void {
-    for (const fil of filter) {
-      fil.active = false;
-    }
+    for (const fil of filter) { fil.active = false; }
     for (const lab of label) {
       lab.active = false;
     }
-    for (const mail of mailbox) {
-      mail.active = false;
-    }
+    for (const mail of mailbox) { mail.active = false; }
     mailbox.find((m) => m.name === type)!.active = true;
   }
 
@@ -513,19 +465,35 @@ export class AppDashboard1Component implements OnInit {
     });
   }
 
+  // displayLeadLabel(status: any): string {
+  //   return status ? status.label : '';
+  // }
+
+
+  onOptionSelected(e: MatAutocompleteSelectedEvent){
+    this.currentselectdstatus = e.option.value;
+    // console.log(this.currentselectdstatus);
+    }
+
+    displayLeadLabel(status: any): string {
+      return status ? status.label : '';
+    }
 
   async updateLeadStaus(event: Event, agent_id:any): Promise<void> {
     event.preventDefault();
-    
-    if (this.updateleadform.valid) {
+    console.log(this.updateleadform.value);
+    if (this.updateleadform.valid){
         const filed = this.updateleadform.value;
         var fd = new FormData();
         fd.append('lead_status', filed.lead_status.lead_status)
         fd.append('lead_id', filed.lead_id)
         fd.append('lead_comment', filed.lead_comment)
-
         fd.append('agent_id', agent_id);
-
+        if(this.role == 1){
+          fd.append('user_id', this.loginUserId);
+        }else{
+          fd.append('user_id', '');
+        }
         this.leadsService.UpdateSingLead(fd).subscribe(async (res: any) => {
             if (res.status === "success") {
                 Swal.fire({
@@ -537,20 +505,20 @@ export class AppDashboard1Component implements OnInit {
                 this.updateleadform.reset();
                 this.ms.selectedLead = null;  // Hide
                 const leadTypes: { [key: string]: string } = {    
-                  'newleads': 'New Lead',
-                  'assignedleads': 'Assigned Lead',
-                  'connectedleads': 'Connected Lead',
-                  'coldleads': 'Cold Lead',
-                  'warmleads': 'Warm Lead',
-                  'hotleads': 'Hot Lead',
+                  'newleads'         : 'New Lead',
+                  'assignedleads'    : 'Assigned Lead',
+                  'connectedleads'   : 'Connected Lead',
+                  'coldleads'        : 'Cold Lead',
+                  'warmleads'        : 'Warm Lead',
+                  'hotleads'         : 'Hot Lead',
                   'meetingschdulede' : 'Meeting Schdulede ',
                   'meetingcomplate'  : 'Meeting Complate',
-                  'lowbuget' : 'Low-Buget',
-                  'noanswer' : 'No-Answer',
-                  'notresponding' : 'Not-Responding',
-                  'incorrectdetail' : 'Incorrect Detail',
-                  'agent' : 'Agent',
-                  'junk'  : 'Junk',
+                  'lowbuget'         : 'Low-Buget',
+                  'noanswer'         : 'No-Answer',
+                  'notresponding'    : 'Not-Responding',
+                  'incorrectdetail'  : 'Incorrect Detail',
+                  'agent'            : 'Agent',
+                  'junk'             : 'Junk',
                 };
                 const leadType = this.ms.type;
                 if (leadTypes.hasOwnProperty(leadType)) {
@@ -563,11 +531,24 @@ export class AppDashboard1Component implements OnInit {
     }
 }
 
-// History(id:any){
-//   // alert(id);
-// console.log(id);
-// }
-// loadDataAfterUpdate(){
+
+displayedColumns1: string[] = ['Name/Position', 'Mobile', 'Whatsapp', 'Email', 'Responsible'];
+dataSource1 = PRODUCT_DATA;
+
+
+  
+
+// formatDateOrToday(value: Date): any {
+//   console.log(value);
+//   const currentDate = new Date();
+//   console.log(currentDate);
+//   // if (isToday(value)) {
+//   //   return `Today ${this.formatTime12Hour(value)}`;
+//   // } else if (isYesterday(value)) {
+//   //   return `Yesterday ${this.formatTime12Hour(value)}`;
+//   // } else {
+//   //   return format(value, 'PP') + ' ' + this.formatTime12Hour(value);
+//   // }
 // }
 
 formatDateOrToday(value: Date): any {
@@ -584,21 +565,24 @@ formatDateOrToday(value: Date): any {
   return new DatePipe('en-US').transform(date, 'short');
 }
 
+
 private formatTime12Hour(date: Date): string {
-  const hours = date.getHours() % 12 || 12;
-  const minutes = date.getMinutes().toString().padStart(2, '0');
-  const amPm = date.getHours() >= 12 ? 'PM' : 'AM';
-  return `${hours}:${minutes} ${amPm}`;
+  return date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
 }
+
+
+// private formatTime12Hour(date: Date): string {
+//   const hours = date.getHours() % 12 || 12;
+//   const minutes = date.getMinutes().toString().padStart(2, '0');
+//   const amPm = date.getHours() >= 12 ? 'PM' : 'AM';
+//   return `${hours}:${minutes} ${amPm}`;
+// }
 
 private isSameDate(date1: Date, date2: Date): boolean {
   return (date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate());
 }
 
-
-
-
-  get f(){ return this.updateleadform.controls; }
+get f(){ return this.updateleadform.controls; }
 
   
 }

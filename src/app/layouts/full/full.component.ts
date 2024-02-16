@@ -229,8 +229,8 @@ export class FullComponent implements OnInit {
   LoginUserDesignation : any;
   public currentUser: any;
   role: any;
-
-
+  LoginUserRole:any;
+  
   ngOnInit(): void {
     this.currentUser = JSON.parse(localStorage.getItem('userData') || '{}');
     if (this.currentUser) {
@@ -238,20 +238,142 @@ export class FullComponent implements OnInit {
       this.LoginUserName  = this.currentUser.client_user_name;
       this.LoginUserEmail  = this.currentUser.client_user_email;
       this.LoginUserDesignation  = this.currentUser.client_user_designation;
+      this.LoginUserRole = this.currentUser.client_user_role;
+      if (this.LoginUserRole == 1 || this.LoginUserRole === 1) {
+        this.navItems = [
+          { navCap: 'Home' },
+          {
+            displayName: 'Dashboard',
+            iconName: 'aperture',
+            route: '/dashboards/dashboard1',
+          },
+          // Other nav items
+          {
+            navCap: 'Leads Management',
+          },
+          {
+            displayName: 'Leads Management',
+            iconName: 'apps',
+            route: 'leads',
+            children: [
+              {
+                displayName: 'Add New Lead',
+                iconName: 'point',
+                route: 'leads/create-lead',
+              },
+              {
+                displayName: 'New Leads',
+                iconName: 'point',
+                route: 'leads/assign-lead',
+              },
+              {
+                displayName: 'Re-Assign',
+                iconName: 'point',
+                route: 'leads/re-assign',
+              },
+              
+              {
+                displayName: 'All Leads',
+                iconName: 'point',
+                route: 'leads/my-lead',
+              },
 
+            ],
+          },
+          {
+            navCap: 'Import Excel',
+          },
+          {
+            displayName: 'Leads From Excel',
+            iconName: 'apps',
+            route: 'excel',
+            children: [
+              {
+                displayName: 'Import File', 
+                iconName: 'point',
+                route: 'excel/import-excel',
+              },
+            ],
+          },
+          
+          {
+            navCap: 'Sale-PipeLine',
+          },
+          {
+            displayName: 'Sale-PipeLine',
+            iconName: 'apps',
+            route: 'excel',
+            children: [
+              {
+                displayName: 'Genrate Sale Offer', 
+                iconName: 'point',
+                route: 'sale/sale-offer',
+              },
+            ],
+          },
+
+
+          {
+            navCap: 'Account Setting',
+          },
+          {
+            displayName: 'Account Setting',
+            iconName: 'apps',
+            route: 'theme-pages',
+            children: [
+              {
+                displayName: 'Profile', 
+                iconName: 'point',
+                route: 'theme-pages/account-setting',
+              },
+            ],
+          },
+        ];
+      } else if (this.LoginUserRole == 2 || this.LoginUserRole === 2) {
+        this.navItems = [
+          {
+            displayName: 'Dashboard',
+            iconName: 'aperture',
+            route: '/dashboards/dashboard1',
+          },
+
+          {
+            navCap: 'Leads Management',
+          },
+
+          {
+            displayName: 'Leads Management',
+            iconName: 'apps',
+            route: 'theme-pages',
+            children: [
+              {
+                displayName: 'My Leads', 
+                iconName: 'point',
+                route: 'leads/my-lead',
+              },
+            ],
+          },
+
+          {
+            navCap: 'Account Setting',
+          },
+          {
+            displayName: 'Account Setting',
+            iconName: 'apps',
+            route: 'theme-pages',
+            children: [
+              {
+                displayName: 'Profile', 
+                iconName: 'point',
+                route: 'theme-pages/account-setting',
+              },
+            ],
+          },
+
+        ];
+      }
     }
-
-
-    // console.log(navItems);
-
   }
-
-
-  // isVisibleForRole(){
-  //   console.log(this.role);
-  // }
-
-
   
 
   logout(e:Event){

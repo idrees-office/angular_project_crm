@@ -18,6 +18,7 @@ import { FormsModule } from '@angular/forms';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { AuthService } from 'src/app/services/auth.service';
 import { LeadsService } from 'src/app/services/leads.service';
+import Swal from 'sweetalert2';
 
 
 interface notifications {
@@ -69,13 +70,12 @@ export class HeaderComponent implements OnInit {
 
 
   showFiller = false;
-  
   LoginUserName    : any;
   LoginUserId      : any;
   LoginUserEmail   : any;
   LoginUserDesignation : any;
-  public currentUser: any;
-  
+  public currentUser   : any;
+  totalLeads:any;
   public selectedLanguage: any = {
     language: 'English',
     code: 'en',
@@ -108,20 +108,17 @@ export class HeaderComponent implements OnInit {
   ];
 
   role: any;
-
+  
   constructor(
-    private vsidenav: CoreService,
-    public dialog: MatDialog,
-    private translate: TranslateService,
-    private router: Router,
-    private authService : AuthService,
-    private _LeadsService:LeadsService
-
+    private vsidenav      : CoreService,
+    public  dialog        : MatDialog,
+    private translate     : TranslateService,
+    private router        : Router,
+    private authService   : AuthService,
+    private _LeadsService : LeadsService
   ) {
     translate.setDefaultLang('en');
   }
-
-
   ngOnInit(): void {
     this.currentUser = JSON.parse(localStorage.getItem('userData') || '{}');
     if (this.currentUser) {
@@ -129,22 +126,23 @@ export class HeaderComponent implements OnInit {
       this.LoginUserName   = this.currentUser.client_user_name;
       this.LoginUserEmail  = this.currentUser.client_user_email;
       this.LoginUserDesignation  = this.currentUser.client_user_designation;
-      // this.role  = this.currentUser.client_user_role;
-      // if(this.role == 2){
-      //   this._LeadsService.GetAgentAndAdminWiseLeads(this.LoginUserId, this.role).subscribe((res:any) => {
-      //     console.log(res);
-      //   });
-      // }
-
+        this._LeadsService.LeadNotoficationAgentWise(this.LoginUserId).subscribe((res:any) => {
+          if(res != 0){
+            this.totalLeads = res;
+            Swal.fire({
+              text: `Hurry! you got `+this.totalLeads+` new lead.`,
+              icon: "success"
+            });
+          }else{  
+            console.log('Sorry no New leads')
+            // Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true, title: `Sorry! you can't get any new lead`, icon: 'error' });
+          }
+        });
     }
-
-
-
   }
 
   openDialog() {
     const dialogRef = this.dialog.open(AppSearchDialogComponent);
-
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog result: ${result}`);
     });
@@ -194,22 +192,23 @@ export class HeaderComponent implements OnInit {
       img: '/assets/images/svgs/icon-account.svg',
       title: 'My Profile',
       subtitle: 'Account Settings',
-      link: '/',
+      link: '/theme-pages/account-setting',
     },
-    {
-      id: 2,
-      img: '/assets/images/svgs/icon-inbox.svg',
-      title: 'My Inbox',
-      subtitle: 'Messages & Email',
-      link: '/apps/email/inbox',
-    },
-    {
-      id: 3,
-      img: '/assets/images/svgs/icon-tasks.svg',
-      title: 'My Tasks',
-      subtitle: 'To-do and Daily Tasks',
-      link: '/apps/taskboard',
-    },
+
+    // {
+    //   id: 2,
+    //   img: '/assets/images/svgs/icon-inbox.svg',
+    //   title: 'My Inbox',
+    //   subtitle: 'Messages & Email',
+    //   link: '/apps/email/inbox',
+    // },
+    // {
+    //   id: 3,
+    //   img: '/assets/images/svgs/icon-tasks.svg',
+    //   title: 'My Tasks',
+    //   subtitle: 'To-do and Daily Tasks',
+    //   link: '/apps/taskboard',
+    // },
   ];
 
   apps: apps[] = [

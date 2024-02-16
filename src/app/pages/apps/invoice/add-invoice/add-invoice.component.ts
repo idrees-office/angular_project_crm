@@ -10,6 +10,7 @@ import { AddedDialogComponent } from './added-dialog/added-dialog.component';
   selector: 'app-add-invoice',
   templateUrl: './add-invoice.component.html'
 })
+
 export class AppAddInvoiceComponent {
   addForm: UntypedFormGroup | any;
   rows: UntypedFormArray;
@@ -20,19 +21,10 @@ export class AppAddInvoiceComponent {
   vat = 0;
   grandTotal = 0;
 
-  constructor(
-    private fb: UntypedFormBuilder,
-    private invoiceService: ServiceinvoiceService,
-    private router: Router,
-    public dialog: MatDialog,
-  ) {
+  constructor(private fb: UntypedFormBuilder,private invoiceService: ServiceinvoiceService, private router: Router, public dialog: MatDialog,) {
     // tslint:disable-next-line - Disables all
     this.invoice.id =
-      Math.max.apply(
-        Math,
-        this.invoiceService.getInvoiceList().map(function (o: any) {
-          return o.id;
-        }),
+      Math.max.apply(Math,this.invoiceService.getInvoiceList().map(function (o: any) { return o.id; }),
       ) + 1;
     this.invoice.status = 'Pending';
 
@@ -46,19 +38,15 @@ export class AppAddInvoiceComponent {
   }
 
   ////////////////////////////////////////////////////////////////////////////////////
-  onAddRow(): void {
-    this.rows.push(this.createItemFormGroup());
-  }
+  onAddRow(): void { this.rows.push(this.createItemFormGroup()); }
 
   onRemoveRow(rowIndex: number): void {
-    const totalCostOfItem =
-      this.addForm.get('rows')?.value[rowIndex].unitPrice *
-      this.addForm.get('rows')?.value[rowIndex].units;
-
+    const totalCostOfItem = this.addForm.get('rows')?.value[rowIndex].unitPrice * this.addForm.get('rows')?.value[rowIndex].units;
     this.subTotal = this.subTotal - totalCostOfItem;
     this.vat = this.subTotal / 10;
     this.grandTotal = this.subTotal + this.vat;
     this.rows.removeAt(rowIndex);
+
   }
 
   createItemFormGroup(): UntypedFormGroup {

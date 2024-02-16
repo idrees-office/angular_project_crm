@@ -22,6 +22,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     NgScrollbarModule,
     NgxPaginationModule,
     MatAutocompleteModule,
+    MatDatepickerModule
     
 
   ]

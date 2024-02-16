@@ -1,9 +1,8 @@
 import { Routes } from '@angular/router';
-
-
 // dashboards
 import { AppDashboard1Component } from './dashboard1/dashboard1.component';
 import { AppDashboard2Component } from './dashboard2/dashboard2.component';
+
 
 export const DashboardsRoutes: Routes = [
   {
@@ -20,6 +19,7 @@ export const DashboardsRoutes: Routes = [
           ],
         },
       },
+
       {
         path: 'dashboard2',
         component: AppDashboard2Component,
@@ -31,6 +31,7 @@ export const DashboardsRoutes: Routes = [
           ],
         },
       },
+
       // { path: 'email', redirectTo: 'email/inbox', pathMatch: 'full' },
 
       { path: 'dashboards', redirectTo: 'dashboards/dashboard1', pathMatch: 'full' },

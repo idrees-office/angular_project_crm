@@ -13,13 +13,17 @@ import { MatInputModule } from '@angular/material/input';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ReAssignComponent } from './re-assign/re-assign.component';
 import { NgxPaginationModule } from 'ngx-pagination';
-
+import { AssignLeadComponent } from './assign-lead/assign-lead.component';
+import { MyLeadComponent } from './my-lead/my-lead.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 @NgModule({
   declarations: [
     CreateLeadComponent,
-    ReAssignComponent
+    ReAssignComponent,
+    AssignLeadComponent,
+    MyLeadComponent
   ],
   imports: [
     CommonModule,
@@ -33,6 +37,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MatInputModule,
     NgSelectModule,
     NgxPaginationModule,
+    MatDatepickerModule,
   ],
   providers: [DatePipe],
 })

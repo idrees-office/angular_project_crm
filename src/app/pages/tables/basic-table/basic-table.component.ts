@@ -212,10 +212,12 @@ export class AppBasicTableComponent implements OnInit {
   // table 4
   
   displayedColumns4 = ['name', 'pname', 'status', 'budget'];
-  dataSource4 = new MatTableDataSource<Element>(BASIC_DATA);
 
+  dataSource4 = new MatTableDataSource<Element>(BASIC_DATA);
+  
   constructor(breakpointObserver: BreakpointObserver) {
     breakpointObserver.observe(['(max-width: 600px)']).subscribe((result) => {
+
       this.displayedColumns4 = result.matches
         ? ['name', 'pname', 'status', 'budget']
         : ['name', 'pname', 'status', 'budget'];

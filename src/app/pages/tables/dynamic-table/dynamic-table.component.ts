@@ -29,7 +29,9 @@ const ELEMENT_DATA: PeriodicElement[] = [
   templateUrl: './dynamic-table.component.html',
 })
 export class AppDynamicTableComponent implements OnInit {
+
   displayedColumns: string[] = ['name', 'weight', 'symbol', 'position'];
+  
   columnsToDisplay: string[] = this.displayedColumns.slice();
   data: PeriodicElement[] = ELEMENT_DATA;
 

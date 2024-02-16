@@ -212,11 +212,13 @@ export const navItems: NavItem[] = [
         iconName: 'point',
         route: 'theme-pages/pricing',
       },
+
       {
         displayName: 'Account Setting',
         iconName: 'point',
         route: 'theme-pages/account-setting',
       },
+      
       {
         displayName: 'FAQ',
         iconName: 'point',

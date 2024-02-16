@@ -20,11 +20,9 @@ export class CreateLeadComponent implements OnInit {
   userData    : any;
   user        : any;
   loginuserId : any;
-  role : any;
+  role        : any;
 
-  
   constructor(private LeadsService:LeadsService, private router:Router, private fb:FormBuilder){}
-
   ngOnInit(): void {
     this.leadForm        = this.fb.group({
       lead_title         : new FormControl('',[Validators.required]),
@@ -36,24 +34,11 @@ export class CreateLeadComponent implements OnInit {
       customer_position  : new FormControl(''),
       lead_comments      : new FormControl(''),
     })
-
-    // this.agents();
-    // LoginUser
     this.userData = localStorage.getItem('userData');
     this.user = JSON.parse(this.userData);
     this.loginuserId = this.user.client_user_id;
     this.role = this.user.client_user_role;
-    // console.log(this.role);
-    // console.log(this.loginuserId);
   }
-
-  // agents(){
-  //   this.LeadsService.getAgentInfo().subscribe((res:any)=>{ 
-  //     this.allAgents = res;
-  //   },(error:any) => {
-  //     console.log(error);
-  //   })
-  // } 
 
   submitForm(event:any){
     if(this.leadForm.invalid){ return }
@@ -66,7 +51,6 @@ export class CreateLeadComponent implements OnInit {
       }else{
         formdata.append('login_user_id', 'empty');
       }
-      
       formdata.append('lead_title', filed.lead_title);
       formdata.append('agent_id', filed.agent_id);
       formdata.append('customer_name', filed.customer_name);
@@ -80,7 +64,7 @@ export class CreateLeadComponent implements OnInit {
         if(res.status === "success"){
           Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true, title: `Create Lead Successfully`, icon: 'success' });
           this.leadForm.reset();
-          this.router.navigate(['/dashboards/dashboard2']);
+          this.router.navigate(['/leads/assign-lead']);
         }
       })
     }

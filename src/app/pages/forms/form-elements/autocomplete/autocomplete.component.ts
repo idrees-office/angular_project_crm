@@ -44,9 +44,7 @@ export interface State {
 export class AppAutocompleteComponent implements OnInit {
   // first option
   firstControl = new FormControl('');
-  
   firstoption: string[] = ['One', 'Two', 'Three'];
-
   filteredOptions: Observable<string[]>;
 
   // option group
@@ -156,12 +154,12 @@ export class AppAutocompleteComponent implements OnInit {
   // filter option
   filterControl = new FormControl('');
   searchoption: string[] = ['One', 'Two', 'Three'];
+
   searchfilteredOptions: Observable<string[]>;
 
   // state
   stateCtrl = new FormControl('');
   filteredStates: Observable<State[]>;
-
   states: State[] = [
     {
       name: 'Arkansas',
@@ -190,11 +188,15 @@ export class AppAutocompleteComponent implements OnInit {
   ];
 
   constructor(private _formBuilder: FormBuilder) {
-    this.filteredStates = this.stateCtrl.valueChanges.pipe(
-      startWith(''),
-      map((state) => (state ? this._filterStates(state) : this.states.slice()))
-    );
+
+    this.filteredStates = this.stateCtrl.valueChanges.pipe(startWith(''), map((state) => (state ? this._filterStates(state) : this.states.slice())));
+
+
+
   }
+
+  
+
 
   private _filterStates(value: string): State[] {
     const filterValue = value.toLowerCase();
@@ -206,9 +208,7 @@ export class AppAutocompleteComponent implements OnInit {
 
   ngOnInit() {
     // first option
-    this.filteredOptions = this.firstControl.valueChanges.pipe(startWith(''), 
-    map((value) => this._filter(value || ''))
-    );
+    this.filteredOptions = this.firstControl.valueChanges.pipe(startWith(''), map((value) => this._filter(value || '')));
 
     // option group
     this.stateGroupOptions = this.stateForm
@@ -225,10 +225,7 @@ export class AppAutocompleteComponent implements OnInit {
   // first option
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-
-    return this.firstoption.filter((option) =>
-      option.toLowerCase().includes(filterValue)
-    );
+    return this.firstoption.filter((option) => option.toLowerCase().includes(filterValue));
   }
 
   // option group
