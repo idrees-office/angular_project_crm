@@ -13,11 +13,13 @@
   <!-- ------------------------------------------------------ -->
   <!-- Desktop App -->
   <!-- ------------------------------------------------------ -->
-  <mat-sidenav-container class="email-box" style="height: calc(100vh - 182px)" [ngClass]="{ 'side-panel-opened': sidePanelOpened, 'side-panel-closed': !sidePanelOpened }">
+  <mat-sidenav-container class="email-box" style="height: calc(100vh - 182px)"
+    [ngClass]="{ 'side-panel-opened': sidePanelOpened, 'side-panel-closed': !sidePanelOpened }">
     <!-- ------------------------------------------------------ -->
     <!-- Sidebar Email -->
     <!-- ------------------------------------------------------ -->
-    <mat-sidenav #mailnav [mode]="isOver() ? 'over' : 'side'" [opened]="!isOver()" (open)="sidePanelOpened = true" (close)="sidePanelOpened = false" class="mail-sidebar">
+    <mat-sidenav #mailnav [mode]="isOver() ? 'over' : 'side'" [opened]="!isOver()" (open)="sidePanelOpened = true"
+      (close)="sidePanelOpened = false" class="mail-sidebar">
       <ng-scrollbar style="height: calc(100% - 10px)" class="position-relative">
         <!-- <div class="p-16 p-b-0">
           <button mat-flat-button (click)="openDialog()" color="accent" class="w-100 btn-block"> Compose </button>
@@ -51,29 +53,31 @@
         </div> -->
         <div class="p-16">
           <div *ngFor="let mail of mailboxes" (click)="mailboxesChanged(mail.name)">
-            <div class="d-flex align-items-center inbox-list rounded p-16 cursor-pointer" [class.bg-light-primary]="mail.active">
+            <div class="d-flex align-items-center inbox-list rounded p-16 cursor-pointer"
+              [class.bg-light-primary]="mail.active">
               <i-tabler name="{{ mail.icon }}" class="m-r-12 icon-18"></i-tabler>
               <span class="f-w-400 f-s-14">{{ mail.name }}</span>
               <div class="m-l-auto d-sm-flex align-items-center gap-4">
-                <ng-container *ngIf="mail.name === 'New Lead' || mail.name === 'Assigned Lead' || mail.name === 'Connected Lead' || mail.name === 'Cold Lead' || mail.name === 'Warm Lead' || mail.name === 'Hot Lead' || mail.name === 'Meeting Schdulede' || mail.name === 'Meeting Complate' || mail.name === 'Low-Buget' || mail.name === 'No-Answer' || mail.name === 'Not-Responding' || mail.name === 'Incorrect Detail' || mail.name === 'Agent' || mail.name === 'Junk'">
+                <ng-container
+                  *ngIf="mail.name === 'New Lead' || mail.name === 'Assigned Lead' || mail.name === 'Connected Lead' || mail.name === 'Cold Lead' || mail.name === 'Warm Lead' || mail.name === 'Hot Lead' || mail.name === 'Meeting Schdulede' || mail.name === 'Meeting Complate' || mail.name === 'Low-Buget' || mail.name === 'No-Answer' || mail.name === 'Not-Responding' || mail.name === 'Incorrect Detail' || mail.name === 'Agent' || mail.name === 'Junk'">
                   <span class="bg-accent rounded-pill p-x-4 text-white">
-                     {{
-                      {
-                        'New Lead'          : Newleads,
-                        'Assigned Lead'     : Assignleads,
-                        'Connected Lead'    : Connectedleads,
-                        'Cold Lead'         : Coldleads,
-                        'Warm Lead'         : Warmleads,
-                        'Hot Lead'          : Hotleads,
-                        'Meeting Schdulede' : MeetingSchduledeleads,
-                        'Meeting Complate'  : MeetingComplate,
-                        'Low-Buget'         : LowBuget,
-                        'No-Answer'         : NoAnswer,
-                        'Not-Responding'    : NotResponding,
-                        'Incorrect Detail'  : IncorrectDetail,
-                        'Agent'             : Agent,
-                        'Junk'              : Junk
-                      }[mail.name]?.length || 0
+                    {{
+                    {
+                    'New Lead' : Newleads,
+                    'Assigned Lead' : Assignleads,
+                    'Connected Lead' : Connectedleads,
+                    'Cold Lead' : Coldleads,
+                    'Warm Lead' : Warmleads,
+                    'Hot Lead' : Hotleads,
+                    'Meeting Schdulede' : MeetingSchduledeleads,
+                    'Meeting Complate' : MeetingComplate,
+                    'Low-Buget' : LowBuget,
+                    'No-Answer' : NoAnswer,
+                    'Not-Responding' : NotResponding,
+                    'Incorrect Detail' : IncorrectDetail,
+                    'Agent' : Agent,
+                    'Junk' : Junk
+                    }[mail.name]?.length || 0
                     }}
                   </span>
                 </ng-container>
@@ -90,57 +94,64 @@
       <div class="row h-100">
         <div class="col-lg-4 b-r-1 p-0">
           <div class="p-x-20 d-flex align-items-center">
-              <h5 class="f-w-500 mat-subtitle-1 f-s-16 m-0">{{ ms.topLable }}</h5>
-              <div class="m-l-auto"> <pagination-controls (pageChange)="p = $event" previousLabel="" nextLabel="" class="mail-pagination"> </pagination-controls> </div>
+            <h5 class="f-w-500 mat-subtitle-1 f-s-16 m-0">{{ ms.topLable }}</h5>
+            <div class="m-l-auto"> <pagination-controls (pageChange)="p = $event" previousLabel="" nextLabel=""
+                class="mail-pagination"> </pagination-controls> </div>
           </div>
           <mat-divider></mat-divider>
           <div class="position-relative">
-              <div *ngFor="let lead of ms.leadList | paginate : { itemsPerPage: 12, currentPage: p }; let i = index" (click)="mailSelected(lead)">
-                  <div class="mail-list p-y-20 p-x-16 p-l-10 cursor-pointer">
-                      <div class="d-flex align-items-start w-100">
-                          <mat-radio-button></mat-radio-button>
-                          <div class="m-l-10 w-100">
-                              <div>
-                                  <div class="d-flex align-items-center w-100">
-                                      <h5 class="m-0 f-w-600 mat-subtitle-1 f-s-16">{{ lead.customer_name | slice : 0 : 15 || 'Lead ID Can not found' }}</h5>
-                                  </div>
-                                  <span class="mat-body-1"> {{ lead.lead_title | slice : 0 : 45 }} </span>
-                                  <div class="d-flex justify-content-center m-t-8">
-                                      <span class="m-r-8 d-flex"> <i-tabler name="star" class="icon-18"></i-tabler> </span>
-                                      <span class="d-flex"> <i-tabler name="alert-circle" class="icon-18 text-error"></i-tabler></span>
-                                      <div class="m-l-auto text-end">
-                                          <span class="f-s-12 text-nowrap"> {{ formatDateOrToday(lead.assigned_at) }} </span>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
+            <div *ngFor="let lead of ms.leadList | paginate : { itemsPerPage: 12, currentPage: p }; let i = index"
+              (click)="mailSelected(lead)">
+              <div class="mail-list p-y-20 p-x-16 p-l-10 cursor-pointer">
+                <div class="d-flex align-items-start w-100">
+                  <mat-radio-button></mat-radio-button>
+                  <div class="m-l-10 w-100">
+                    <div>
+                      <div class="d-flex align-items-center w-100">
+                        <h5 class="m-0 f-w-600 mat-subtitle-1 f-s-16">{{ lead.customer_name | slice : 0 : 15 || 'Lead ID
+                          Can not found' }}</h5>
                       </div>
+                      <span class="mat-body-1"> {{ lead.lead_title | slice : 0 : 45 }} </span>
+                      <div class="d-flex justify-content-center m-t-8">
+                        <span class="m-r-8 d-flex"> <i-tabler name="star" class="icon-18"></i-tabler> </span>
+                        <span class="d-flex"> <i-tabler name="alert-circle"
+                            class="icon-18 text-error"></i-tabler></span>
+                        <div class="m-l-auto text-end">
+                          <span class="f-s-12 text-nowrap"> {{ formatDateOrToday(lead.assigned_at) }} </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <mat-divider></mat-divider>
+                </div>
               </div>
+              <mat-divider></mat-divider>
+            </div>
           </div>
-      </div>
+        </div>
         <!-- ------------------------------------------------------ -->
         <!-- Details of Email  -->
         <!-- ------------------------------------------------------ -->
         <div class="col-lg-8 detail-part p-0" [class.movetodetail]="ms.addClass">
           <div *ngIf="ms.selectedLead === null" class="h-100 welcome-app">
-              <div class="d-flex align-items-center justify-content-center h-100 w-100">
-                  <div> <h3 class="mat-subtitle-1 f-w-600">Please Select Any Lead which lead your want see info</h3> <img src="/assets/images/breadcrumb/emailSv.png" width="250px" /> </div>
+            <div class="d-flex align-items-center justify-content-center h-100 w-100">
+              <div>
+                <h3 class="mat-subtitle-1 f-w-600">Please Select Any Lead which lead your want see info</h3> <img
+                  src="/assets/images/breadcrumb/emailSv.png" width="250px" />
               </div>
+            </div>
           </div>
           <div *ngIf="ms.selectedLead !== null" class="w-100">
-              <!-- <app-maildetail></app-maildetail>    [matMenuTriggerFor]="menu" -->
-              <div class="w-100 position-relative">
-                  <div class="d-flex align-items-center p-x-16 p-y-16" style="padding-top: 19px !important;">
-                     {{ leadInfo.lead_title | slice : 0 : 45 || 'Lead Title Can not found' }}
-                    <!-- <button mat-icon-button (click)="removeClass()" class="d-block d-lg-none"><mat-icon>arrow_back</mat-icon></button>
+            <!-- <app-maildetail></app-maildetail>    [matMenuTriggerFor]="menu" -->
+            <div class="w-100 position-relative">
+              <div class="d-flex align-items-center p-x-16 p-y-16" style="padding-top: 19px !important;">
+                {{ leadInfo.lead_title | slice : 0 : 45 || 'Lead Title Can not found' }}
+                <!-- <button mat-icon-button (click)="removeClass()" class="d-block d-lg-none"><mat-icon>arrow_back</mat-icon></button>
                       <button mat-icon-button [matMenuTriggerFor]="menu">
                         <i-tabler name="arrow-badge-right" class="icon-20"></i-tabler>
                       </button> -->
-                  </div>
-                  <mat-menu #menu="matMenu" class="cardWithShadow">
-                    <!-- <button mat-menu-item class="p-l-0">
+              </div>
+              <mat-menu #menu="matMenu" class="cardWithShadow">
+                <!-- <button mat-menu-item class="p-l-0">
                       <span>  <mat-checkbox color="primary" [checked]="true" >Personal</mat-checkbox></span>
                       <span> <mat-checkbox>Personal</mat-checkbox> </span>
                     </button>
@@ -148,96 +159,108 @@
                       <span> <mat-checkbox color="primary" [checked]="true" >Work</mat-checkbox></span>
                       <span> <mat-checkbox color="primary">Work</mat-checkbox> </span>
                     </button> -->
-                  </mat-menu>
-                  <mat-divider></mat-divider>
-                  <div *ngIf="ms.selectedLead" class="position-relative" style="height: calc(100vh - 247px)">
-                    <div class="p-24">
-                      <mat-card class="cardWithShadow">
-                        <mat-card-header class="d-flex">
-                          <mat-card-title>Details of the lead</mat-card-title>
-                          <!-- <mat-card-subtitle class="mat-body-1">About the leads Details</mat-card-subtitle> -->
-                        </mat-card-header>
-                        <mat-card-content>
-                          <div class="table-responsive m-t-30">
-                            <table mat-table [dataSource]="dataSource1" class="w-100">
-                              <ng-container matColumnDef="Name/Position">
-                                <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 p-l-0"> Responsible </th>
-                                <td mat-cell *matCellDef="let element" class="p-l-0">
-                                  <div class="d-flex align-items-center">
-                                    <!-- <img [src]="element.imagePath" alt="users" width="40" class="rounded-circle"/> -->
-                                    <div class="m-l-16">
-                                      <h6 class="mat-subtitle-1 f-s-14 f-w-600"> {{ leadInfo.agent?.client_user_name || 'Unknow' }}   </h6>
-                                      <span class="mat-body-1 f-s-12"> 
-                                          {{ leadInfo.agent?.client_user_designation || 'Unknow' }} </span>
-                                    </div>
-                                  </div>
-                                </td>
-                              </ng-container>
-                              <ng-container matColumnDef="Mobile">
-                                <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Mobile</th>
-                                <td mat-cell *matCellDef="let element" class="mat-body-1"> {{ leadInfo.customer_phone || 'Unknow' }} </td>
-                              </ng-container>
-                              <ng-container matColumnDef="Whatsapp">
-                                <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Whatsapp</th>
-                                <td mat-cell *matCellDef="let element" class="mat-body-1"> {{ leadInfo.customer_phone2 || 'Unknow' }}</td>
-                              </ng-container>
-                              <ng-container matColumnDef="Email">
-                                <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Email</th>
-                                <td mat-cell *matCellDef="let element" class="mat-body-1"> {{ leadInfo.customer_email || 'Invalid Emial' }} 
-                                </td>
-                              </ng-container>
-                              <ng-container matColumnDef="Responsible">
-                                <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Client/Name  </th>
-                                <td mat-cell *matCellDef="let element" class="mat-body-1">
-                                  {{ leadInfo.customer_name || 'Can Not Find Customer Name' }}
-                                </td>
-                              </ng-container>
-                              <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
-                              <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
-                            </table>
-                          </div>
-                        </mat-card-content>
-                      </mat-card>
-                    </div>
-                    <div class="p-24">
-                      <div class="p-t-5">
-                        <div class="" *ngFor="let comments of leadInfo.comments; index as i">
-                        <div  class="maindiv">
-                            <small> {{formatDateOrToday(comments.created_at)}}</small> &nbsp;
-                            <small> {{ comments.user_id !== null ? comments.user.client_user_name : i > 0 ? leadInfo.comments[i-1].agent.client_user_name : ""  }} </small>
-                            <small> {{this.leadoptions[comments.lead_status-1].label }}</small>
-                            <small *ngIf="leadUser([leadInfo.comments, comments, i, ])">&nbsp;{{comments.agent.client_user_name}}</small>
-                            <small *ngIf="i>0">&nbsp;{{this.leadoptions[(leadInfo.comments[i-1].lead_status)-1].notes }}</small>
-                            <mat-card class="b-1 shadow-none" *ngIf="comments.lead_comment" style="margin-bottom: 4px;">
-                              <mat-card-content class="">
-                                <small> {{formatDateOrToday(comments.updated_at)}}</small> &nbsp; <small>{{comments.agent.client_user_name}} : </small>
-                                <small> {{ comments.lead_comment }} </small> </mat-card-content>
-                            </mat-card>
-                        </div>
-                        </div>
+              </mat-menu>
+              <mat-divider></mat-divider>
+              <div *ngIf="ms.selectedLead" class="position-relative" style="height: calc(100vh - 247px)">
+                <div class="p-24">
+                  <mat-card class="cardWithShadow">
+                    <mat-card-header class="d-flex">
+                      <mat-card-title>Details of the lead</mat-card-title>
+                      <!-- <mat-card-subtitle class="mat-body-1">About the leads Details</mat-card-subtitle> -->
+                    </mat-card-header>
+                    <mat-card-content>
+                      <div class="table-responsive m-t-30">
+                        <table mat-table [dataSource]="dataSource1" class="w-100">
+                          <ng-container matColumnDef="Name/Position">
+                            <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 p-l-0">
+                              Responsible </th>
+                            <td mat-cell *matCellDef="let element" class="p-l-0">
+                              <div class="d-flex align-items-center">
+                                <!-- <img [src]="element.imagePath" alt="users" width="40" class="rounded-circle"/> -->
+                                <div class="m-l-16">
+                                  <h6 class="mat-subtitle-1 f-s-14 f-w-600"> {{ leadInfo.agent?.client_user_name ||
+                                    'Unknow' }} </h6>
+                                  <span class="mat-body-1 f-s-12">
+                                    {{ leadInfo.agent?.client_user_designation || 'Unknow' }} </span>
+                                </div>
+                              </div>
+                            </td>
+                          </ng-container>
+                          <ng-container matColumnDef="Mobile">
+                            <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Mobile</th>
+                            <td mat-cell *matCellDef="let element" class="mat-body-1"> {{ leadInfo.customer_phone ||
+                              'Unknow' }} </td>
+                          </ng-container>
+                          <ng-container matColumnDef="Whatsapp">
+                            <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Whatsapp</th>
+                            <td mat-cell *matCellDef="let element" class="mat-body-1"> {{ leadInfo.customer_phone2 ||
+                              'Unknow' }}</td>
+                          </ng-container>
+                          <ng-container matColumnDef="Email">
+                            <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Email</th>
+                            <td mat-cell *matCellDef="let element" class="mat-body-1"> {{ leadInfo.customer_email ||
+                              'Invalid Emial' }}
+                            </td>
+                          </ng-container>
+                          <ng-container matColumnDef="Responsible">
+                            <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Client/Name
+                            </th>
+                            <td mat-cell *matCellDef="let element" class="mat-body-1">
+                              {{ leadInfo.customer_name || 'Can Not Find Customer Name' }}
+                            </td>
+                          </ng-container>
+                          <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+                          <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
+                        </table>
                       </div>
-                    </div>
-                    <div class="p-24">
-                      <div class="m-t-10">
-                        <!-- (optionSelected)="onOptionSelected($event)" -->
-                        <form [formGroup]="updateleadform" (ngSubmit)="updateLeadStaus($event,leadInfo.agent?.client_user_id)" id="updateleadform">
-                          <mat-form-field appearance="outline" class="mt-5" class="w-100 border-0">
-                            <input type="hidden" [(ngModel)]="leadInfo.lead_id" formControlName="lead_id" />
-                              <input type="text" placeholder="Pick One" aria-label="Pick One" matInput [matAutocomplete]="auto3" formControlName="lead_status" />
-                              <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displayLeadLabel">
-                                  <mat-option *ngFor="let lead of leadoptions2" [value]="lead"> {{ lead.label }}</mat-option>
-                              </mat-autocomplete>
-                          </mat-form-field>
-                          <mat-form-field appearance="outline" class="w-100">
-                              <mat-label>Type your comments here</mat-label>
-                              <textarea matInput rows="5" formControlName="lead_comment"></textarea>
-                          </mat-form-field>
-                          <button mat-flat-button color="accent" class="m-l-10" type="submit">Send</button>
-                      </form>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+                <div class="p-24">
+                  <div class="p-t-5">
+                    <div class="" *ngFor="let comments of leadInfo.comments; index as i">
+                      <div class="maindiv">
+                        <small> {{formatDateOrToday(comments.created_at)}}</small> &nbsp;
+                        <small> {{ comments.user_id !== null ? comments.user.client_user_name : i > 0 ?
+                          leadInfo.comments[i-1].agent.client_user_name : "" }} </small>
+                        <small> {{this.leadoptions[comments.lead_status-1].label }}</small>
+                        <small
+                          *ngIf="leadUser([leadInfo.comments, comments, i, ])">&nbsp;{{comments.agent.client_user_name}}</small>
+                        <small *ngIf="i>0">&nbsp;{{this.leadoptions[(leadInfo.comments[i-1].lead_status)-1].notes
+                          }}</small>
+                        <mat-card class="b-1 shadow-none" *ngIf="comments.lead_comment" style="margin-bottom: 4px;">
+                          <mat-card-content class="">
+                            <small> {{formatDateOrToday(comments.updated_at)}}</small> &nbsp;
+                            <small>{{comments.agent.client_user_name}} : </small>
+                            <small> {{ comments.lead_comment }} </small> </mat-card-content>
+                        </mat-card>
                       </div>
                     </div>
                   </div>
+                </div>
+                <div class="p-24">
+                  <div class="m-t-10">
+                    <!-- (optionSelected)="onOptionSelected($event)" -->
+                    <form [formGroup]="updateleadform"
+                      (ngSubmit)="updateLeadStaus($event,leadInfo.agent?.client_user_id)" id="updateleadform">
+                      <mat-form-field appearance="outline" class="mt-5" class="w-100 border-0">
+                        <input type="hidden" [(ngModel)]="leadInfo.lead_id" formControlName="lead_id" />
+                        <input type="text" placeholder="Pick One" aria-label="Pick One" matInput
+                          [matAutocomplete]="auto3" formControlName="lead_status" />
+                        <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displayLeadLabel">
+                          <mat-option *ngFor="let lead of leadoptions2" [value]="lead"> {{ lead.label }}</mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                      <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Type your comments here</mat-label>
+                        <textarea matInput rows="5" formControlName="lead_comment"></textarea>
+                      </mat-form-field>
+                      <button mat-flat-button color="accent" class="m-l-10" type="submit">Send</button>
+                    </form>
+                  </div>
+                </div>
               </div>
+            </div>
           </div>
         </div>
       </div>

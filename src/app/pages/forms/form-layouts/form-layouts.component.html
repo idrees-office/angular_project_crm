@@ -11,9 +11,7 @@
         <mat-hint> We'll never share your email with anyone else.</mat-hint>
       </mat-form-field>
       <!-- input -->
-      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block m-t-12"
-        >Password</mat-label
-      >
+      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block m-t-12">Password</mat-label>
       <mat-form-field appearance="outline" class="w-100" color="primary">
         <input matInput type="password" />
       </mat-form-field>
@@ -53,9 +51,7 @@
   <mat-card-content class="b-t-1">
     <form>
       <!-- input -->
-      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-        >Default Text</mat-label
-      >
+      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Default Text</mat-label>
       <mat-form-field appearance="outline" class="w-100" color="primary">
         <input matInput value="George deo" />
       </mat-form-field>
@@ -67,17 +63,13 @@
       </mat-form-field>
 
       <!-- input -->
-      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-        >Password</mat-label
-      >
+      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Password</mat-label>
       <mat-form-field appearance="outline" class="w-100" color="primary">
         <input matInput type="password" />
       </mat-form-field>
 
       <!-- input -->
-      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-        >Textarea</mat-label
-      >
+      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Textarea</mat-label>
       <mat-form-field appearance="outline" class="w-100" color="primary">
         <textarea matInput rows="5"></textarea>
       </mat-form-field>
@@ -92,26 +84,16 @@
         <!-- radio -->
         <div class="col-sm-6 col-lg-4">
           <mat-radio-group aria-label="Select an option">
-            <mat-radio-button color="primary" value="1"
-              >Toggle this custom radio</mat-radio-button
-            >
-            <mat-radio-button color="primary" value="2"
-              >Toggle this custom radio</mat-radio-button
-            >
-            <mat-radio-button color="primary" value="3"
-              >Toggle this custom radio</mat-radio-button
-            >
+            <mat-radio-button color="primary" value="1">Toggle this custom radio</mat-radio-button>
+            <mat-radio-button color="primary" value="2">Toggle this custom radio</mat-radio-button>
+            <mat-radio-button color="primary" value="3">Toggle this custom radio</mat-radio-button>
           </mat-radio-group>
         </div>
       </div>
-      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block m-t-12"
-        >Select</mat-label
-      >
+      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block m-t-12">Select</mat-label>
       <mat-form-field appearance="outline" class="w-100">
         <mat-select [(value)]="selectedFood">
-          <mat-option [value]="option.value" *ngFor="let option of foods">{{
-            option.viewValue
-          }}</mat-option>
+          <mat-option [value]="option.value" *ngFor="let option of foods">{{ option.viewValue }}</mat-option>
         </mat-select>
       </mat-form-field>
 
@@ -129,25 +111,20 @@
   <mat-card-content class="b-t-1">
     <div class="p-16 bg-light-primary rounded">
       <h5 class="mat-subtitle-2 text-primary d-flex align-items-center f-w-600">
-        <i-tabler name="info-circle" class="icon-20 m-r-8 d-flex"></i-tabler
-        >Person Info
+        <i-tabler name="info-circle" class="icon-20 m-r-8 d-flex"></i-tabler>Person Info
       </h5>
     </div>
 
     <div class="row m-t-20">
       <div class="col-lg-6">
         <!-- input -->
-        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-          >First Name</mat-label
-        >
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">First Name</mat-label>
         <mat-form-field appearance="outline" class="w-100" color="primary">
           <input matInput type="text" />
         </mat-form-field>
 
         <!-- input -->
-        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-          >Select Gender</mat-label
-        >
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Select Gender</mat-label>
         <mat-form-field appearance="outline" class="w-100">
           <mat-select value="male">
             <mat-option value="male">Male</mat-option>
@@ -157,9 +134,7 @@
         </mat-form-field>
 
         <!-- input -->
-        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-          >Membership</mat-label
-        >
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Membership</mat-label>
         <mat-radio-group aria-label="Select an option">
           <mat-radio-button value="1" color="primary">Free</mat-radio-button>
           <mat-radio-button value="2" color="primary">Paid</mat-radio-button>
@@ -167,23 +142,16 @@
       </div>
       <div class="col-lg-6">
         <!-- input -->
-        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-          >Last Name</mat-label
-        >
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Last Name</mat-label>
         <mat-form-field appearance="outline" class="w-100" color="primary">
           <input matInput type="text" />
         </mat-form-field>
 
         <!-- input -->
-        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-          >Date of Birth</mat-label
-        >
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Date of Birth</mat-label>
         <mat-form-field appearance="outline" class="w-100">
           <input matInput [matDatepicker]="picker" />
-          <mat-datepicker-toggle
-            matIconSuffix
-            [for]="picker"
-          ></mat-datepicker-toggle>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </div>
@@ -191,17 +159,14 @@
 
     <div class="p-16 bg-light-primary rounded m-y-20">
       <h5 class="mat-subtitle-2 text-primary d-flex align-items-center f-w-600">
-        <i-tabler name="info-circle" class="icon-20 m-r-8 d-flex"></i-tabler
-        >Address
+        <i-tabler name="info-circle" class="icon-20 m-r-8 d-flex"></i-tabler>Address
       </h5>
     </div>
 
     <div class="row m-t-20">
       <div class="col-lg-12">
         <!-- input -->
-        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-          >Street</mat-label
-        >
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Street</mat-label>
         <mat-form-field appearance="outline" class="w-100" color="primary">
           <input matInput type="text" />
         </mat-form-field>
@@ -217,9 +182,7 @@
 
       <div class="col-lg-6">
         <!-- input -->
-        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-          >State</mat-label
-        >
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">State</mat-label>
         <mat-form-field appearance="outline" class="w-100" color="primary">
           <input matInput type="text" />
         </mat-form-field>
@@ -227,9 +190,7 @@
 
       <div class="col-lg-6">
         <!-- input -->
-        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-          >Post Code</mat-label
-        >
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Post Code</mat-label>
         <mat-form-field appearance="outline" class="w-100" color="primary">
           <input matInput type="text" />
         </mat-form-field>
@@ -237,9 +198,7 @@
 
       <div class="col-lg-6">
         <!-- input -->
-        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-          >Country</mat-label
-        >
+        <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Country</mat-label>
         <mat-form-field appearance="outline" class="w-100">
           <mat-select value="male">
             <mat-option value="india">India</mat-option>
@@ -273,9 +232,7 @@
         <input matInput disabled type="email" />
       </mat-form-field>
       <!-- input -->
-      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-        >Password</mat-label
-      >
+      <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Password</mat-label>
       <mat-form-field appearance="outline" class="w-100">
         <input matInput disabled type="password" />
       </mat-form-field>
@@ -293,9 +250,7 @@
       <mat-card-content class="b-t-1">
         <form>
           <!-- input -->
-          <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-            >Username</mat-label
-          >
+          <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Username</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Username" />
             <mat-icon matPrefix>
@@ -304,9 +259,7 @@
           </mat-form-field>
 
           <!-- input -->
-          <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-            >Email</mat-label
-          >
+          <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Email</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Email" />
             <mat-icon matPrefix>
@@ -315,9 +268,7 @@
           </mat-form-field>
 
           <!-- input -->
-          <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-            >Password</mat-label
-          >
+          <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Password</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Password" type="password" />
             <mat-icon matPrefix>
@@ -326,9 +277,7 @@
           </mat-form-field>
 
           <!-- input -->
-          <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-            >Confirm Password</mat-label
-          >
+          <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Confirm Password</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Confirm Password" type="password" />
             <mat-icon matPrefix>
@@ -337,7 +286,7 @@
           </mat-form-field>
           <!-- input -->
           <mat-checkbox color="primary">Remember Me!</mat-checkbox>
-        </form> 
+        </form>
       </mat-card-content>
       <mat-card-actions class="b-t-1">
         <button mat-flat-button color="primary">Submit</button>
@@ -353,9 +302,7 @@
       <mat-card-content class="b-t-1">
         <form>
           <!-- input -->
-          <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-            >Username</mat-label
-          >
+          <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Username</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Username" />
             <mat-icon matSuffix>
@@ -364,9 +311,7 @@
           </mat-form-field>
 
           <!-- input -->
-          <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-            >Email</mat-label
-          >
+          <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Email</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Email" />
             <mat-icon matSuffix>
@@ -375,9 +320,7 @@
           </mat-form-field>
 
           <!-- input -->
-          <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-            >Password</mat-label
-          >
+          <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Password</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Password" type="password" />
             <mat-icon matSuffix>
@@ -386,9 +329,7 @@
           </mat-form-field>
 
           <!-- input -->
-          <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"
-            >Confirm Password</mat-label
-          >
+          <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block">Confirm Password</mat-label>
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Confirm Password" type="password" />
             <mat-icon matSuffix>

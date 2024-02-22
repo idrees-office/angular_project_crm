@@ -40,12 +40,13 @@ export class ReAssignComponent implements OnInit {
   reassignLeadSelectedAgent: any;
   allAgents:any;
   userData:any;
-  user:any;
+  user:any; 
   loginuserId:any;
   role:any;
   @ViewChild(MatPaginator) paginator: MatPaginator ;
   @ViewChild(MatSort) sort: MatSort ;
   constructor(private _httpClient: HttpClient, private _LeadsService:LeadsService) {}
+
   ngAfterViewInit(): void {
     this.exampleDatabase = new ExampleHttpDatabase(this._httpClient);
     if (this.sort && this.paginator) {
@@ -69,9 +70,11 @@ export class ReAssignComponent implements OnInit {
     this.user = JSON.parse(this.userData);
     this.loginuserId = this.user.client_user_id;
     this.role = this.user.client_user_role;
-
     this.agents();
   }
+
+
+
   Delete(e:Event, lead_id:any){
     Swal.fire({
       title: 'Are you sure want to remove?',
@@ -111,6 +114,8 @@ export class ReAssignComponent implements OnInit {
         });
     }
   }
+
+
   agents(){
     this._LeadsService.getAgentInfo().subscribe((res:any)=>{
         this.allAgents = res;
@@ -149,57 +154,15 @@ export class ReAssignComponent implements OnInit {
         }else{
           alert('SomeThing Wrong')
         }
-
-
       }
     });
   }
   
 
   displayLeadLabel(agent: any): string {
-    // const id = agent ? agent.client_user_id : '';
-    // console.log(id);
     return agent ? agent.client_user_name : '';
   }
 
-  // onInputChange(e:Event){
-  //     console.log(e);
-  // }
-  // UpdateReassignLead(event:Event){ 
-  //   if(this.reassigAgentId == undefined || this.reassigAgentId === undefined){
-  //     Swal.fire('Please select at least one agent Name', '','error');
-  //     return  
-  //   }else{
-  //     Swal.fire({
-  //       title: 'Are you sure want to Re-assign?',
-  //       showCancelButton: true,
-  //       confirmButtonText: 'Yes',
-  //       cancelButtonText: 'No',
-  //     }).then((result) => {
-  //       if(result.isConfirmed){
-  //         var fd = new FormData();
-  //         fd.append('agent_id',this.reassigAgentId);
-  //         fd.append('lead_id',this.reassignleadid);
-  //         // fd.append('agent_name',this.reassigAgentName);
-  //         this.leadsService.ReAssignLeads(fd).subscribe((res:any) =>{
-  //           if(res.status === "success"){
-  //             Swal.fire({ title: 'Success', html: 'Lead Re-assigned Successfully', timer: 2000, showConfirmButton: false, });
-  //             this.fetch((data: any) => {
-  //               this.rows = data;
-  //               this.filteredRows = [...this.rows];
-  //             });
-  //             this.modalService.dismissAll();
-  //           }
-  //         },(error:any) => {
-  //             console.log(error);
-  //         });
-  //       }else{
-  //         this.modalService.dismissAll();
-  //         this.selectedAgent = null;
-  //       }
-  //     });
-  //   }
-  // }
 
   Reassign(e:Event, lead_id:any){
     if(lead_id != ''){
@@ -266,11 +229,13 @@ export interface LeadsApi {
   data: Lead[];
   total_count: number;
 }
+
+
 export class ExampleHttpDatabase {
   constructor(private _httpClient: HttpClient) {}
   getLeads(sort: string, order: string, page: number): Observable<LeadsApi> {
     // const baseUrl = 'http://127.0.0.1:8000/api'; 
-    const baseUrl = 'http://10.99.1.76:8000/api'; 
+    const baseUrl = 'http://10.99.1.77:8000/api'; 
     const leadsUrl = `${baseUrl}/leads/lead-list`;
     // Adjust query parameters based on your backend API
     const requestUrl = `${leadsUrl}?sort=${sort}&order=${order}&page=${page + 1}`;

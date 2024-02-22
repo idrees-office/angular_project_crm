@@ -169,7 +169,7 @@ export interface LeadsApi {
 export class ExampleHttpDatabase {
   constructor(private _httpClient: HttpClient) {}
   getLeads(sort: string, order: string, page: number): Observable<LeadsApi> {
-    const baseUrl = 'http://10.99.1.76:8000/api'; 
+    const baseUrl = 'http://10.99.1.77:8000/api'; 
     // const baseUrl = 'http://127.0.0.1:8000/api'; 
     const leadsUrl = `${baseUrl}/leads/get-new-lead`;
     // Adjust query parameters based on your backend API

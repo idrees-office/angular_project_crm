@@ -309,6 +309,13 @@ export class FullComponent implements OnInit {
                 iconName: 'point',
                 route: 'sale/sale-offer',
               },
+
+              {
+                displayName: 'Create Pdf', 
+                iconName: 'point',
+                route: 'sale/list-sale-offer',
+              },
+
             ],
           },
 

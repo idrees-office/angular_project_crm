@@ -1,231 +1,148 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validator, FormControl, Validators, UntypedFormGroup, UntypedFormArray, UntypedFormBuilder,NgForm } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
 import { ServiceinvoiceService } from '../../apps/invoice/serviceinvoice.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AddedDialogComponent } from '../../apps/invoice/add-invoice/added-dialog/added-dialog.component';
-
 import { saleorder, saleInvoiceList } from './saleofferlist';
+import { SellofferService } from 'src/app/services/selloffer.service';
+import Swal from 'sweetalert2';
+
+
 
 @Component({
   selector: 'app-sale-offer',
   templateUrl: './sale-offer.component.html',
   styleUrls: ['./sale-offer.component.scss']
 })
+
+
 export class SaleOfferComponent implements OnInit {
-  
-  // addForm: UntypedFormGroup | any;
-  // rows: UntypedFormArray;
-  // invoice: InvoiceList = new InvoiceList();
-  // saleForm : FormGroup;
-  
+  saleForm : FormGroup;
+  selectedFile: File | null = null;
 
-  // subTotal = 0;
-  // vat = 0;
-  // grandTotal = 0;
- 
-  // constructor(private _fb:FormBuilder, __fb:UntypedFormBuilder){}
+  constructor(private fb: FormBuilder,private invoiceService: ServiceinvoiceService, private router: Router, public dialog: MatDialog, private _SellofferService:SellofferService) {}
+  
   ngOnInit(): void {
-  //   // this.saleForm = this._fb.group({
-  //   //   project_name         : new FormControl('',[Validators.required]),
-  //   //   selling_price        : new FormControl('',[Validators.required]),
-  //   //   bedrooms             : new FormControl('',[Validators.required]),
-  //   //   total_area           : new FormControl('',[Validators.required]),
-  //   //   built_up_area        : new FormControl('',[Validators.required]),
-  //   //   payable_now          : new FormControl('',[Validators.required]),
-  //   //   Ist_installment_date : new FormControl('',[Validators.required]),
-  //   //   Ist_installment_price : new FormControl('',[Validators.required]),
-  //   //   second_installment_date : new FormControl('',[Validators.required]),
-  //   //   second_installment_price : new FormControl('',[Validators.required]),
-  //   //   third_installment_date : new FormControl('',[Validators.required]),
-  //   //   third_installment_price : new FormControl('',[Validators.required]),
-  //   //   fourth_installment_date : new FormControl('',[Validators.required]),
-  //   //   fourth_installment_price : new FormControl('',[Validators.required]),
-  //   //   hand_over : new FormControl(''),
-  //   // })
+
+    this.saleForm = this.fb.group({
+      project_name         : new FormControl('',[Validators.required]),
+      unit_number          :  new FormControl('',[Validators.required]),
+      selling_price        : new FormControl('',[Validators.required]),
+      bedrooms             : new FormControl('',[Validators.required]),
+      total_area           : new FormControl('',[Validators.required]),
+      built_up_area        : new FormControl('',[Validators.required]),
+      payable_now          : new FormControl('',[Validators.required]),
+      datePriceArray       : this.fb.array([this.createDatePriceRow()]),
+      hand_over            : new FormControl(''),
+      vat_rate             : new FormControl('',[Validators.required]),
+      payable_to_seller    : new FormControl('',[Validators.required]),
+      dld_fee              : new FormControl('',[Validators.required]),
+      noc_fee              : new FormControl('',[Validators.required]),
+      trustee_fee          : new FormControl('',[Validators.required]),
+      property_type        : new FormControl('',[Validators.required]),
+    })
   }
-
-  addForm: UntypedFormGroup | any;
-  rows: UntypedFormArray;
-  invoice: saleInvoiceList = new saleInvoiceList();
-
-  ///////////////////////////////////////////////////////////
   subTotal = 0;
   vat = 0;
   grandTotal = 0;
 
-  constructor(private fb: UntypedFormBuilder,private invoiceService: ServiceinvoiceService, private router: Router, public dialog: MatDialog,) {
-    // tslint:disable-next-line - Disables all
-    this.invoice.id =
-      Math.max.apply(Math,this.invoiceService.getInvoiceList().map(function (o: any) { return o.id; }),
-      ) + 1;
-    this.invoice.status = 'Pending';
-
-    ///////////////////////////////////////////////////////////
-
-    this.addForm = this.fb.group({});
-
-    this.rows = this.fb.array([]);
-    this.addForm.addControl('rows', this.rows);
-    this.rows.push(this.createItemFormGroup());
-  }
-
-  ////////////////////////////////////////////////////////////////////////////////////
-  onAddRow(): void { this.rows.push(this.createItemFormGroup()); }
-
-  onRemoveRow(rowIndex: number): void {
-    const totalCostOfItem = this.addForm.get('rows')?.value[rowIndex].unitPrice * this.addForm.get('rows')?.value[rowIndex].units;
-    this.subTotal = this.subTotal - totalCostOfItem;
-    this.vat = this.subTotal / 10;
-    this.grandTotal = this.subTotal + this.vat;
-    this.rows.removeAt(rowIndex);
-
-  }
-
-  createItemFormGroup(): UntypedFormGroup {
+  createDatePriceRow(): FormGroup {
     return this.fb.group({
-      itemName: ['', Validators.required],
-      units: ['', Validators.required],
-      unitPrice: ['', Validators.required],
-      itemTotal: ['0'],
+      date  : ['', Validators.required],
+      price : ['', Validators.required],
+      percent: ['', [Validators.required, Validators.min(0), Validators.max(100)]],
+      // vat_rate : ['', Validators.required],
     });
   }
 
-  itemsChanged(): void {
-    let total: number = 0;
-    // tslint:disable-next-line - Disables all
-    for (let t = 0; t < (<UntypedFormArray>this.addForm.get('rows')).length; t++) {
-      if (
-        this.addForm.get('rows')?.value[t].unitPrice !== '' &&
-        this.addForm.get('rows')?.value[t].units
-      ) {
-        total =
-          this.addForm.get('rows')?.value[t].unitPrice * this.addForm.get('rows')?.value[t].units +
-          total;
-      }
+  upload(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+        this.selectedFile = input.files[0];
+        console.log(this.selectedFile);
     }
-    this.subTotal = total;
-    this.vat = this.subTotal / 10;
-    this.grandTotal = this.subTotal + this.vat;
-  }
-  ////////////////////////////////////////////////////////////////////
-
-  saveDetail(): void {
-    this.invoice.grandTotal = this.grandTotal;
-    this.invoice.totalCost = this.subTotal;
-    this.invoice.vat = this.vat;
-    // tslint:disable-next-line - Disables all
-    for (let t = 0; t < (<UntypedFormArray>this.addForm.get('rows')).length; t++) {
-      const o: saleorder = new saleorder();
-      o.itemName = this.addForm.get('rows')?.value[t].itemName;
-      o.unitPrice = this.addForm.get('rows')?.value[t].unitPrice;
-      o.units = this.addForm.get('rows')?.value[t].units;
-      o.unitTotalPrice = o.units * o.unitPrice;
-      this.invoice.orders.push(o);
-    }
-    this.dialog.open(AddedDialogComponent);
-    this.invoiceService.addInvoice(this.invoice);
-    this.router.navigate(['/apps/invoice']);
   }
 
+  get datePriceArray(): FormArray {
+    return this.saleForm.get('datePriceArray') as FormArray;
+  }
 
+  addDatePriceRow(): void {
+    this.datePriceArray.push(this.createDatePriceRow());
+  }
 
-  // onAddRow(){
+  removeDatePriceRow(index: number): void {
+    this.datePriceArray.removeAt(index);
+  }
 
-  // }
-
-   ////////////////////////////////////////////////////////////////////////////////////
-  //  onAddRow(): void { this.rows.push(this.createItemFormGroup()); }
-
-  //  onRemoveRow(rowIndex: number): void {
-  //    const totalCostOfItem = this.addForm.get('rows')?.value[rowIndex].unitPrice * this.addForm.get('rows')?.value[rowIndex].units;
-  //    this.subTotal = this.subTotal - totalCostOfItem;
-  //    this.vat = this.subTotal / 10;
-  //    this.grandTotal = this.subTotal + this.vat;
-  //    this.rows.removeAt(rowIndex);
-  //  }
-  //  createItemFormGroup(): UntypedFormGroup {
-  //    return this.__fb.group({
-  //      itemName: ['', Validators.required],
-  //      units: ['', Validators.required],
-  //      unitPrice: ['', Validators.required],
-  //      itemTotal: ['0'],
-  //    });
-  //  }
-
-
-  // itemsChanged(): void {
-  //   let total: number = 0;
-  //   // tslint:disable-next-line - Disables all
-  //   for (let t = 0; t < (<UntypedFormArray>this.addForm.get('rows')).length; t++) {
-  //     if (
-  //       this.addForm.get('rows')?.value[t].unitPrice !== '' &&
-  //       this.addForm.get('rows')?.value[t].units
-  //     ) {
-  //       total =
-  //         this.addForm.get('rows')?.value[t].unitPrice * this.addForm.get('rows')?.value[t].units +
-  //         total;
-  //     }
-  //   }
-  //   this.subTotal = total;
-  //   this.vat = this.subTotal / 10;
-  //   this.grandTotal = this.subTotal + this.vat;
-  // }
-
-
-//   updateHandOver(event: any) {
-//     const fourth_installment_price = parseFloat(event.target.value); // Parse the input value to a float
-//     const selling_price = this.saleForm?.get('selling_price')?.value;
-//     const payable_now = this.saleForm?.get('payable_now')?.value;
-//     const firstInstallmentPrice = this.saleForm?.get('Ist_installment_price')?.value;
-//     const secondInstallmentPrice = this.saleForm?.get('second_installment_price')?.value;
-//     const thirdInstallmentPrice = this.saleForm?.get('third_installment_price')?.value;
-
-//     // Calculate the sum of all installment prices and the fourth installment price
-//     const sum = payable_now + firstInstallmentPrice + secondInstallmentPrice + thirdInstallmentPrice + fourth_installment_price;
-
-//     if(sum < selling_price){
-//       const handover = parseFloat(selling_price) - sum; // Calculate the handover amount
-//       this.saleForm?.get('hand_over')?.setValue(handover);
-//     }else{
-//       alert
-//     }
-
-    
-
-
-
-
-
-    
-// }
- 
-
-
-  // updateHandOver(event: any){
-  //   const fourth_installment_date = event.target.value;
-  //   const selling_price = this.saleForm?.get('selling_price')?.value;
-  //   const payable_now = this.saleForm?.get('payable_now')?.value;
-  //   const firstInstallmentPrice = this.saleForm?.get('Ist_installment_price')?.value;
-  //   const secondInstallmentPrice = this.saleForm?.get('second_installment_price')?.value;
-  //   const thirdInstallmentPrice = this.saleForm?.get('third_installment_price')?.value;
-
-  //   const sum = payable_now +  firstInstallmentPrice + secondInstallmentPrice + thirdInstallmentPrice + fourth_installment_date;
-
-  //   const handover  = Number(selling_price) - Number(sum);
-
-  //   console.log(handover)
-
-  // }
-
-
+  onPriceChange(): any {
+    const sellingPrice = this.saleForm.get('selling_price')?.value;
+    if(!sellingPrice){
+      alert('Please Enter the sale price first');
+      return false;
+    }
+    const payable_now = this.saleForm.get('payable_now')?.value;
+    if(!payable_now){
+      alert('Please Enter the Payable Price');
+      return false;
+    }
+    const prices   = this.datePriceArray.controls.map(row => row.get('price')?.value);
+    const pricesum = prices.reduce((acc, curr) => acc + (parseFloat(curr) || 0), 0);
+    const sum      = pricesum +  payable_now;
+    const remaing  =  sellingPrice -  sum;
+    this.saleForm?.get('hand_over')?.setValue(remaing);
+  }
 
   submitForm(e:Event){
-    console.log(e);
+    if(this.saleForm.invalid){  return  }
+    if(this.saleForm.valid){
+      const formData = new FormData();
+      const filed = this.saleForm.value;
+      formData.append('project_name', filed.project_name);
+      formData.append('unit_number', filed.unit_number);
+      formData.append('selling_price', filed.selling_price);
+      formData.append('bedrooms', filed.bedrooms);
+      formData.append('total_area', filed.total_area);
+      formData.append('built_up_area', filed.built_up_area);
+      formData.append('payable_now', filed.payable_now);
+      formData.append('hand_over', filed.hand_over);
+      formData.append('vat_rate', filed.vat_rate);
+      formData.append('payable_to_seller', filed.payable_to_seller);
+      formData.append('dld_fee', filed.dld_fee);
+      formData.append('noc_fee', filed.noc_fee);
+      formData.append('trustee_fee', filed.trustee_fee);
+      formData.append('property_type', filed.property_type);
+
+      if(this.selectedFile){
+        formData.append('image', this.selectedFile);
+      }
+      this.datePriceArray.controls.forEach((control, index) => {
+        formData.append(`datePriceArray[${index}][price]`, control.get('price')?.value);
+        formData.append(`datePriceArray[${index}][date]`, control.get('date')?.value);
+        formData.append(`datePriceArray[${index}][percent]`, control.get('percent')?.value);
+      });
+      this._SellofferService.CreateSaleOffer(formData).subscribe((res:any) => {
+        if(res.status === "success"){
+          Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true, title: `Create Sale Offer Successfully`, icon: 'success' });
+          this.saleForm.reset();
+          // this.router.navigate(['/leads/assign-lead']);
+        }
+      })
+    }
   }
 
-  // get f(){
-  //   return this.saleForm.controls;
-  // }
+
+  optionSelected(event: any){
+      
+      const selectedOptionName = event;
+      
+        console.log(selectedOptionName);
+
+  }
+
+  get f(){
+    return this.saleForm.controls;
+  }
 
 }

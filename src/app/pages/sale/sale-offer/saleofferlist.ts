@@ -2,24 +2,20 @@ export class saleorder {
     constructor(
       public itemName: string = '',
       public unitPrice: number = 0,
-      public units: number = 0,
-      public unitTotalPrice: number = 0,
+      // public units: number = 0,
+      // public unitTotalPrice: number = 0,
     ) {}
   }
   
   export class saleInvoiceList {
     constructor(
       public id: number = 0,
-      public billFrom: string = '',
-      public billFromEmail: string = 'from@mail.com',
-      public billFromAddress: string = '',
-      public billFromPhone: number = 758269842,
-      public billFromFax: number = 0,
-      public billTo: string = '',
-      public billToEmail: string = 'to@mail.com',
-      public billToAddress: string = '',
-      public billToPhone: number = 58258855,
-      public billToFax: number = 0,
+      public project_name: any = '',
+      public selling_price: any = '',
+      public bedrooms : any= '',
+      public total_area: any = '',
+      public built_up_area : any = '',
+      public payable_now : any = '',
       public orders: saleorder[] = [],
       public orderDate: Date = new Date(),
       public totalCost: number = 0,

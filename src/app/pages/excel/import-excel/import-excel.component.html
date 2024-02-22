@@ -1,28 +1,31 @@
 <div class="row">
-    <div class="col-lg-4">
-        <mat-card class="cardWithShadow theme-card">
-          <mat-card-header>
-            <mat-card-title class="m-b-0">Create Leads</mat-card-title>
-          </mat-card-header>
-          <mat-card-content class="b-t-1">
-            <!--  [formGroup]="leadForm" (ngSubmit)="submitForm($event)" -->
-            <form  id="leadForm" enctype="multipart/form-data">
-              <div class="row">
-                <div class="col-sm-12 d-flex align-items-center"> <mat-label class="mat-subtitle-2 f-w-600 d-block m-b-16">Lead Title</mat-label> </div>
-                <div class="col-sm-12">      
-                  <div (click)="uploadFile.click()">
-                    <button mat-raised-button color="warn" class="w-100">Read Excel File...</button>
-                    <input #uploadFile (change)="upload($event)" type="file" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="display:none"/> 
-                 </div>
-                 <br>
-                </div>
+  <div class="col-lg-4">
+    <mat-card class="cardWithShadow theme-card">
+      <mat-card-header>
+        <mat-card-title class="m-b-0">Create Leads</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="b-t-1">
+        <!--  [formGroup]="leadForm" (ngSubmit)="submitForm($event)" -->
+        <form id="leadForm" enctype="multipart/form-data">
+          <div class="row">
+            <div class="col-sm-12 d-flex align-items-center"> <mat-label
+                class="mat-subtitle-2 f-w-600 d-block m-b-16">Lead Title</mat-label> </div>
+            <div class="col-sm-12">
+              <div (click)="uploadFile.click()">
+                <button mat-raised-button color="warn" class="w-100">Read Excel File...</button>
+                <input #uploadFile (change)="upload($event)" type="file"
+                  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                  style="display:none" />
               </div>
-              <div class="row justify-content-end">
-                <div class="col-sm-12"> <button mat-flat-button color="primary" (click)="save()">Save</button>
-                </div>
-              </div>
-            </form>
-          </mat-card-content>
-        </mat-card>
-      </div>
+              <br>
+            </div>
+          </div>
+          <div class="row justify-content-end">
+            <div class="col-sm-12"> <button mat-flat-button color="primary" (click)="save()">Save</button>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

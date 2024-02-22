@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { SaleOfferComponent } from './sale-offer/sale-offer.component';
-import { Route, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { MaterialModule } from 'src/app/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormModule } from '../forms/forms.module';
@@ -11,6 +11,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { TablerIconsModule } from 'angular-tabler-icons';
 import * as TablerIcons from 'angular-tabler-icons/icons';
+import { ListSaleOfferComponent } from './list-sale-offer/list-sale-offer.component';
+
 
 const router : Routes = [
   {
@@ -27,13 +29,26 @@ const router : Routes = [
           ],
         },
       },
+      {
+        path: 'list-sale-offer',
+        component: ListSaleOfferComponent,
+        data: {
+          title: 'List Sale Offer',
+          urls: [
+            { title: 'Dashboard', url: '/sale/list-sale-offer' },
+            { title: 'List Sale Offer' },
+          ],
+        },
+      },
+
     ]
   }
 ]
 
 @NgModule({
   declarations: [
-    SaleOfferComponent
+    SaleOfferComponent,
+    ListSaleOfferComponent
   ],
   imports: [
     CommonModule,

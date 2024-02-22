@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { from } from 'rxjs';
 import { InvoiceList } from './invoice';
-import { invoceLists } from './invoice-data';
+
+// import { saleInvoiceList } from '../../sale/sale-offer/saleofferlist';
+
+// import { invoceLists } from './invoice-data';
+
+import { invoceLists } from '../../sale/sale-offer/saleofferdata';
 
 @Injectable({
   providedIn: 'root',

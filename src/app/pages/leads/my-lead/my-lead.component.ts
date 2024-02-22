@@ -164,8 +164,6 @@ displayLeadLabel(agent: any): string {
   reload(){
     window.location.reload();
   }
-
-
 }
 
 export interface LeadsApi {
@@ -176,7 +174,7 @@ export interface LeadsApi {
 export class ExampleHttpDatabase {
   constructor(private _httpClient: HttpClient) {}
   getLeads(role:any,loginuserId: any, sort: string, order: string, page: number,startDate:any, endDate:any): Observable<LeadsApi> {
-    const baseUrl = 'http://10.99.1.76:8000/api';
+    const baseUrl = 'http://10.99.1.77:8000/api';
     let leadsUrl = `${baseUrl}/leads/get-my-lead`;
     if (role == 2 || role === 2) {
       leadsUrl += `/${loginuserId}`;
@@ -194,7 +192,6 @@ export class ExampleHttpDatabase {
     const requestUrl = `${leadsUrl}`;
     // Adjust query parameters based on your backend API
     // const requestUrl = `${leadsUrl}?sort=${sort}&order=${order}&page=${page + 1}`;
-
     return this._httpClient.get<LeadsApi>(requestUrl, { params }).pipe(map(data => ({...data,data: data.data.map((lead, index) => ({...lead,counter: index + 1 + page * 10 })) })));
     // return this._httpClient.get<LeadsApi>(requestUrl).pipe( map(data => ({...data,data: data.data.map((lead, index) => ({...lead,counter: index + 1 + page * 10 })) })));
     // return this._httpClient.get<LeadsApi>(requestUrl).pipe( map(data => ({...data,data: data.data.map((lead, index) => ({...lead,counter: index + 1 + page * 10 })) })));
