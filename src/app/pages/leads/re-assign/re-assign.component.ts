@@ -235,7 +235,8 @@ export class ExampleHttpDatabase {
   constructor(private _httpClient: HttpClient) {}
   getLeads(sort: string, order: string, page: number): Observable<LeadsApi> {
     // const baseUrl = 'http://127.0.0.1:8000/api'; 
-    const baseUrl = 'http://10.99.1.77:8000/api'; 
+    // const baseUrl = 'http://10.99.1.77:8000/api'; 
+    const baseUrl = 'https://offplanbackend.evernestre.ae/api';
     const leadsUrl = `${baseUrl}/leads/lead-list`;
     // Adjust query parameters based on your backend API
     const requestUrl = `${leadsUrl}?sort=${sort}&order=${order}&page=${page + 1}`;
