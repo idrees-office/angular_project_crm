@@ -247,7 +247,6 @@ export class FullComponent implements OnInit {
             iconName: 'aperture',
             route: '/dashboards/dashboard1',
           },
-          // Other nav items
           {
             navCap: 'Leads Management',
           },
@@ -335,6 +334,24 @@ export class FullComponent implements OnInit {
               },
             ],
           },
+
+          {
+            navCap: 'Users',
+          },
+          {
+            displayName: 'Users',
+            iconName: 'apps',
+            route: 'users',
+            children: [
+              {
+                displayName: 'Add a User', 
+                iconName: 'point',
+                route: 'users/create-user',
+              },
+            ],
+          },
+
+
         ];
       } else if (this.LoginUserRole == 2 || this.LoginUserRole === 2) {
         this.navItems = [

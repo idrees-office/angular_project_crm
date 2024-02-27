@@ -55,6 +55,9 @@ import { ListingDialogDataExampleDialogComponent } from '../../apps/email/listin
 
 })
 export class AppDashboard1Component implements OnInit {
+previousPage() {
+throw new Error('Method not implemented.');
+}
   allLeads              : any[] = [];
   filteredLeads         : any[] = [];
   Newleads              : any[] = [];

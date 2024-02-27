@@ -122,7 +122,6 @@ export class AssignLeadComponent implements OnInit {
     })
   }
   
-
   onOptionSelected(e: MatAutocompleteSelectedEvent, leads:any){
     Swal.fire({
       html: `Are you sure want to Assign?`,
@@ -170,7 +169,7 @@ export class ExampleHttpDatabase {
   constructor(private _httpClient: HttpClient) {}
   getLeads(sort: string, order: string, page: number): Observable<LeadsApi> {
     // const baseUrl = 'http://10.99.1.77:8000/api'; 
-    const baseUrl = 'https://offplanbackend.evernestre.ae/api'; 
+    const baseUrl = 'https://newcrmbackend.evernestre.ae/api'; 
     // const baseUrl = 'http://127.0.0.1:8000/api'; 
     const leadsUrl = `${baseUrl}/leads/get-new-lead`;
     // Adjust query parameters based on your backend API

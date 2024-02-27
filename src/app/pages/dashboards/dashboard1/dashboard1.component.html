@@ -93,10 +93,27 @@
     <div class="p-x-15 w-100 h-100">
       <div class="row h-100">
         <div class="col-lg-4 b-r-1 p-0">
-          <div class="p-x-20 d-flex align-items-center">
+          <div class="p-x-20 d-flex align-items-center" style="padding-top: 10px; padding-bottom: 10px;">
             <h5 class="f-w-500 mat-subtitle-1 f-s-16 m-0">{{ ms.topLable }}</h5>
-            <div class="m-l-auto"> <pagination-controls (pageChange)="p = $event" previousLabel="" nextLabel=""
-                class="mail-pagination"> </pagination-controls> </div>
+            <div class="m-l-auto">
+              <div class="pagination-controls">
+                <button style="max-width: 28px !important; background-color: #fff; margin: 2px; border:1px solid #5d87ff; cursor: pointer;" (click)="previousPage()" [disabled]="p === 1">
+                  <!-- <mat-icon>chevron_left</mat-icon>   -->
+                  <
+                </button>
+                <!-- mat-raised-button -->
+                <button style="max-width: 28px !important; background-color: #fff; margin: 2px; border:1px solid #5d87ff; cursor: pointer;"  *ngFor="let pageNumber of getPageNumbers()" (click)="goToPage(pageNumber)"
+                  [class.active]="pageNumber === p">{{ pageNumber }}</button>
+
+                <button style="max-width: 28px !important; background-color: #fff; margin: 2px; border:1px solid #5d87ff; cursor: pointer;" (click)="nextPage()" [disabled]="p === getTotalPages()">
+                  <!-- <mat-icon>chevron_right</mat-icon> -->
+                  >
+                </button>
+              </div>
+
+              <!-- <pagination-controls (pageChange)="p = $event" previousLabel="" nextLabel="" class="mail-pagination"></pagination-controls> -->
+            
+            </div>
           </div>
           <mat-divider></mat-divider>
           <div class="position-relative">
@@ -117,7 +134,8 @@
                         <span class="d-flex"> <i-tabler name="alert-circle"
                             class="icon-18 text-error"></i-tabler></span>
                         <div class="m-l-auto text-end">
-                          <span class="f-s-12 text-nowrap"> {{ formatDateOrToday(lead.assigned_at) }} </span>
+                         
+                          <span class="f-s-12 text-nowrap"> {{ lead.assigned_at || 'Invalid Time'}} </span>
                         </div>
                       </div>
                     </div>
@@ -220,7 +238,7 @@
                   <div class="p-t-5">
                     <div class="" *ngFor="let comments of leadInfo.comments; index as i">
                       <div class="maindiv">
-                        <small> {{formatDateOrToday(comments.created_at)}}</small> &nbsp;
+                        <small> {{ comments.created_at ||'Invalid Time' }}</small> &nbsp;
                         <small> {{ comments.user_id !== null ? comments.user.client_user_name : i > 0 ?
                           leadInfo.comments[i-1].agent.client_user_name : "" }} </small>
                         <small> {{this.leadoptions[comments.lead_status-1].label }}</small>
@@ -230,7 +248,7 @@
                           }}</small>
                         <mat-card class="b-1 shadow-none" *ngIf="comments.lead_comment" style="margin-bottom: 4px;">
                           <mat-card-content class="">
-                            <small> {{formatDateOrToday(comments.updated_at)}}</small> &nbsp;
+                            <small> {{ comments.updated_at ||'Invalid Time' }}</small> &nbsp;
                             <small>{{comments.agent.client_user_name}} : </small>
                             <small> {{ comments.lead_comment }} </small> </mat-card-content>
                         </mat-card>

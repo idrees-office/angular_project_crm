@@ -1,0 +1,136 @@
+<form [formGroup]="userFrom" (ngSubmit)="create($event)" id="users" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-lg-6">
+            <mat-card class="cardWithShadow theme-card">
+                <mat-card-header>
+                    <mat-card-title class="m-b-0">Create User</mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="b-t-1">
+                    <div class="row">
+                        <div class="col-sm-6 custom_lable_col">
+                            <mat-label class="d-block custom_lable" style="font-size: 10px;">UserName</mat-label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput placeholder="UserName" formControlName="user_name" style="border-radius: 0px;" />
+                                <mat-icon matPrefix class="op-5"> <i-tabler name="user" class="icon-20 d-flex"></i-tabler></mat-icon>
+                                <mat-hint *ngIf="f['user_name'].touched && f['user_name'].invalid" class="m-b-16 error-msg">
+                                    <div class="text-error" *ngIf="f['user_name'].errors && f['user_name'].errors['required']">Name is required.</div>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-6 custom_lable_col">
+                            <mat-label class="d-block custom_lable" style="font-size: 10px;">UserPhone</mat-label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput type="" number placeholder="UserPhone" formControlName="user_phone" style="border-radius: 0px;" />
+                                <mat-icon matPrefix class="op-5"> <i-tabler name="user" class="icon-20 d-flex"></i-tabler></mat-icon>
+                                <mat-hint *ngIf="f['user_phone'].touched && f['user_phone'].invalid" class="m-b-16 error-msg">
+                                    <div class="text-error" *ngIf="f['user_phone'].errors && f['user_phone'].errors['required']">Phone is required.</div>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-sm-12 custom_lable_col">
+                            <mat-label class="d-block custom_lable" style="font-size: 10px;">Designation</mat-label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput placeholder="Designation...." formControlName="user_designation" style="border-radius: 0px;" />
+                                <mat-icon matPrefix class="op-5"> <i-tabler name="user" class="icon-20 d-flex"></i-tabler></mat-icon>
+                                <mat-hint *ngIf="f['user_designation'].touched && f['user_designation'].invalid" class="m-b-16 error-msg">
+                                    <div class="text-error" *ngIf="f['user_designation'].errors && f['user_designation'].errors['required']">Phone is required.</div>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-6 custom_lable_col">
+                            <mat-label class="d-block custom_lable" style="font-size: 10px;">Email</mat-label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput type="email" placeholder="Email" formControlName="user_email" style="border-radius: 0px;" />
+                                <mat-icon matPrefix class="op-5"> <i-tabler name="user" class="icon-20 d-flex"></i-tabler></mat-icon>
+                                <mat-hint *ngIf="f['user_email'].touched && f['user_email'].invalid" class="m-b-16 error-msg">
+                                    <div class="text-error" *ngIf="f['user_email'].errors && f['user_email'].errors['required']">Phone is required.</div>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-6 custom_lable_col">
+                            <mat-label class="d-block custom_lable" style="font-size: 10px;">Password</mat-label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput type="password" placeholder="Password" formControlName="user_password" style="border-radius: 0px;" />
+                                <mat-icon matPrefix class="op-5"> <i-tabler name="password" class="icon-20 d-flex"></i-tabler></mat-icon>
+                                <mat-hint *ngIf="f['user_password'].touched && f['user_password'].invalid" class="m-b-16 error-msg">
+                                    <div class="text-error" *ngIf="f['user_password'].errors && f['user_password'].errors['required']">Password is required.</div>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-6 custom_lable_col">
+                            <mat-label class="d-block custom_lable" style="font-size: 10px;">Status</mat-label>
+                            <mat-form-field appearance="outline">
+                                <mat-label class="d-block custom_lable">Status</mat-label>
+                                <mat-select placeholder="Type to Search" formControlName="user_status">
+                                    <mat-option *ngFor="let option of options" [value]="option.value">
+                                        {{ option.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-6 custom_lable_col">
+                            <mat-label class="d-block custom_lable" style="font-size: 10px;">Sort Order</mat-label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input matInput type="email" placeholder="Sort Order" formControlName="sort_order" style="border-radius: 0px;" />
+                                <mat-icon matPrefix class="op-5"> <i-tabler name="user" class="icon-20 d-flex"></i-tabler></mat-icon>
+                                <mat-hint *ngIf="f['sort_order'].touched && f['sort_order'].invalid" class="m-b-16 error-msg">
+                                    <div class="text-error" *ngIf="f['sort_order'].errors && f['sort_order'].errors['required']">Role is required.</div>
+                                </mat-hint>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="mb-3">
+                                <label class="form-label">User's Photo</label>
+                                <input type="file" class="form-control" (change)="userImage($event)" placeholder="Sort Order" autocomplete="off" />
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row d-flex justify-content-end ">
+                        <div class="col-sm-12"><button type="submit" type="submit" [disabled]="this.userFrom.invalid || isNextDisabled" mat-flat-button color="primary">Send</button></div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div class="col-lg-6">
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title class="m-b-0">User Role</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="mb-3">
+                        <label *ngFor="let item of items" class="checkbox_container">
+                            <mat-checkbox type="checkbox" formControlName="checkedItems" [checked]="isChecked(item)" (change)="toggleCheckbox(item)">
+                                {{ item.name }} <br />
+                                <small>{{ item.badge }}</small>
+                            </mat-checkbox>
+                            <span class="checkmark"></span>
+                        </label>
+                        <div *ngIf="f['checkedItems'].touched && f['checkedItems'].invalid">
+                            <div *ngIf="f['checkedItems'].errors && f['checkedItems'].errors?.['required']" class="text-danger">UserRole is required</div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title class="m-b-0">User Website Role</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <label *ngFor="let item of items2" class="checkbox_container"> {{ item.label }}
+                        <mat-checkbox type="checkbox" formControlName="checkedItemsforwebsite" [checked]="item.selected" (change)="toggleSelection(item)"></mat-checkbox>
+                        <span class="checkmark"></span>
+                      </label>
+                      <div *ngIf="f['checkedItemsforwebsite'].touched && f['checkedItemsforwebsite'].invalid">
+                          <div *ngIf="f['checkedItemsforwebsite'].errors && f['checkedItemsforwebsite'].errors?.['required']" class="text-danger">Website-Role is required</div>
+                      </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</form>
+
+

@@ -26,6 +26,11 @@ const routes: Routes = [
       {
         path: 'sale', loadChildren: () => import('./pages/sale/sale.module').then((m) => m.SaleModule),
       },
+
+      {
+        path: 'users', loadChildren: () => import('./pages/users/users.module').then((m) => m.UsersModule),
+      },
+
       { 
         path: 'ui-components', loadChildren: () => import('./pages/ui-components/ui-components.module').then((m) => m.UicomponentsModule),
       },

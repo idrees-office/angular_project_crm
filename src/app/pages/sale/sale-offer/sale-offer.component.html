@@ -177,10 +177,9 @@
         <div class="col-sm-2">
           <!-- <mat-label style="padding-left: 6px;" class="mat-subtitle-2 d-block m-b-4"> <small>Transfer Fee</small>
           </mat-label> -->
-
           <mat-label class="mat-subtitle-2 f-w-600 m-b-8 d-block"> Type </mat-label>
           <mat-form-field appearance="outline" class="w-100">
-            <mat-select value="choose">
+            <mat-select value="choose" formControlName="property_type">
               <mat-option value="choose">choose</mat-option>
               <mat-option value="apartment">Apartment</mat-option>
               <mat-option value="townhouse">Townhouse</mat-option>
@@ -188,7 +187,6 @@
               <mat-option value="penthouse">Penthouse</mat-option>
             </mat-select>
           </mat-form-field>
-
           <mat-form-field appearance="outline" class="w-100">
             <input matInput placeholder="Built-Up Area" type="number" formControlName="built_up_area"
               style="border-radius: 0px;" />
@@ -199,8 +197,6 @@
             </mat-hint>
           </mat-form-field>
         </div>
-
-
         <div class="col-sm-12">
           <label for="">When You Payable Remaing...</label>
           <hr>

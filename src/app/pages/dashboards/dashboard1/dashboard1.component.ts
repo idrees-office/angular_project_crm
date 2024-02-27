@@ -94,6 +94,7 @@ export class AppDashboard1Component implements OnInit {
   currentselectdstatus  : any; 
   stateCtrl         = new FormControl('');
   filteredStates: Observable<LeadsOptionDropdown[]>;
+  itemsPerPage: number = 12;
 
   constructor(private leadsService:LeadsService,private fb:FormBuilder, private mailService:mailService, public ms: mailGlobalVariable, private router:Router,public dialog: MatDialog, private _Location :Location) { 
 
@@ -301,6 +302,73 @@ export class AppDashboard1Component implements OnInit {
       }
     );
   }
+
+
+
+
+  previousPage() {
+    if (this.p > 1) {
+      this.p--;
+    }
+  }
+  
+  nextPage() {
+    if (this.p < this.getTotalPages()) {
+      this.p++;
+    }
+  }
+  
+  goToPage(pageNumber: number) {
+    this.p = pageNumber;
+  }
+  
+  getTotalPages(): number {
+    return Math.ceil(this.ms.leadList.length / this.itemsPerPage);
+  }
+  
+  // getPageNumbers(): number[] {
+  //   const totalPages = this.getTotalPages();
+  //   return Array.from({ length: totalPages }, (_, i) => i + 1);
+  // }
+
+  getPageNumbers(): number[] {
+    const totalPages = this.getTotalPages();
+    const currentPage = this.p;
+    const maxVisiblePages = 3; // Set the maximum number of visible page buttons
+    let startPage: number;
+    let endPage: number;
+  
+    if (totalPages <= maxVisiblePages) {
+      // If total pages are less than or equal to maxVisiblePages, show all pages
+      startPage = 1;
+      endPage = totalPages;
+    } else {
+      // Calculate start and end pages to display
+      const middlePage = Math.floor(maxVisiblePages / 2);
+      if (currentPage <= middlePage) {
+        startPage = 1;
+        endPage = maxVisiblePages;
+      } else if (currentPage   + middlePage >= totalPages) {
+        startPage = totalPages - maxVisiblePages + 1;
+        endPage   = totalPages;
+      } else {
+        startPage = currentPage - middlePage;
+        endPage   = currentPage + middlePage;
+      }
+    }
+    return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+  }
+  
+
+
+
+
+
+
+
+
+
+
 
   mailSelected(lead: Leadbox): void {
     this.ms.selectedLead = null;
@@ -581,6 +649,10 @@ private formatTime12Hour(date: Date): string {
 private isSameDate(date1: Date, date2: Date): boolean {
   return (date1.getFullYear() === date2.getFullYear() && date1.getMonth() === date2.getMonth() && date1.getDate() === date2.getDate());
 }
+
+
+
+
 
 get f(){ return this.updateleadform.controls; }
 

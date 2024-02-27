@@ -95,7 +95,10 @@ export class SaleOfferComponent implements OnInit {
   }
 
   submitForm(e:Event){
-    if(this.saleForm.invalid){  return  }
+    if(this.saleForm.invalid){
+      console.log(this.saleForm.value); 
+       console.log('Invalide');
+       return  }
     if(this.saleForm.valid){
       const formData = new FormData();
       const filed = this.saleForm.value;
@@ -126,7 +129,7 @@ export class SaleOfferComponent implements OnInit {
         if(res.status === "success"){
           Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true, title: `Create Sale Offer Successfully`, icon: 'success' });
           this.saleForm.reset();
-          // this.router.navigate(['/leads/assign-lead']);
+          this.router.navigate(['/sale/list-sale-offer']);
         }
       })
     }

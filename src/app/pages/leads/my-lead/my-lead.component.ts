@@ -175,7 +175,7 @@ export class ExampleHttpDatabase {
   constructor(private _httpClient: HttpClient) {}
   getLeads(role:any,loginuserId: any, sort: string, order: string, page: number,startDate:any, endDate:any): Observable<LeadsApi> {
     // const baseUrl = 'http://10.99.1.77:8000/api';
-    const baseUrl = 'https://offplanbackend.evernestre.ae/api';
+    const baseUrl = 'https://newcrmbackend.evernestre.ae/api';
     let leadsUrl = `${baseUrl}/leads/get-my-lead`;
     if (role == 2 || role === 2) {
       leadsUrl += `/${loginuserId}`;

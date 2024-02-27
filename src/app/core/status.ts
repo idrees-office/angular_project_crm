@@ -1,11 +1,11 @@
 export interface Option {
-    index   ? : number;
-    optname ? :string;
+    value   ? : number;
+    name ? :string;
   }
   export class OptionStatus {
     public static optionvalue: Option[] = [
-      { 'index': 0, 'optname': 'InActive'},
-      { 'index': 1, 'optname': "Active"},
+      { 'value': 0, 'name': 'InActive'},
+      { 'value': 1, 'name': "Active"},
     ]
   }
 
