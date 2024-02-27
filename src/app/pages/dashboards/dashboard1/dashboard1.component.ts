@@ -95,6 +95,7 @@ export class AppDashboard1Component implements OnInit {
   stateCtrl         = new FormControl('');
   filteredStates: Observable<LeadsOptionDropdown[]>;
   itemsPerPage: number = 12;
+  
 
   constructor(private leadsService:LeadsService,private fb:FormBuilder, private mailService:mailService, public ms: mailGlobalVariable, private router:Router,public dialog: MatDialog, private _Location :Location) { 
 

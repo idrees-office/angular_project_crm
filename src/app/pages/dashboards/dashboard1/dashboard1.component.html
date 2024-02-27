@@ -183,7 +183,7 @@
                 <div class="p-24">
                   <mat-card class="cardWithShadow">
                     <mat-card-header class="d-flex">
-                      <mat-card-title>Details of the lead</mat-card-title>
+                      <mat-card-title> Details of the lead </mat-card-title>
                       <!-- <mat-card-subtitle class="mat-body-1">About the leads Details</mat-card-subtitle> -->
                     </mat-card-header>
                     <mat-card-content>
@@ -249,11 +249,13 @@
                         <mat-card class="b-1 shadow-none" *ngIf="comments.lead_comment" style="margin-bottom: 4px;">
                           <mat-card-content>
 
+
                             <small> {{ comments.updated_at ||'Invalid Time' }}</small> &nbsp;
 
                             <small>{{comments.agent.client_user_name}} : </small>
                             <small> {{ comments.lead_comment }} </small> </mat-card-content>
                         </mat-card>
+                        
                       </div>
                     </div>
                   </div>
