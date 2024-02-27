@@ -20,5 +20,5 @@ jobs:
           server: ftp.farhanali.ae
           username: admin@azizi-mina.evernestre.ae
           password: "syWApxDy*BdW"
-          local-dir: "dist" # Specify the folder whose contents you want to push
+          local-dir: "dist/" # Specify the folder whose contents you want to push
           server-dir: "/"
