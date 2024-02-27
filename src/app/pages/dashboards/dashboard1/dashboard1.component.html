@@ -135,7 +135,7 @@
                             class="icon-18 text-error"></i-tabler></span>
                         <div class="m-l-auto text-end">
                          
-                          <span class="f-s-12 text-nowrap"> {{ lead.assigned_at || 'Invalid Time'}} </span>
+                          <span class="f-s-12 text-nowrap"> {{ lead }} </span>
                         </div>
                       </div>
                     </div>
@@ -247,8 +247,10 @@
                         <small *ngIf="i>0">&nbsp;{{this.leadoptions[(leadInfo.comments[i-1].lead_status)-1].notes
                           }}</small>
                         <mat-card class="b-1 shadow-none" *ngIf="comments.lead_comment" style="margin-bottom: 4px;">
-                          <mat-card-content class="">
+                          <mat-card-content>
+
                             <small> {{ comments.updated_at ||'Invalid Time' }}</small> &nbsp;
+
                             <small>{{comments.agent.client_user_name}} : </small>
                             <small> {{ comments.lead_comment }} </small> </mat-card-content>
                         </mat-card>
