@@ -37,6 +37,8 @@ const routes: Routes = [
     ]
   },
 
+  // { path: 'https://www.azizi-mina.evernestre.ae/dashboards/dashboard1', redirectTo: '/dashboards/dashboard1', pathMatch: 'full' },
+
   // {
   //   path: '',
   //   component: BlankComponent,
@@ -46,7 +48,9 @@ const routes: Routes = [
   //   ]
   // },
   { path: '', redirectTo: '/dashboards/dashboard1', pathMatch: 'full' },
-  { path: '**', redirectTo: 'authentication/error' }
+  { path: '**', redirectTo: '/dashboards/dashboard1', pathMatch: 'full' },
+
+  // { path: '**', redirectTo: 'authentication/error' }
 ];
 
 
