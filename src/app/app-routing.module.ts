@@ -26,14 +26,25 @@ const routes: Routes = [
       { path: 'theme-pages', loadChildren: () => import('./pages/theme-pages/theme-pages.module').then((m) => m.ThemePagesModule) }
     ]
   },
+
   {
     path: '',
-    component: BlankComponent,
+    component: FullComponent,
     children: [
-      { path: 'authentication', loadChildren: () => import('./pages/authentication/authentication.module').then((m) => m.AuthenticationModule) },
-      { path: 'landingpage', loadChildren: () => import('./pages/theme-pages/landingpage/landingpage.module').then((m) => m.LandingPageModule) }
+      { path: 'dashboards', loadChildren: () => import('./pages/dashboards/dashboards.module').then((m) => m.DashboardsModule) },
+
+      // { path: 'landingpage', loadChildren: () => import('./pages/theme-pages/landingpage/landingpage.module').then((m) => m.LandingPageModule) }
     ]
   },
+
+  // {
+  //   path: '',
+  //   component: BlankComponent,
+  //   children: [
+  //     { path: 'authentication', loadChildren: () => import('./pages/authentication/authentication.module').then((m) => m.AuthenticationModule) },
+  //     { path: 'landingpage', loadChildren: () => import('./pages/theme-pages/landingpage/landingpage.module').then((m) => m.LandingPageModule) }
+  //   ]
+  // },
   { path: '', redirectTo: '/dashboards/dashboard1', pathMatch: 'full' },
   { path: '**', redirectTo: 'authentication/error' }
 ];
