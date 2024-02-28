@@ -26,31 +26,16 @@ const routes: Routes = [
       { path: 'theme-pages', loadChildren: () => import('./pages/theme-pages/theme-pages.module').then((m) => m.ThemePagesModule) }
     ]
   },
-
   {
     path: '',
-    component: FullComponent,
+    component: BlankComponent,
     children: [
-      { path: 'dashboards', loadChildren: () => import('./pages/dashboards/dashboards.module').then((m) => m.DashboardsModule) },
-
-      // { path: 'landingpage', loadChildren: () => import('./pages/theme-pages/landingpage/landingpage.module').then((m) => m.LandingPageModule) }
+      { path: 'authentication', loadChildren: () => import('./pages/authentication/authentication.module').then((m) => m.AuthenticationModule) },
+      { path: 'landingpage', loadChildren: () => import('./pages/theme-pages/landingpage/landingpage.module').then((m) => m.LandingPageModule) }
     ]
   },
-
-  // { path: 'https://www.azizi-mina.evernestre.ae/dashboards/dashboard1', redirectTo: '/dashboards/dashboard1', pathMatch: 'full' },
-
-  // {
-  //   path: '',
-  //   component: BlankComponent,
-  //   children: [
-  //     { path: 'authentication', loadChildren: () => import('./pages/authentication/authentication.module').then((m) => m.AuthenticationModule) },
-  //     { path: 'landingpage', loadChildren: () => import('./pages/theme-pages/landingpage/landingpage.module').then((m) => m.LandingPageModule) }
-  //   ]
-  // },
   { path: '', redirectTo: '/dashboards/dashboard1', pathMatch: 'full' },
-  { path: '**', redirectTo: '/dashboards/dashboard1', pathMatch: 'full' },
-
-  // { path: '**', redirectTo: 'authentication/error' }
+  { path: '**', redirectTo: 'authentication/error' }
 ];
 
 
