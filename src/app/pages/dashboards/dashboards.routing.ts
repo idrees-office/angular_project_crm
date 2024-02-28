@@ -4,6 +4,7 @@ import { AppDashboard1Component } from './dashboard1/dashboard1.component';
 import { AppDashboard2Component } from './dashboard2/dashboard2.component';
 
 
+
 export const DashboardsRoutes: Routes = [
   {
     path: '',
@@ -19,7 +20,6 @@ export const DashboardsRoutes: Routes = [
           ],
         },
       },
-
       {
         path: 'dashboard2',
         component: AppDashboard2Component,
@@ -31,10 +31,6 @@ export const DashboardsRoutes: Routes = [
           ],
         },
       },
-
-      // { path: 'email', redirectTo: 'email/inbox', pathMatch: 'full' },
-
-      { path: 'dashboards', redirectTo: 'dashboards/dashboard1', pathMatch: 'full' },
       {
         path: 'dashboard1/:type',
         component: AppDashboard1Component,
@@ -45,23 +41,68 @@ export const DashboardsRoutes: Routes = [
             { title: 'Email' },
           ],
         },
-
-        // children: [
-        //   {
-        //     path: ':id',
-        //     component: DetailComponent,
-        //     data: {
-        //       title: 'Email Detail',
-        //       urls: [
-        //         { title: 'Dashboard', url: '/dashboards/dashboard1' },
-        //         { title: 'Email Detail' },
-        //       ],
-        //     },
-        //   },
-        // ],
-
       },
-
     ],
   },
 ];
+
+
+// export const DashboardsRoutes: Routes = [
+//   {
+//     path: '',
+//     children: [
+//       {
+//         path: 'dashboard1',
+//         component: AppDashboard1Component,
+//         data: {
+//           title: 'Analytical',
+//           urls: [
+//             { title: 'Dashboard', url: '/dashboards/dashboard1' },
+//             { title: 'Analytical' },
+//           ],
+//         },
+//       },
+//       {
+//         path: 'dashboard2',
+//         component: AppDashboard2Component,
+//         data: {
+//           title: 'eCommerce',
+//           urls: [
+//             { title: 'Dashboard', url: '/dashboards/dashboard1' },
+//             { title: 'eCommerce' },
+//           ],
+//         },
+//       },
+//       // { path: 'email', redirectTo: 'email/inbox', pathMatch: 'full' },
+
+//       { path: 'dashboards', redirectTo: 'dashboards/dashboard1', pathMatch: 'full' },
+//       {
+//         path: 'dashboard1/:type',
+//         component: AppDashboard1Component,
+//         data: {
+//           title: 'Email',
+//           urls: [
+//             { title: 'Dashboard', url: '/dashboards/dashboard1' },
+//             { title: 'Email' },
+//           ],
+//         },
+
+//         // children: [
+//         //   {
+//         //     path: ':id',
+//         //     component: DetailComponent,
+//         //     data: {
+//         //       title: 'Email Detail',
+//         //       urls: [
+//         //         { title: 'Dashboard', url: '/dashboards/dashboard1' },
+//         //         { title: 'Email Detail' },
+//         //       ],
+//         //     },
+//         //   },
+//         // ],
+
+//       },
+
+//     ],
+//   },
+// ];

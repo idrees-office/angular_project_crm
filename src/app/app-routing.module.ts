@@ -26,25 +26,21 @@ const routes: Routes = [
       {
         path: 'sale', loadChildren: () => import('./pages/sale/sale.module').then((m) => m.SaleModule),
       },
-
       {
         path: 'users', loadChildren: () => import('./pages/users/users.module').then((m) => m.UsersModule),
       },
-
       { 
         path: 'ui-components', loadChildren: () => import('./pages/ui-components/ui-components.module').then((m) => m.UicomponentsModule),
       },
       {
         path: 'forms', loadChildren: () => import('./pages/forms/forms.module').then((m) => m.FormModule),
       },
-
       {
         path: 'charts', loadChildren: () => import('./pages/charts/charts.module').then((m) => m.ChartsModule),
       },
       { 
         path: 'apps', loadChildren: () => import('./pages/apps/apps.module').then((m) => m.AppsModule),
       },
-
       { 
         path: 'widgets', loadChildren: () => import('./pages/widgets/widgets.module').then((m) => m.WidgetsModule),
       },
@@ -69,7 +65,7 @@ const routes: Routes = [
     ],
   },
 
-  { path: '', redirectTo: '/dashboards/dashboard1', pathMatch: 'full' }, 
+  // { path: '', redirectTo: '/dashboards/dashboard1', pathMatch: 'full' }, 
 
   { path: '**', redirectTo: 'authentication/error', },
 ]; 
