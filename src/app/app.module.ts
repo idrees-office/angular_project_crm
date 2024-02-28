@@ -26,6 +26,8 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AuthGuard } from './core/auth.guard';
 
+import { AuthenticationModule } from './pages/authentication/authentication.module';
+
 export function HttpLoaderFactory(http: HttpClient): any {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -40,6 +42,7 @@ export function HttpLoaderFactory(http: HttpClient): any {
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
+    AuthenticationModule,
     TablerIconsModule.pick(TablerIcons),
     TranslateModule.forRoot({
       loader: {
