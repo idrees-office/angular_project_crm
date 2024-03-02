@@ -11,17 +11,31 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-side-login',
   standalone: true,
-  imports: [RouterModule, MaterialModule, FormsModule, ReactiveFormsModule, NgIf],
+  imports: [
+    RouterModule,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgIf,
+  ],
   templateUrl: './side-login.component.html',
 })
 export class AppSideLoginComponent implements OnInit {
   options = this.settings.getOptions();
-  loginForm : FormGroup;
-  returnUrl : any;
-  constructor(private settings: CoreService, private router: Router, private fb:FormBuilder, private auth:AuthService,private userservice:UserService, private ActivatedRoute:ActivatedRoute) {}
+  loginForm: FormGroup;
+  returnUrl: any;
+  constructor(
+    private settings: CoreService,
+    private router: Router,
+    private fb: FormBuilder,
+    private _AuthService: AuthService,
+    private userservice: UserService,
+    private ActivatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
-    this.returnUrl = this.ActivatedRoute.snapshot.queryParams['returnUrl'] || '/';
+    this.returnUrl =
+      this.ActivatedRoute.snapshot.queryParams['returnUrl'] || '/';
     this.loginForm = this.fb.group({
       client_user_email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
@@ -32,30 +46,45 @@ export class AppSideLoginComponent implements OnInit {
     return this.loginForm.controls;
   }
 
-  login(e:Event){
+  login(e: Event) {
     e.preventDefault();
-    if(this.loginForm.valid){
+    if (this.loginForm.valid) {
       let fd = this.loginForm.value;
-      this.auth.login(fd).subscribe((res:any)=>{
-        if (res.status == "login") {
-          Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true, title: 'Login Successfully', icon: 'success'});
-          localStorage.setItem('userData',JSON.stringify(res.user));
+      this._AuthService.login(fd).subscribe((res: any) => {
+          
+          // console.log(res);
+
+        // console.log(res.token);
+
+        if (res.status == 'login') {
+          Swal.fire({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            title: 'Login Successfully',
+            icon: 'success',
+          });
+
+          localStorage.setItem('userData', JSON.stringify(res.user));
+          localStorage.setItem('token', res.token);
+
           // this.userservice.setUser(res.user);
           this.loginForm.reset();
           localStorage.setItem('isLoggedin', 'true');
-          if(localStorage.getItem('isLoggedin')) {
+          if (localStorage.getItem('isLoggedin')) {
             this.router.navigate([this.returnUrl]);
           }
-        } else if (res.status == "false") {
-          Swal.fire('Invalid username and password ', '', 'error');
+        } else if (res.status == 'false') {
+          Swal.fire('Invalid Username And Password ', '', 'error');
           this.loginForm.reset();
         } else {
-          Swal.fire('Invalid username and password', '', 'error');
+          Swal.fire('Invalid Username And Password', '', 'error');
         }
       });
-    }else{
+    } else {
       Swal.fire('Opps.....', '', 'error');
     }
   }
-
 }

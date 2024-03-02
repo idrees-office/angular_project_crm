@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "src/environments/environments.dev";
 import { catchError, map } from 'rxjs/operators';
 import { Observable } from "rxjs";
@@ -39,8 +39,10 @@ export class LeadsService {
   fetchLeadsData(){
     return this.http.get(this.getUrl);
   }
-
+  
   GetAgentAndAdminWiseLeads() {
+    // const token = localStorage.getItem('token');
+    // const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get(this.getallleads);
   }
 

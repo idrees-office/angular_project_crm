@@ -3,42 +3,50 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environments.dev';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  registerurl = environment.baseUrl+'/auth/regitser';
-  loginUrl    = environment.baseUrl+'/auth/login';
+  registerurl = environment.baseUrl + '/auth/regitser';
+  loginUrl = environment.baseUrl + '/auth/login';
   // emailurl = environment.baseUrl+'/auth/check_email';
-  logouturl = environment.baseUrl+'/auth/logout';
-  forgetpasswordUrl = environment.baseUrl+'/auth/forget_password';
-  get = environment.baseUrl+'/auth/send-reset-link-email';  // first Get Recode from db through Email
+  logouturl = environment.baseUrl + '/auth/logout';
+  forgetpasswordUrl = environment.baseUrl + '/auth/forget_password';
+  get = environment.baseUrl + '/auth/send-reset-link-email';
+
+  checkUserExistOrNot = environment.baseUrl + '/auth/check-user-exist-or-not';
+
+  constructor(private http: HttpClient) {}
+  register(postData: any) {
+    return this.http.post(this.registerurl, postData);
+  }
 
 
-  constructor(private http:HttpClient) { }
-  register(postData:any){
-    return this.http.post(this.registerurl,postData);
+  login(postData: any) {
+    return this.http.post(this.loginUrl, postData);
   }
-  
-  login(postData:any){
-    return this.http.post(this.loginUrl,postData);
-  }
-  
+
+
   getLoggedInUsername() {
     return localStorage.getItem('user_email');
   }
 
-  forgetPassword(postData:any){
-    return this.http.post(this.forgetpasswordUrl,postData);
-  }
-  
-  logoutFunction(postData:any){
-    return this.http.post(this.logouturl,postData);
+  forgetPassword(postData: any) {
+    return this.http.post(this.forgetpasswordUrl, postData);
   }
 
-
-  sendResetLink(postData:any){
-    return this.http.post(this.get,postData);
+  logoutFunction(postData: any) {
+    return this.http.post(this.logouturl, postData);
   }
 
-  
+  sendResetLink(postData: any) {
+    return this.http.get(this.get, postData);
+  }
+
+  // checkUserExistOrNotFun(id: any) {
+  //   return this.http.get(this.checkUserExistOrNot + '/' + id);
+  // }
+
+  checkUserDataExists(id:any){
+    return this.http.get(this.checkUserExistOrNot+'/'+id);
+  }
 }

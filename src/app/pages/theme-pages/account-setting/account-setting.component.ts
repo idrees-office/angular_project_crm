@@ -66,6 +66,7 @@ export class AppAccountSettingComponent implements OnInit {
       this._AuthService.logoutFunction(fd).subscribe((res:any) => {
         console.log(res);
       })
+      
       localStorage.removeItem('isLoggedin');
       localStorage.removeItem('userData');
       if (!localStorage.getItem('isLoggedin')) {

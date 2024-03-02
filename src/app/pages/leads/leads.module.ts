@@ -17,12 +17,17 @@ import { AssignLeadComponent } from './assign-lead/assign-lead.component';
 import { MyLeadComponent } from './my-lead/my-lead.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
+//  Set Token in the modules for all services
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptorService } from 'src/app/services/auth-interceptor.service';
+
+
 @NgModule({
   declarations: [
     CreateLeadComponent,
     ReAssignComponent,
     AssignLeadComponent,
-    MyLeadComponent
+    MyLeadComponent,
   ],
   imports: [
     CommonModule,
@@ -37,7 +42,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     NgSelectModule,
     NgxPaginationModule,
     MatDatepickerModule,
+    HttpClientModule,
   ],
-  providers: [DatePipe],
+  providers: [
+    DatePipe,
+   
+  ],
 })
-export class LeadsModule { }
+export class LeadsModule {}

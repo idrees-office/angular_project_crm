@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,8 +25,11 @@ import { FilterPipe } from './pipe/filter.pipe';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AuthGuard } from './core/auth.guard';
-
 import { AuthenticationModule } from './pages/authentication/authentication.module';
+
+// import { HttpClientModule,  } from '@angular/common/http';
+import { AuthInterceptorService } from 'src/app/services/auth-interceptor.service';
+
 
 export function HttpLoaderFactory(http: HttpClient): any {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -54,7 +57,18 @@ export function HttpLoaderFactory(http: HttpClient): any {
     NgScrollbarModule,
     FullComponent,
   ],
-  providers:[AuthGuard],
+  providers:[
+    AuthGuard,
+    //  set token all the aoi token 
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    }
+    
+
+
+  ],
   exports: [TablerIconsModule],
   bootstrap: [AppComponent],
 })
