@@ -26,7 +26,7 @@ jobs:
       - name: 📂 Sync folders and files to the server
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          server: ftp://kamoke.com.pk
+          server: ftp.kamoke.com.pk
           username: leads
           password: "Test123@"
           local-dir: "dist/" # Specify the folder whose contents you want to push
