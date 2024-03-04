@@ -138,10 +138,8 @@ export class AppDashboard1Component implements OnInit {
       this.role = this.user?.client_user_role;
       this.loginUserId = this.user?.client_user_id;
     } else {
-      // Handle case where userData is null or undefined
       console.error('User data not found in localStorage');
     }
-
     this._AuthService.checkUserDataExists(this.loginUserId).subscribe(
       (res: any) => {},
       (error: any) => {
@@ -149,15 +147,15 @@ export class AppDashboard1Component implements OnInit {
         if (error.status == 404 || error.status === 404) {
           localStorage.removeItem('userData');
           this._Router.navigate(['/authentication/side-login']);
-          Swal.fire({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 5000,
-            timerProgressBar: true,
-            title: `You Deleted The Existing User. Please Add A New User, Then You Can Try.`,
-            icon: 'error',
-          });
+          // Swal.fire({
+          //   toast: true,
+          //   position: 'top-end',
+          //   showConfirmButton: false,
+          //   timer: 5000,
+          //   timerProgressBar: true,
+          //   title: `You Deleted The Existing User. Please Add A New User, Then You Can Try.`,
+          //   icon: 'error',
+          // });
         }
       }
     );
@@ -169,7 +167,7 @@ export class AppDashboard1Component implements OnInit {
     });
 
     this.leadoptions = LeadStatus.leads;
-    this.leadoptions2 = LeadStatusDropdown.leadsoption;
+    this.leadoptions2 = this.filteredLeadsOptions();
 
     if (this.role == 1) {
       if (this.ms.type == '' || this.ms.type === '') {
@@ -185,19 +183,12 @@ export class AppDashboard1Component implements OnInit {
       }
       this.Newleads = 0;
     }
+  }
 
-    // this._WebsocketService.connect().subscribe(
-    //   (message) => {
-    //     // Handle incoming messages
-    //     console.log(message);
-    //   },
-    //   (error) => {
-    //     // Handle errors
-    //   },
-    //   () => {
-    //     // Handle WebSocket close
-    //   }
-    // );
+  private filteredLeadsOptions(){
+      return LeadStatusDropdown.leadsoption.filter(
+        (lead) => lead.role === this.role || lead.role === ''
+      );
   }
 
   // private async logout(): Promise<void> {
@@ -231,7 +222,8 @@ export class AppDashboard1Component implements OnInit {
 
     const agent_id = this.user.client_user_id;
     try {
-      const res: any = await this.leadsService.GetAgentAndAdminWiseLeads()
+      const res: any = await this.leadsService
+        .GetAgentAndAdminWiseLeads()
         .toPromise();
 
       this.allLeads = res.data;
@@ -412,23 +404,17 @@ export class AppDashboard1Component implements OnInit {
   }
 
   getTotalPages(): number {
-    return Math.ceil(this.ms.leadList.length / this.itemsPerPage);
+    return Math.ceil(this.ms.leadList?.length / this.itemsPerPage);
   }
-
-  // getPageNumbers(): number[] {
-  //   const totalPages = this.getTotalPages();
-  //   return Array.from({ length: totalPages }, (_, i) => i + 1);
-  // }
 
   getPageNumbers(): number[] {
     const totalPages = this.getTotalPages();
     const currentPage = this.p;
-    const maxVisiblePages = 3; // Set the maximum number of visible page buttons
+    const maxVisiblePages = 3;
     let startPage: number;
     let endPage: number;
 
     if (totalPages <= maxVisiblePages) {
-      // If total pages are less than or equal to maxVisiblePages, show all pages
       startPage = 1;
       endPage = totalPages;
     } else {
@@ -623,13 +609,8 @@ export class AppDashboard1Component implements OnInit {
     });
   }
 
-  // displayLeadLabel(status: any): string {
-  //   return status ? status.label : '';
-  // }
-
   onOptionSelected(e: MatAutocompleteSelectedEvent) {
     this.currentselectdstatus = e.option.value;
-    // console.log(this.currentselectdstatus);
   }
 
   displayLeadLabel(status: any): string {
@@ -638,10 +619,6 @@ export class AppDashboard1Component implements OnInit {
 
   async updateLeadStaus(event: Event, agent_id: any): Promise<void> {
     event.preventDefault();
-
-    console.log(agent_id);
-    return;
-    // console.log(this.updateleadform.value);
     if (this.updateleadform.valid) {
       const filed = this.updateleadform.value;
       var fd = new FormData();
@@ -649,6 +626,11 @@ export class AppDashboard1Component implements OnInit {
       fd.append('lead_id', filed.lead_id);
       fd.append('lead_comment', filed.lead_comment);
       fd.append('agent_id', agent_id);
+
+      if (this.loginUserId) {
+        fd.append('login_user_id', this.loginUserId);
+      }
+
       if (this.role == 1) {
         fd.append('user_id', this.loginUserId);
       } else {
@@ -703,19 +685,6 @@ export class AppDashboard1Component implements OnInit {
   ];
   dataSource1 = PRODUCT_DATA;
 
-  // formatDateOrToday(value: Date): any {
-  //   console.log(value);
-  //   const currentDate = new Date();
-  //   console.log(currentDate);
-  //   // if (isToday(value)) {
-  //   //   return `Today ${this.formatTime12Hour(value)}`;
-  //   // } else if (isYesterday(value)) {
-  //   //   return `Yesterday ${this.formatTime12Hour(value)}`;
-  //   // } else {
-  //   //   return format(value, 'PP') + ' ' + this.formatTime12Hour(value);
-  //   // }
-  // }
-
   formatDateOrToday(value: Date): any {
     const currentDate = new Date();
     const date = new Date(value);
@@ -737,13 +706,6 @@ export class AppDashboard1Component implements OnInit {
     });
   }
 
-  // private formatTime12Hour(date: Date): string {
-  //   const hours = date.getHours() % 12 || 12;
-  //   const minutes = date.getMinutes().toString().padStart(2, '0');
-  //   const amPm = date.getHours() >= 12 ? 'PM' : 'AM';
-  //   return `${hours}:${minutes} ${amPm}`;
-  // }
-
   private isSameDate(date1: Date, date2: Date): boolean {
     return (
       date1.getFullYear() === date2.getFullYear() &&
@@ -756,30 +718,6 @@ export class AppDashboard1Component implements OnInit {
     return this.updateleadform.controls;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

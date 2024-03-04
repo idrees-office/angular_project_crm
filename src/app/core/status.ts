@@ -35,22 +35,24 @@ export interface Option {
 
     export interface LeadsOptionDropdown {
       // [x: string]: any;
-      lead_status   ? : any | number;
-      label         ? : any | number;
+      lead_status?: any | number;
+      label?: any | number;
+      role?: string | number;
     }
     export class LeadStatusDropdown {
-      public static leadsoption: LeadsOption[] = [
-        { 'lead_status' : '3',   'label' :  'Connected Lead'},
-        { 'lead_status' : '4',   'label' :  'Cold Leads'},
-        { 'lead_status' : '5',   'label' :  'Warm Leads',},
-        { 'lead_status' : '6',   'label' :  'Hot Leads',},
-        { 'lead_status' : '7',   'label' :  'Meeting Schdulede',},
-        { 'lead_status' : '8',   'label' :  'Meeting Complate',},
-        { 'lead_status' : '9',   'label' :  'No Answer'},
-        { 'lead_status' : '10',  'label' :  'Low Buget'},
-        { 'lead_status' : '11',  'label' :  'Not Responding AnyMore'},
-        { 'lead_status' : '12',  'label' :  'Incorrect Detail'},
-        { 'lead_status' : '13',  'label' :  'Agent'},
-        { 'lead_status' : '14',  'label' :  'Junk'},
-      ]
+      public static leadsoption: LeadsOptionDropdown[] = [
+        { lead_status: '3', label: 'Connected Lead', role: '' },
+        { lead_status: '4', label: 'Cold Leads', role: '' },
+        { lead_status: '5', label: 'Warm Leads', role: '' },
+        { lead_status: '6', label: 'Hot Leads', role: '' },
+        { lead_status: '7', label: 'Meeting Schdulede', role: '' },
+        { lead_status: '8', label: 'Meeting Complate', role: '' },
+        { lead_status: '9', label: 'No Answer', role: '' },
+        { lead_status: '10', label: 'Low Buget', role: '' },
+        { lead_status: '11', label: 'Not Responding AnyMore', role: '' },
+        { lead_status: '12', label: 'Incorrect Detail', role: '' },
+        { lead_status: '13', label: 'Agent', role: '' },
+        { lead_status: '14', label: 'Junk', role: '' },
+        { lead_status: '2', label: 'Re-Assign', role: '1' },
+      ];
     }

@@ -51,11 +51,6 @@ export class AppSideLoginComponent implements OnInit {
     if (this.loginForm.valid) {
       let fd = this.loginForm.value;
       this._AuthService.login(fd).subscribe((res: any) => {
-          
-          // console.log(res);
-
-        // console.log(res.token);
-
         if (res.status == 'login') {
           Swal.fire({
             toast: true,
@@ -66,11 +61,8 @@ export class AppSideLoginComponent implements OnInit {
             title: 'Login Successfully',
             icon: 'success',
           });
-
           localStorage.setItem('userData', JSON.stringify(res.user));
           localStorage.setItem('token', res.token);
-
-          // this.userservice.setUser(res.user);
           this.loginForm.reset();
           localStorage.setItem('isLoggedin', 'true');
           if (localStorage.getItem('isLoggedin')) {

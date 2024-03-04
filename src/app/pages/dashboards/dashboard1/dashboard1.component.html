@@ -103,15 +103,11 @@
                 <!-- mat-raised-button -->
                 <button style="max-width: 28px !important; background-color: #fff; margin: 2px; border:1px solid #5d87ff; cursor: pointer;"  *ngFor="let pageNumber of getPageNumbers()" (click)="goToPage(pageNumber)"
                   [class.active]="pageNumber === p">{{ pageNumber }}</button>
-
                 <button style="max-width: 28px !important; background-color: #fff; margin: 2px; border:1px solid #5d87ff; cursor: pointer;" (click)="nextPage()" [disabled]="p === getTotalPages()">
-                  <!-- <mat-icon>chevron_right</mat-icon> -->
                   >
                 </button>
               </div>
-
               <!-- <pagination-controls (pageChange)="p = $event" previousLabel="" nextLabel="" class="mail-pagination"></pagination-controls> -->
-            
             </div>
           </div>
           <mat-divider></mat-divider>
@@ -130,10 +126,8 @@
                       <span class="mat-body-1"> {{ lead.lead_title | slice : 0 : 45 }} </span>
                       <div class="d-flex justify-content-center m-t-8">
                         <span class="m-r-8 d-flex"> <i-tabler name="star" class="icon-18"></i-tabler> </span>
-                        <span class="d-flex"> <i-tabler name="alert-circle"
-                            class="icon-18 text-error"></i-tabler></span>
+                        <span class="d-flex"><i-tabler name="alert-circle" class="icon-18 text-error"></i-tabler></span>
                         <div class="m-l-auto text-end">
-                         
                           <span class="f-s-12 text-nowrap"> {{ lead.assigned_at  }} </span>
                         </div>
                       </div>
@@ -150,7 +144,7 @@
         <!-- ------------------------------------------------------ -->
         <div class="col-lg-8 detail-part p-0" [class.movetodetail]="ms.addClass">
           <div *ngIf="ms.selectedLead === null" class="h-100 welcome-app">
-            <div class="d-flex align-items-center justify-content-center h-100 w-100">
+            <div class="d-flex align-items-center justify-content-center w-100">
               <div>
                 <h3 class="mat-subtitle-1 f-w-600">Please Select Any Leads which lead your want see info</h3> <img
                   src="/assets/images/breadcrumb/emailSv.png" width="250px" />
@@ -196,8 +190,7 @@
                                 <!-- <img [src]="element.imagePath" alt="users" width="40" class="rounded-circle"/> -->
                                 <div class="m-l-16">
                                   <h6 class="mat-subtitle-1 f-s-14 f-w-600"> {{ leadInfo.agents?.client_user_name ||
-                                    'Unknow' }} </h6>
-                                  <span class="mat-body-1 f-s-12">
+                                    'Unknow' }} </h6> <span class="mat-body-1 f-s-12">
                                     {{ leadInfo.agents?.client_user_designation || 'Unknow' }} </span>
                                 </div>
                               </div>
@@ -205,29 +198,23 @@
                           </ng-container>
                           <ng-container matColumnDef="Mobile">
                             <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Mobile</th>
-                            <td mat-cell *matCellDef="let element" class="mat-body-1"> {{ leadInfo.customer_phone ||
-                              'Unknow' }} </td>
+                            <td mat-cell *matCellDef="let element" class="mat-body-1"> {{ leadInfo.customer_phone || 'Unknow' }} </td>
                           </ng-container>
                           <ng-container matColumnDef="Whatsapp">
                             <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Whatsapp</th>
-                            <td mat-cell *matCellDef="let element" class="mat-body-1"> {{ leadInfo.customer_phone2 ||
-                              'Unknow' }}</td>
+                            <td mat-cell *matCellDef="let element" class="mat-body-1"> {{ leadInfo.customer_phone2 ||  'Unknow' }}</td>
                           </ng-container>
                           <ng-container matColumnDef="Email">
                             <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Email</th>
-                            <td mat-cell *matCellDef="let element" class="mat-body-1"> {{ leadInfo.customer_email ||
-                              'Invalid Emial' }}
+                            <td mat-cell *matCellDef="let element" class="mat-body-1"> {{ leadInfo.customer_email || 'Invalid Emial' }}
                             </td>
                           </ng-container>
-
                           <ng-container matColumnDef="Name/Position">
-                            <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Client/Name
-                            </th>
+                            <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Client/Name </th>
                             <td mat-cell *matCellDef="let element" class="mat-body-1">
                             {{ leadInfo.customer_name ||'Invalid Emial' }} / <small> {{ leadInfo.customer_position ||'Invalid Emial' }} </small> 
                             </td>
                           </ng-container>
-
                           <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
                           <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
                         </table>
@@ -239,18 +226,17 @@
                   <div class="p-t-5">
                     <div class="" *ngFor="let comments of leadInfo.comments; index as i">
                       <div class="maindiv">
-                        <small> {{ comments.created_at ||'Invalid Time' }}</small> &nbsp;
-                        <small> {{ comments.user_id !== null ? comments.user_name : i > 0 ?
-                          leadInfo.comments[i-1].agent_name : "" }} </small>
+                        <small> {{ comments?.created_at ||'Invalid Time' }} </small> &nbsp;
+
+                        <small> {{ comments?.user_id !== null ? comments?.user_name : i > 0 ? leadInfo.comments[i-1].user_name : "" }} </small>
+
                         <small> {{this.leadoptions[comments.lead_status-1].label }}</small>
-                        <small
-                          *ngIf="leadUser([leadInfo.comments, comments, i, ])">&nbsp;{{comments.agent_name}}</small>
-                        <small *ngIf="i>0">&nbsp;{{this.leadoptions[(leadInfo.comments[i-1].lead_status)-1].notes
-                          }}</small>
-                        <mat-card class="b-1 shadow-none" *ngIf="comments.lead_comment" style="margin-bottom: 4px;">
-                          <mat-card-content>
+                        <small *ngIf="leadInfo.comments[i].lead_status == 2">&nbsp; {{comments.agent_name}} </small>
+                         <small *ngIf="i>0">&nbsp;
+                          {{this.leadoptions[(leadInfo.comments[i-1].lead_status)-1].notes }}</small>
+                         <mat-card class="b-1 shadow-none" *ngIf="comments.lead_comment" style="margin-bottom: 4px;"><mat-card-content>
                             <small> {{ comments.updated_at ||'Invalid Time' }}</small> &nbsp;
-                            <small>{{comments.agent_name}}  : </small>
+                            <small> {{comments.user_name}}  : </small>
                             <small> {{ comments.lead_comment }} </small> </mat-card-content>
                         </mat-card>
                       </div>
@@ -259,8 +245,7 @@
                 </div>
                 <div class="p-24">
                   <div class="m-t-10">
-                    <form [formGroup]="updateleadform"
-                      (ngSubmit)="updateLeadStaus($event,leadInfo.agent?.client_user_id)" id="updateleadform">
+                    <form [formGroup]="updateleadform" (ngSubmit)="updateLeadStaus($event,leadInfo.agent_id)" id="updateleadform">
                       <mat-form-field appearance="outline" class="mt-5" class="w-100 border-0">
                         <input type="hidden" [(ngModel)]="leadInfo.lead_id" formControlName="lead_id" />
                         <input type="text" placeholder="Pick One" aria-label="Pick One" matInput
