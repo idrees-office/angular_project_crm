@@ -9,7 +9,7 @@ function getBaseUrl(): string {
   console.log(currentUrl);
   
   // Check if the current URL is your production URL
-  if (currentUrl.includes('newcrmbackend.evernestre.ae')) {
+  if (currentUrl.includes('azizi-mina')) {
     return 'https://newcrmbackend.evernestre.ae/api';
   } else {
     // If not, use a default base URL for development
