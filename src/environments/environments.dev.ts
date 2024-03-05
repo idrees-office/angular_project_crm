@@ -6,6 +6,8 @@ export const environment = {
 function getBaseUrl(): string {
   const currentUrl = window.location.href;
 
+  console.log(currentUrl);
+  
   // Check if the current URL is your production URL
   if (currentUrl.includes('newcrmbackend.evernestre.ae')) {
     return 'https://newcrmbackend.evernestre.ae/api';
