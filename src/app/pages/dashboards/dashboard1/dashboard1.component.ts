@@ -186,8 +186,7 @@ export class AppDashboard1Component implements OnInit {
   }
 
   private filteredLeadsOptions(){
-      return LeadStatusDropdown.leadsoption.filter(
-        (lead) => lead.role === this.role || lead.role === ''
+      return LeadStatusDropdown.leadsoption.filter((lead) => lead.role === this.role || lead.role === ''
       );
   }
 

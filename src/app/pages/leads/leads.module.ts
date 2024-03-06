@@ -17,6 +17,7 @@ import { AssignLeadComponent } from './assign-lead/assign-lead.component';
 import { MyLeadComponent } from './my-lead/my-lead.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 
+
 @NgModule({
   declarations: [
     CreateLeadComponent,
@@ -39,8 +40,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     MatDatepickerModule,
     // HttpClientModule,
   ],
-  providers: [
-    DatePipe,
-  ],
+  providers: [DatePipe],
 })
 export class LeadsModule {}

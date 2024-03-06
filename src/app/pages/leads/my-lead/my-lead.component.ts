@@ -9,7 +9,6 @@ import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import Swal from 'sweetalert2';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 export interface Lead {
   lead_id: any;
@@ -21,46 +20,73 @@ export interface Lead {
   // Add any other properties you need for leads
 }
 
-
 @Component({
   selector: 'app-my-lead',
   templateUrl: './my-lead.component.html',
-  styleUrls: ['./my-lead.component.scss']
+  styleUrls: ['./my-lead.component.scss'],
 })
-export class MyLeadComponent implements OnInit  {
-
-  displayedColumns   : string[] = ['lead_id', 'lead_title', 'customer_name', 'customer_email' , 'customer_phone','customer_phone2', 'actions'];
-  exampleDatabase    : ExampleHttpDatabase | null = null;
-  leadsData          : Lead[] = [];
-  counter: number    = 1;
-  resultsLength      = 0;
-  isLoadingResults   = true;
+export class MyLeadComponent implements OnInit {
+  displayedColumns: string[] = [
+    'lead_id',
+    'lead_title',
+    'customer_name',
+    'customer_email',
+    'customer_phone',
+    // 'customer_phone2',
+    'date',
+    'actions',
+  ];
+  exampleDatabase: ExampleHttpDatabase | null = null;
+  leadsData: Lead[] = [];
+  counter: number = 1;
+  resultsLength = 0;
+  isLoadingResults = true;
   isRateLimitReached = false;
   reassignLeadSelectedAgent: any;
-  allAgents   : any;
-  userData    : any;
-  user        : any;
-  loginuserId : any;
-  role        : any;
-  startDate   : any;
-  endDate     : any;
+  allAgents: any;
+  userData: any;
+  user: any;
+  loginuserId: any;
+  role: any;
+  startDate: any;
+  endDate: any;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator ;
-  @ViewChild(MatSort) sort: MatSort ;
-  constructor(private _httpClient: HttpClient, private _LeadsService:LeadsService) {}
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  constructor(
+    private _httpClient: HttpClient,
+    private _LeadsService: LeadsService,
+    private _http: HttpClient
+  ) {}
   ngAfterViewInit(): void {
     this.exampleDatabase = new ExampleHttpDatabase(this._httpClient);
     if (this.sort && this.paginator) {
       this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
       merge(this.sort.sortChange, this.paginator.page)
-        .pipe(startWith({}),switchMap(() => {
+        .pipe(
+          startWith({}),
+          switchMap(() => {
             this.isLoadingResults = true;
-            return this.exampleDatabase!.getLeads(this.role,this.loginuserId,this.sort.active,this.sort.direction,this.paginator.pageIndex, this.startDate, this.endDate);
+            return this.exampleDatabase!.getLeads(
+              this.role,
+              this.loginuserId,
+              this.sort.active,
+              this.sort.direction,
+              this.paginator.pageIndex,
+              this.startDate,
+              this.endDate
+            );
           }),
-          map((data) => { this.isLoadingResults = false; this.isRateLimitReached = false; this.resultsLength = data.total_count;
+          map((data) => {
+            this.isLoadingResults = false;
+            this.isRateLimitReached = false;
+            this.resultsLength = data.total_count;
             return data.data;
           }),
-          catchError(() => { this.isLoadingResults = false; this.isRateLimitReached = true; return observableOf([]);
+          catchError(() => {
+            this.isLoadingResults = false;
+            this.isRateLimitReached = true;
+            return observableOf([]);
           })
         )
         .subscribe((data) => (this.leadsData = data));
@@ -75,23 +101,31 @@ export class MyLeadComponent implements OnInit  {
     this.agents();
   }
 
-  Delete(e:Event, lead_id:any, startDate?: any, endDate?: any){
+  Delete(e: Event, lead_id: any, startDate?: any, endDate?: any) {
     Swal.fire({
       title: 'Are you sure want to remove?',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
     }).then((result) => {
-      if(result.isConfirmed){
-        this._LeadsService.DeleteLead(lead_id).subscribe((res:any) =>{
-          if(res.status === "delete"){
-            Swal.fire({ title: 'Success', html: 'Lead Delete Successfully', timer: 2000, showConfirmButton: false, });
-            this.reloadData(startDate, endDate);
-          }
-        },(error:any) => {
+      if (result.isConfirmed) {
+        this._LeadsService.DeleteLead(lead_id).subscribe(
+          (res: any) => {
+            if (res.status === 'delete') {
+              Swal.fire({
+                title: 'Success',
+                html: 'Lead Delete Successfully',
+                timer: 2000,
+                showConfirmButton: false,
+              });
+              this.reloadData(startDate, endDate);
+            }
+          },
+          (error: any) => {
             console.log(error);
-        });
-      }else{
+          }
+        );
+      } else {
         // this.modalService.dismissAll();
         // this.selectedAgent = null;
       }
@@ -101,72 +135,71 @@ export class MyLeadComponent implements OnInit  {
   reloadData(startDate?: any, endDate?: any) {
     if (this.sort && this.paginator) {
       this.isLoadingResults = true;
-      this.exampleDatabase!.getLeads(this.role,this.loginuserId,this.sort.active, this.sort.direction, this.paginator.pageIndex, startDate, endDate)
-      .pipe( catchError(() => { this.isLoadingResults = false; this.isRateLimitReached = true; return observableOf([]); }))
-        .subscribe((data:any) => {
+      this.exampleDatabase!.getLeads(
+        this.role,
+        this.loginuserId,
+        this.sort.active,
+        this.sort.direction,
+        this.paginator.pageIndex,
+        startDate,
+        endDate
+      )
+        .pipe(
+          catchError(() => {
+            this.isLoadingResults = false;
+            this.isRateLimitReached = true;
+            return observableOf([]);
+          })
+        )
+        .subscribe((data: any) => {
           if ('data' in data) {
             this.isLoadingResults = false;
             this.isRateLimitReached = false;
             this.resultsLength = data.total_count;
             this.leadsData = data.data;
+
+            console.log('ddddd');
+            console.log(this.leadsData);
           }
         });
     }
   }
 
-  agents(){
-    this._LeadsService.getAgentInfo().subscribe((res:any)=>{ this.allAgents = res; },(error:any) => {
-      console.log(error);
-    })
+  exportToCSV(startDate?: any, endDate?: any) {
+    if (this.leadsData && this.leadsData.length > 0) {
+      const fd = new FormData();
+      if (startDate !== '') { fd.append('startDate', startDate); }
+      if (endDate !== '') { fd.append('endDate', endDate); }
+      this._LeadsService.FilterCsv(fd).subscribe((res: any) => {
+
+        // const url = ' http://127.0.0.1:8000/crmproject/public/csv';
+      });
+    }
   }
 
-  // onOptionSelected(e: MatAutocompleteSelectedEvent, leads:any){
-  //   Swal.fire({
-  //     html: `Are you sure want to Assign?`,
-  //     showCloseButton: true,
-  //     showCancelButton: true,
-  //     confirmButtonText: `Yes`,
-  //     cancelButtonText: `No`,
-  //   }).then((result) => {
-  //     if(result.isConfirmed){
-  //       this.reassignLeadSelectedAgent = e.option.value;
-  //       const leadid = leads.lead_id;
-  //       if(this.reassignLeadSelectedAgent != '' && leadid != ''){
-  //         var fd = new FormData();
-  //         fd.append('agent_id',this.reassignLeadSelectedAgent.client_user_id);
-  //         fd.append('lead_id',leadid);
-  //         if(this.loginuserId){
-  //           fd.append('login_user_id',this.loginuserId);
-  //         }
-  //         this._LeadsService.AssignLeads(fd).subscribe((res:any) =>{
-  //           if(res.status === "success"){
-  //             Swal.fire({ title: 'Success', html: 'Lead Re-assigned Successfully', timer: 2000, showConfirmButton: false, });
-  //             this.reloadData();
-  //           }
-  //         },(error:any) => {
-  //             console.log(error);
-  //         });
-  //       }else{
-  //         alert('SomeThing Wrong')
-  //       }
-  //     }
-  //   });
-  // }
+  agents() {
+    this._LeadsService.getAgentInfo().subscribe(
+      (res: any) => {
+        this.allAgents = res;
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
+  }
 
-displayLeadLabel(agent: any): string {
+  displayLeadLabel(agent: any): string {
     return agent ? agent.client_user_name : '';
   }
-
   filter(startDate: string, endDate: string) {
     this.reloadData(startDate, endDate);
   }
-
-  reload(){
+  reload() {
     window.location.reload();
   }
 }
 
-export interface LeadsApi {
+  export interface LeadsApi {
   data: Lead[];
   total_count: number;
 }
@@ -175,12 +208,13 @@ export class ExampleHttpDatabase {
   constructor(private _httpClient: HttpClient) {}
   getLeads(role:any,loginuserId: any, sort: string, order: string, page: number,startDate:any, endDate:any): Observable<LeadsApi> {
     // const baseUrl = 'http://10.99.1.77:8000/api';
+    //  const baseUrl = 'http://127.0.0.1:8000/api'; 
     const baseUrl = 'https://newcrmbackend.evernestre.ae/api';
     let leadsUrl = `${baseUrl}/leads/get-my-lead`;
     if (role == 2 || role === 2) {
       leadsUrl += `/${loginuserId}`;
     }
-    
+
     let params = new HttpParams()
       .set('sort', sort)
       .set('order', order)
@@ -189,13 +223,18 @@ export class ExampleHttpDatabase {
     if (startDate && endDate) {
       params = params.set('startDate', startDate).set('endDate', endDate);
     }
-
     const requestUrl = `${leadsUrl}`;
-    // Adjust query parameters based on your backend API
-    // const requestUrl = `${leadsUrl}?sort=${sort}&order=${order}&page=${page + 1}`;
-    return this._httpClient.get<LeadsApi>(requestUrl, { params }).pipe(map(data => ({...data,data: data.data.map((lead, index) => ({...lead,counter: index + 1 + page * 10 })) })));
-    // return this._httpClient.get<LeadsApi>(requestUrl).pipe( map(data => ({...data,data: data.data.map((lead, index) => ({...lead,counter: index + 1 + page * 10 })) })));
-    // return this._httpClient.get<LeadsApi>(requestUrl).pipe( map(data => ({...data,data: data.data.map((lead, index) => ({...lead,counter: index + 1 + page * 10 })) })));
+
+    return this._httpClient.get<LeadsApi>(requestUrl, { params }).pipe(
+      map((data) => ({
+        ...data,
+        data: data.data.map((lead, index) => ({
+          ...lead,
+          counter: index + 1 + page * 10,
+        })),
+      }))
+    );
+
   }
 }
 
