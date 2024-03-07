@@ -153,8 +153,7 @@ export class AssignLeadComponent implements OnInit {
       }
     });
   }
-
-
+  
   displayLeadLabel(agent: any): string {
     return agent ? agent.client_user_name : '';
   }
