@@ -9,6 +9,7 @@ import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import Swal from 'sweetalert2';
+import { environment } from 'src/environments/environments.dev';
 
 export interface Lead {
   lead_id: any;
@@ -170,8 +171,11 @@ export class MyLeadComponent implements OnInit {
       const fd = new FormData();
       if (startDate !== '') { fd.append('startDate', startDate); }
       if (endDate !== '') { fd.append('endDate', endDate); }
+       if (this.loginuserId !== '') { fd.append('login_user_id', this.loginuserId); }
+       if (this.role !== '') { fd.append('user_role', this.role); }
       this._LeadsService.FilterCsv(fd).subscribe((res: any) => {
 
+        window.open(res.data);
         // const url = ' http://127.0.0.1:8000/crmproject/public/csv';
       });
     }
@@ -199,7 +203,7 @@ export class MyLeadComponent implements OnInit {
   }
 }
 
-  export interface LeadsApi {
+export interface LeadsApi {
   data: Lead[];
   total_count: number;
 }
@@ -207,14 +211,11 @@ export class MyLeadComponent implements OnInit {
 export class ExampleHttpDatabase {
   constructor(private _httpClient: HttpClient) {}
   getLeads(role:any,loginuserId: any, sort: string, order: string, page: number,startDate:any, endDate:any): Observable<LeadsApi> {
-    // const baseUrl = 'http://10.99.1.77:8000/api';
-    //  const baseUrl = 'http://127.0.0.1:8000/api'; 
-    const baseUrl = 'https://newcrmbackend.evernestre.ae/api';
+    const baseUrl = environment.baseUrl;
     let leadsUrl = `${baseUrl}/leads/get-my-lead`;
     if (role == 2 || role === 2) {
       leadsUrl += `/${loginuserId}`;
     }
-
     let params = new HttpParams()
       .set('sort', sort)
       .set('order', order)

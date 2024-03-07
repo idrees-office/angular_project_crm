@@ -103,16 +103,11 @@
         </mat-button-toggle-group>
       </div>
 
-      <h6 class="f-s-16 f-w-600 mat-subtitle-1 f-s-16 m-b-16 m-t-24">
+      <!-- <h6 class="f-s-16 f-w-600 mat-subtitle-1 f-s-16 m-b-16 m-t-24">
         Theme Direction
-      </h6>
+      </h6> -->
 
-      <mat-button-toggle-group
-        #group="matButtonToggleGroup"
-        [(ngModel)]="options.dir"
-        (change)="setDir()"
-        class="customizer-button-group gap-16"
-      >
+      <!-- <mat-button-toggle-group #group="matButtonToggleGroup" [(ngModel)]="options.dir" (change)="setDir()" class="customizer-button-group gap-16">
         <mat-button-toggle [value]="'ltr'">
           <div class="d-flex align-items-center f-w-500">
             <i-tabler
@@ -131,12 +126,10 @@
             RTL
           </div>
         </mat-button-toggle>
-      </mat-button-toggle-group>
-      <div *ngIf="!options.horizontal">
-      <h6 class="f-s-16 f-w-600 mat-subtitle-1 f-s-16 m-b-16 m-t-24 p-t-16">
-        Sidebar type
-      </h6>
+      </mat-button-toggle-group> -->
 
+      <!-- <div *ngIf="!options.horizontal">
+      <h6 class="f-s-16 f-w-600 mat-subtitle-1 f-s-16 m-b-16 m-t-24 p-t-16"> Sidebar type </h6>
       <mat-button-toggle-group
         #group="matButtonToggleGroup"
         [(ngModel)]="options.sidenavCollapsed"
@@ -162,8 +155,8 @@
           </div>
         </mat-button-toggle>
       </mat-button-toggle-group>
-    </div>
-      <h6 class="f-s-16 f-w-600 mat-subtitle-1 f-s-16 m-b-16 m-t-24 p-t-16">
+    </div> -->
+      <!-- <h6 class="f-s-16 f-w-600 mat-subtitle-1 f-s-16 m-b-16 m-t-24 p-t-16">
         Layout type
       </h6>
 
@@ -190,13 +183,11 @@
             Horizontal
           </div>
         </mat-button-toggle>
-      </mat-button-toggle-group>
+      </mat-button-toggle-group> -->
 
-      <h6 class="f-s-16 f-w-600 mat-subtitle-1 f-s-16 m-b-16 m-t-24 p-t-16">
-        Card with
-      </h6>
+      <!-- <h6 class="f-s-16 f-w-600 mat-subtitle-1 f-s-16 m-b-16 m-t-24 p-t-16"> Card with </h6> -->
 
-      <mat-button-toggle-group
+      <!-- <mat-button-toggle-group
         #group="matButtonToggleGroup"
         [(ngModel)]="options.cardBorder"
         class="customizer-button-group gap-16"
@@ -216,13 +207,12 @@
             Border
           </div>
         </mat-button-toggle>
-      </mat-button-toggle-group>
+      </mat-button-toggle-group> -->
 
-      <h6 class="f-s-16 f-w-600 mat-subtitle-1 f-s-16 m-b-16 m-t-24 p-t-16">
+      <!-- <h6 class="f-s-16 f-w-600 mat-subtitle-1 f-s-16 m-b-16 m-t-24 p-t-16">
         Container Option
-      </h6>
-
-      <mat-button-toggle-group
+      </h6> -->
+      <!-- <mat-button-toggle-group
         #group="matButtonToggleGroup"
         [(ngModel)]="options.boxed"
         class="customizer-button-group gap-16"
@@ -242,7 +232,7 @@
             Boxed
           </div>
         </mat-button-toggle>
-      </mat-button-toggle-group>
+      </mat-button-toggle-group> -->
     </div>
   </ng-scrollbar>
 </div>

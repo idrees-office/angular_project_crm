@@ -5,6 +5,7 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { SellofferService } from 'src/app/services/selloffer.service';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { environment } from 'src/environments/environments.dev';
 
 
 export interface SaleOffer {
@@ -134,9 +135,7 @@ export interface SaleofferApi {
 export class ExampleHttpDatabase {
   constructor(private _httpClient: HttpClient) {}
   getLeads(sort: string, order: string, page: number): Observable<SaleofferApi> {
-    // const baseUrl = 'http://127.0.0.1:8000/api'; 
-    const baseUrl = 'https://newcrmbackend.evernestre.ae/api'; 
-    // const baseUrl = 'http://10.99.1.77:8000/api'; 
+    const baseUrl = environment.baseUrl;
     const leadsUrl = `${baseUrl}/sale/saleoffer-list`;
     // Adjust query parameters based on your backend API
     const requestUrl = `${leadsUrl}?sort=${sort}&order=${order}&page=${page + 1}`;

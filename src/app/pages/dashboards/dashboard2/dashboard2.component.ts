@@ -10,6 +10,7 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { environment } from 'src/environments/environments.dev';
 
 export interface Lead {
   lead_id: any;
@@ -173,9 +174,7 @@ export interface LeadsApi {
 export class ExampleHttpDatabase {
   constructor(private _httpClient: HttpClient) {}
   getLeads(sort: string, order: string, page: number): Observable<LeadsApi> {
-    // const baseUrl = 'http://127.0.0.1:8000/api'; 
-    // const baseUrl = 'http://127.0.0.1:8000/api'; 
-    const baseUrl = 'https://newcrmbackend.evernestre.ae/api'; 
+    const baseUrl = environment.baseUrl;
     const leadsUrl = `${baseUrl}/leads/get-new-lead`;
     // Adjust query parameters based on your backend API
     const requestUrl = `${leadsUrl}?sort=${sort}&order=${order}&page=${page + 1}`;
