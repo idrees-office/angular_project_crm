@@ -93,6 +93,7 @@ export class AppDashboard1Component implements OnInit {
   stateCtrl = new FormControl('');
   filteredStates: Observable<LeadsOptionDropdown[]>;
   itemsPerPage: number = 12;
+  fd = new FormData();
 
   constructor(
     private leadsService: LeadsService,
@@ -140,6 +141,7 @@ export class AppDashboard1Component implements OnInit {
     } else {
       console.error('User data not found in localStorage');
     }
+
     this._AuthService.checkUserDataExists(this.loginUserId).subscribe(
       (res: any) => {},
       (error: any) => {
@@ -185,9 +187,10 @@ export class AppDashboard1Component implements OnInit {
     }
   }
 
-  private filteredLeadsOptions(){
-      return LeadStatusDropdown.leadsoption.filter((lead) => lead.role === this.role || lead.role === ''
-      );
+  private filteredLeadsOptions() {
+    return LeadStatusDropdown.leadsoption.filter(
+      (lead) => lead.role === this.role || lead.role === ''
+    );
   }
 
   // private async logout(): Promise<void> {
@@ -218,13 +221,16 @@ export class AppDashboard1Component implements OnInit {
     this.userData = localStorage.getItem('userData');
     this.user = JSON.parse(this.userData);
     this.role = this.user.client_user_role;
-
     const agent_id = this.user.client_user_id;
+
+    // fd = new FormData();
+    this.fd.append('login_user_id', agent_id);
+    this.fd.append('user_role', this.role);
+
     try {
       const res: any = await this.leadsService
-        .GetAgentAndAdminWiseLeads()
+        .GetAgentAndAdminWiseLeads(this.fd)
         .toPromise();
-
       this.allLeads = res.data;
       // console.log(this.allLeads);
       this.Newleads = [];
@@ -242,81 +248,80 @@ export class AppDashboard1Component implements OnInit {
       this.Agent = [];
       this.Junk = [];
       var leadsstatus = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
-      if (this.role == 2) {
-        leadsstatus.forEach((leadStatus) => {
-          this.fetchLeadsForAgent(leadStatus, agent_id);
-        });
-      } else {
+      // if (this.role == 2) {
+      //   leadsstatus.forEach((leadStatus) => {
+      //     this.fetchLeadsForAgent(leadStatus, agent_id);
+      //   });
+      // } else {
         leadsstatus.forEach((leadStatus) => {
           this.filterLeads(leadStatus);
         });
-      }
+      // }
     } catch (error) {
       console.error('Error fetching leads:', error);
     }
   }
-
-  fetchLeadsForAgent(leadStatus: number, agent_id: any) {
-    if (agent_id) {
-      if (leadStatus === 1) {
-        this.Newleads = this.allLeads.filter(
-          (lead) => lead.lead_status == 1 && lead.agent_id == agent_id
-        );
-      } else if (leadStatus === 2) {
-        this.Assignleads = this.allLeads.filter(
-          (lead) => lead.lead_status == 2 && lead.agent_id == agent_id
-        );
-      } else if (leadStatus === 3) {
-        this.Connectedleads = this.allLeads.filter(
-          (lead) => lead.lead_status == 3 && lead.agent_id == agent_id
-        );
-      } else if (leadStatus === 4) {
-        this.Coldleads = this.allLeads.filter(
-          (lead) => lead.lead_status == 4 && lead.agent_id == agent_id
-        );
-      } else if (leadStatus === 5) {
-        this.Warmleads = this.allLeads.filter(
-          (lead) => lead.lead_status == 5 && lead.agent_id == agent_id
-        );
-      } else if (leadStatus === 6) {
-        this.Hotleads = this.allLeads.filter(
-          (lead) => lead.lead_status == 6 && lead.agent_id == agent_id
-        );
-      } else if (leadStatus === 7) {
-        this.MeetingSchduledeleads = this.allLeads.filter(
-          (lead) => lead.lead_status == 7 && lead.agent_id == agent_id
-        );
-      } else if (leadStatus === 8) {
-        this.MeetingComplate = this.allLeads.filter(
-          (lead) => lead.lead_status == 8 && lead.agent_id == agent_id
-        );
-      } else if (leadStatus === 9) {
-        this.NoAnswer = this.allLeads.filter(
-          (lead) => lead.lead_status == 9 && lead.agent_id == agent_id
-        );
-      } else if (leadStatus === 10) {
-        this.LowBuget = this.allLeads.filter(
-          (lead) => lead.lead_status == 10 && lead.agent_id == agent_id
-        );
-      } else if (leadStatus === 11) {
-        this.NotResponding = this.allLeads.filter(
-          (lead) => lead.lead_status == 11 && lead.agent_id == agent_id
-        );
-      } else if (leadStatus === 12) {
-        this.IncorrectDetail = this.allLeads.filter(
-          (lead) => lead.lead_status == 12 && lead.agent_id == agent_id
-        );
-      } else if (leadStatus === 13) {
-        this.Agent = this.allLeads.filter(
-          (lead) => lead.lead_status == 13 && lead.agent_id == agent_id
-        );
-      } else if (leadStatus === 14) {
-        this.Junk = this.allLeads.filter(
-          (lead) => lead.lead_status == 14 && lead.agent_id == agent_id
-        );
-      }
-    }
-  }
+  // fetchLeadsForAgent(leadStatus: number, agent_id: any) {
+  //   if (agent_id) {
+  //     if (leadStatus === 1) {
+  //       this.Newleads = this.allLeads.filter(
+  //         (lead) => lead.lead_status == 1 && lead.agent_id == agent_id
+  //       );
+  //     } else if (leadStatus === 2) {
+  //       this.Assignleads = this.allLeads.filter(
+  //         (lead) => lead.lead_status == 2 && lead.agent_id == agent_id
+  //       );
+  //     } else if (leadStatus === 3) {
+  //       this.Connectedleads = this.allLeads.filter(
+  //         (lead) => lead.lead_status == 3 && lead.agent_id == agent_id
+  //       );
+  //     } else if (leadStatus === 4) {
+  //       this.Coldleads = this.allLeads.filter(
+  //         (lead) => lead.lead_status == 4 && lead.agent_id == agent_id
+  //       );
+  //     } else if (leadStatus === 5) {
+  //       this.Warmleads = this.allLeads.filter(
+  //         (lead) => lead.lead_status == 5 && lead.agent_id == agent_id
+  //       );
+  //     } else if (leadStatus === 6) {
+  //       this.Hotleads = this.allLeads.filter(
+  //         (lead) => lead.lead_status == 6 && lead.agent_id == agent_id
+  //       );
+  //     } else if (leadStatus === 7) {
+  //       this.MeetingSchduledeleads = this.allLeads.filter(
+  //         (lead) => lead.lead_status == 7 && lead.agent_id == agent_id
+  //       );
+  //     } else if (leadStatus === 8) {
+  //       this.MeetingComplate = this.allLeads.filter(
+  //         (lead) => lead.lead_status == 8 && lead.agent_id == agent_id
+  //       );
+  //     } else if (leadStatus === 9) {
+  //       this.NoAnswer = this.allLeads.filter(
+  //         (lead) => lead.lead_status == 9 && lead.agent_id == agent_id
+  //       );
+  //     } else if (leadStatus === 10) {
+  //       this.LowBuget = this.allLeads.filter(
+  //         (lead) => lead.lead_status == 10 && lead.agent_id == agent_id
+  //       );
+  //     } else if (leadStatus === 11) {
+  //       this.NotResponding = this.allLeads.filter(
+  //         (lead) => lead.lead_status == 11 && lead.agent_id == agent_id
+  //       );
+  //     } else if (leadStatus === 12) {
+  //       this.IncorrectDetail = this.allLeads.filter(
+  //         (lead) => lead.lead_status == 12 && lead.agent_id == agent_id
+  //       );
+  //     } else if (leadStatus === 13) {
+  //       this.Agent = this.allLeads.filter(
+  //         (lead) => lead.lead_status == 13 && lead.agent_id == agent_id
+  //       );
+  //     } else if (leadStatus === 14) {
+  //       this.Junk = this.allLeads.filter(
+  //         (lead) => lead.lead_status == 14 && lead.agent_id == agent_id
+  //       );
+  //     }
+  //   }
+  // }
 
   filterLeads(leadStatus: number) {
     if (leadStatus === 1) {

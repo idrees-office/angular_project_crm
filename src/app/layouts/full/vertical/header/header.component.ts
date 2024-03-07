@@ -122,6 +122,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = JSON.parse(localStorage.getItem('userData') || '{}');
     if (this.currentUser) {
+      
       this.LoginUserId     = this.currentUser.client_user_id;
       this.LoginUserName   = this.currentUser.client_user_name;
       this.LoginUserEmail  = this.currentUser.client_user_email;
@@ -135,7 +136,7 @@ export class HeaderComponent implements OnInit {
             });
           }else{  
             console.log('Sorry no New leads')
-            // Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true, title: `Sorry! you can't get any new lead`, icon: 'error' });
+            
           }
         });
     }

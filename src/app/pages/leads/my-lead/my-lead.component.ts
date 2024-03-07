@@ -208,7 +208,6 @@ export interface LeadsApi {
   total_count: number;
 }
 
-
 export class ExampleHttpDatabase {
   constructor(private _httpClient: HttpClient) {}
   getLeads(role:any,loginuserId: any, sort: string, order: string, page: number,startDate:any, endDate:any): Observable<LeadsApi> {
