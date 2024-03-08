@@ -54,20 +54,21 @@ const PRODUCT_DATA: productsData[] = [
 export class AppDashboard1Component implements OnInit {
   allLeads: any[] = [];
   filteredLeads: any[] = [];
-  Newleads: any;
-  Assignleads: any;
-  Connectedleads: any;
-  Coldleads: any;
-  Warmleads: any;
-  Hotleads: any;
-  MeetingSchduledeleads: any;
-  MeetingComplate: any;
-  NoAnswer: any;
-  LowBuget: any;
-  NotResponding: any;
-  IncorrectDetail: any;
-  Agent: any;
-  Junk: any;
+  Newleads: any[] = [];
+  Assignleads: any[] = [];
+  Connectedleads: any[] = [];
+  Coldleads: any[] = [];
+  Warmleads: any[] = [];
+  Hotleads: any[] = [];
+  MeetingSchduledeleads: any[] = [];
+  MeetingComplate: any[] = [];
+  NoAnswer: any[] = [];
+  LowBuget: any[] = [];
+  NotResponding: any[] = [];
+  IncorrectDetail: any[] = [];
+  Agent: any[] = [];
+  Junk: any[] = [];
+
   userData: any;
   user: any;
   role: any;
@@ -131,9 +132,8 @@ export class AppDashboard1Component implements OnInit {
     return this.mediaMatcher.matches;
   }
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit() {
     this.userData = localStorage.getItem('userData');
-
     if (this.userData) {
       this.user = JSON.parse(this.userData);
       this.role = this.user?.client_user_role;
@@ -145,19 +145,11 @@ export class AppDashboard1Component implements OnInit {
     this._AuthService.checkUserDataExists(this.loginUserId).subscribe(
       (res: any) => {},
       (error: any) => {
-        console.log(error.status);
+        // console.log(error.status);
         if (error.status == 404 || error.status === 404) {
           localStorage.removeItem('userData');
           this._Router.navigate(['/authentication/side-login']);
-          // Swal.fire({
-          //   toast: true,
-          //   position: 'top-end',
-          //   showConfirmButton: false,
-          //   timer: 5000,
-          //   timerProgressBar: true,
-          //   title: `You Deleted The Existing User. Please Add A New User, Then You Can Try.`,
-          //   icon: 'error',
-          // });
+          //add swall
         }
       }
     );
@@ -173,18 +165,21 @@ export class AppDashboard1Component implements OnInit {
 
     if (this.role == 1) {
       if (this.ms.type == '' || this.ms.type === '') {
-        await this.mailboxesChanged('Assigned Lead');
+        // this.mailboxesChanged('Assigned Lead');
       } else {
-        await this.mailboxesChanged('Assigned Lead');
+        // this.mailboxesChanged('Assigned Lead');
       }
     } else if (this.role == 2) {
       if (this.ms.type == '' || this.ms.type === '') {
-        await this.mailboxesChanged('Assigned Lead');
+        // this.mailboxesChanged('Assigned Lead');
       } else {
-        await this.mailboxesChanged('Assigned Lead');
+        // this.mailboxesChanged('Assigned Lead');
       }
-      this.Newleads = 0;
+      // this.Newleads = [];
+      // this.Newleads.length = 0;
     }
+
+    this.loadAllLeads();
   }
 
   private filteredLeadsOptions() {
@@ -193,73 +188,32 @@ export class AppDashboard1Component implements OnInit {
     );
   }
 
-  // private async logout(): Promise<void> {
-  //   localStorage.removeItem('isLoggedin');
-  //   localStorage.removeItem('userData');
-  //   this._Router.navigate(['/authentication/side-login']);
-  //   Swal.fire({
-  //     toast: true,
-  //     position: 'top-end',
-  //     showConfirmButton: false,
-  //     timer: 3000,
-  //     timerProgressBar: true,
-  //     title: `Your Password was chnage Please login Again`,
-  //     icon: 'success',
-  //   });
-  // }
-
-  //  private _filter(value: any): string[] {
-  //   const filterValue = value.toLowerCase();
-  //   return this.firstoption.filter((option) => option.toLowerCase().includes(filterValue));
-  // }
-  // updateLeadStatus(event: MatAutocompleteSelectedEvent): void {
-  //   const selectedLead: any = event.option.value;
-  //   this.leadInfo = selectedLead;
-  // }
-
-  async loadAllLeads() {
+  loadAllLeads() {
     this.userData = localStorage.getItem('userData');
     this.user = JSON.parse(this.userData);
     this.role = this.user.client_user_role;
     const agent_id = this.user.client_user_id;
-
-    // fd = new FormData();
     this.fd.append('login_user_id', agent_id);
     this.fd.append('user_role', this.role);
-
-    try {
-      const res: any = await this.leadsService
-        .GetAgentAndAdminWiseLeads(this.fd)
-        .toPromise();
-      this.allLeads = res.data;
+    this.leadsService.GetAgentAndAdminWiseLeads(this.fd).subscribe((res:any) => {
+         this.allLeads =  res.data;
+         var leadsstatus = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+          leadsstatus.forEach((leadStatus) => {
+            this.filterLeads(leadStatus);
+          });
+    });
+      // const res: any = this.leadsService.GetAgentAndAdminWiseLeads(this.fd);
+        // console.log(res)
+      // this.allLeads = res.data;
       // console.log(this.allLeads);
-      this.Newleads = [];
-      this.Assignleads = [];
-      this.Connectedleads = [];
-      this.Coldleads = [];
-      this.Warmleads = [];
-      this.Hotleads = [];
-      this.MeetingSchduledeleads = [];
-      this.MeetingComplate = [];
-      this.NoAnswer = [];
-      this.LowBuget = [];
-      this.NotResponding = [];
-      this.IncorrectDetail = [];
-      this.Agent = [];
-      this.Junk = [];
-      var leadsstatus = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
       // if (this.role == 2) {
       //   leadsstatus.forEach((leadStatus) => {
       //     this.fetchLeadsForAgent(leadStatus, agent_id);
       //   });
       // } else {
-        leadsstatus.forEach((leadStatus) => {
-          this.filterLeads(leadStatus);
-        });
+     
       // }
-    } catch (error) {
-      console.error('Error fetching leads:', error);
-    }
+    
   }
   // fetchLeadsForAgent(leadStatus: number, agent_id: any) {
   //   if (agent_id) {
@@ -451,18 +405,19 @@ export class AppDashboard1Component implements OnInit {
     this.leadInfo = lead;
   }
 
-  zeroforNewLead() {
-    if (this.role == 2) {
-      this.Newleads = 0;
-    } else {
-    }
-  }
+
+  // zeroforNewLead() {
+  //   if (this.role == 2) {
+  //     this.Newleads = 0;
+  //   } else {
+  //   }
+  // }
 
   removeClass(): void {
     this.ms.addClass = false;
   }
 
-  async mailboxesChanged(type: any): Promise<void> {
+  mailboxesChanged(type: any) {
     if (this.role == 2 && type === 'New Lead') {
       Swal.fire({
         title: 'Sorry',
@@ -472,7 +427,7 @@ export class AppDashboard1Component implements OnInit {
       });
       return;
     }
-    await this.loadAllLeads();
+    // await this.loadAllLeads();
     switch (type) {
       case 'New Lead':
         this.ms.selectedLead = null;
@@ -483,11 +438,12 @@ export class AppDashboard1Component implements OnInit {
         break;
       case 'Assigned Lead':
         this.ms.selectedLead = null;
+        // console.log(this.Assignleads);
         this.ms.leadList = this.Assignleads;
         this.ms.topLable = 'Assigned';
         this.mailActiveClass(type);
         this.ms.type = 'assignedleads';
-        this.zeroforNewLead();
+        // this.zeroforNewLead();
         break;
       case 'Connected Lead':
         this.ms.selectedLead = null;
@@ -495,7 +451,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Connected';
         this.mailActiveClass(type);
         this.ms.type = 'connectedleads';
-        this.zeroforNewLead();
+        // this.zeroforNewLead();
         break;
       case 'Cold Lead':
         this.ms.selectedLead = null;
@@ -503,7 +459,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Cold';
         this.mailActiveClass(type);
         this.ms.type = 'connectedleads';
-        this.zeroforNewLead();
+        // this.zeroforNewLead();
         break;
       case 'Warm Lead':
         this.ms.selectedLead = null;
@@ -511,7 +467,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Warm';
         this.mailActiveClass(type);
         this.ms.type = 'warmleads';
-        this.zeroforNewLead();
+        // this.zeroforNewLead();
         break;
       case 'Hot Lead':
         this.ms.selectedLead = null;
@@ -519,7 +475,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Hot';
         this.mailActiveClass(type);
         this.ms.type = 'hotleads';
-        this.zeroforNewLead();
+        // this.zeroforNewLead();
         break;
       case 'Meeting Schdulede':
         this.ms.selectedLead = null;
@@ -527,7 +483,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Meeting Schdulede';
         this.mailActiveClass(type);
         this.ms.type = 'meetingschdulede';
-        this.zeroforNewLead();
+        // this.zeroforNewLead();
         break;
       case 'Meeting Complate':
         this.ms.selectedLead = null;
@@ -535,7 +491,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Meeting Complate';
         this.mailActiveClass(type);
         this.ms.type = 'meetingschdulede';
-        this.zeroforNewLead();
+        // this.zeroforNewLead();
         break;
       case 'No-Answer':
         this.ms.selectedLead = null;
@@ -543,7 +499,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'No-Answer';
         this.mailActiveClass(type);
         this.ms.type = 'noanswer';
-        this.zeroforNewLead();
+        // this.zeroforNewLead();
         break;
       case 'Low-Buget':
         this.ms.selectedLead = null;
@@ -551,7 +507,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Low-Buget';
         this.mailActiveClass(type);
         this.ms.type = 'lowbuget';
-        this.zeroforNewLead();
+        // this.zeroforNewLead();
         break;
       case 'Not-Responding':
         this.ms.selectedLead = null;
@@ -559,7 +515,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Not-Responding';
         this.mailActiveClass(type);
         this.ms.type = 'notresponding';
-        this.zeroforNewLead();
+        // this.zeroforNewLead();
         break;
       case 'Incorrect Detail':
         this.ms.selectedLead = null;
@@ -567,7 +523,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Incorrect Detail';
         this.mailActiveClass(type);
         this.ms.type = 'incorrectdetail';
-        this.zeroforNewLead();
+        // this.zeroforNewLead();
         break;
       case 'Agent':
         this.ms.selectedLead = null;
@@ -575,7 +531,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Agent';
         this.mailActiveClass(type);
         this.ms.type = 'agent';
-        this.zeroforNewLead();
+        // this.zeroforNewLead();
         break;
       case 'Junk':
         this.ms.selectedLead = null;
@@ -583,20 +539,22 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Junk';
         this.mailActiveClass(type);
         this.ms.type = 'junk';
-        this.zeroforNewLead();
+        // this.zeroforNewLead();
         break;
       default:
         // Handle the default case if necessary
         break;
     }
   }
+
   mailActiveClass(type: string): void {
-    for (const fil of filter) {
-      fil.active = false;
-    }
-    for (const lab of label) {
-      lab.active = false;
-    }
+    // for (const fil of filter) {
+    //   fil.active = false;
+    // }
+    // for (const lab of label) {
+    //   lab.active = false;
+    // }
+    
     for (const mail of mailbox) {
       mail.active = false;
     }

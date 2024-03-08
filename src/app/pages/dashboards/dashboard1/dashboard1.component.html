@@ -62,7 +62,7 @@
                   <span class="bg-accent rounded-pill p-x-4 text-white">
                     {{
                     {
-                    'New Lead' : Newleads,
+                    'New Lead' :Newleads,
                     'Assigned Lead' : Assignleads,
                     'Connected Lead' : Connectedleads,
                     'Cold Lead' : Coldleads,
@@ -76,7 +76,7 @@
                     'Incorrect Detail' : IncorrectDetail,
                     'Agent' : Agent,
                     'Junk' : Junk
-                    }[mail.name]?.length || 0
+                    }[mail.name]!.length || 0
                     }}
                   </span>
                 </ng-container>

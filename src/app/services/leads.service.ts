@@ -40,14 +40,9 @@ export class LeadsService {
   fetchLeadsData() {
     return this.http.get(this.getUrl);
   }
-
+  
   GetAgentAndAdminWiseLeads(PostData:any) {
-    // const token = localStorage.getItem('token');
-    // const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    // return this.http.get(this.getallleads);
      return this.http.post(this.getallleads, PostData);
-
-
   }
 
   moveLead(source: any[], destination: any[], index: number) {
