@@ -12,6 +12,13 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.initFacebookSdk();
+
+
+    FB.api('/me', { fields: 'last_name' }, function (response: any) {
+      console.log(response);
+    });
+
+
   }
 
   initFacebookSdk(): void {
@@ -21,5 +28,10 @@ export class AppComponent implements OnInit {
       xfbml: true,
       version: 'v12.0',
     });
+
+
+   
+
+     
   }
 }
