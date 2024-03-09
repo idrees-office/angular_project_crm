@@ -51,14 +51,14 @@
           </div>
         </div> -->
         <div class="p-16">
-          <div *ngFor="let mail of mailboxes" (click)="mailboxesChanged(mail.name)">
+          <div *ngFor="let mail of mailboxes" (click)="mailboxesChanged(mail.id)">
             <div class="d-flex align-items-center inbox-list rounded p-16 cursor-pointer"
               [class.bg-light-primary]="mail.active">
               <i-tabler name="{{ mail.icon }}" class="m-r-12 icon-18"></i-tabler>
               <span class="f-w-400 f-s-14">{{ mail.name }}</span>
               <div class="m-l-auto d-sm-flex align-items-center gap-4">
                 <ng-container
-                  *ngIf="mail.name === 'New Lead' || mail.name === 'Assigned Lead' || mail.name === 'Connected Lead' || mail.name === 'Cold Lead' || mail.name === 'Warm Lead' || mail.name === 'Hot Lead' || mail.name === 'Meeting Schdulede' || mail.name === 'Meeting Complate' || mail.name === 'Low-Buget' || mail.name === 'No-Answer' || mail.name === 'Not-Responding' || mail.name === 'Incorrect Detail' || mail.name === 'Agent' || mail.name === 'Junk'">
+                  *ngIf="mail.id === 1 || mail.id === 2 || mail.id === 3 || mail.id === 4 || mail.id === 5 || mail.id === 6 || mail.id === 7 || mail.id === 8 || mail.id === 9 || mail.id === 10 || mail.id === 11 || mail.id === 12 || mail.id === 13 || mail.id === 14">
                   <span class="bg-accent rounded-pill p-x-4 text-white">
                     {{
                     {

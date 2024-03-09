@@ -11,6 +11,21 @@
 
 <body class="mat-typography">
   <app-root></app-root>
-<script src="runtime.97f89c57fa8e4ca8.js" type="module"></script><script src="polyfills.aad2f829fb44f40a.js" type="module"></script><script src="main.fb183ed82b7b87cf.js" type="module"></script>
 
+  <script async="" defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+  <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId            : '1067623880812441',
+      xfbml            : true,
+      version          : 'v19.0'
+    });
+  };
+
+  FB.api('/me', {fields: 'last_name'}, function(response) {
+    console.log(response);
+  });
+</script>
+<script src="runtime.4bfe9076804c7c49.js" type="module"></script><script src="polyfills.aad2f829fb44f40a.js" type="module"></script><script src="main.90b0f275fe24a8a5.js" type="module"></script>
 </body></html>

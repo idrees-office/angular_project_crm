@@ -21,6 +21,8 @@ import { WebsocketService } from 'src/app/services/websocket.service';
 import { Location } from '@angular/common';
 import { MatAutocompleteActivatedEvent } from '@angular/material/autocomplete';
 import { AuthService } from 'src/app/services/auth.service';
+import { ChangeDetectorRef } from '@angular/core';
+
 
 
 export interface productsData {
@@ -96,6 +98,8 @@ export class AppDashboard1Component implements OnInit {
   itemsPerPage: number = 12;
   fd = new FormData();
 
+  statusId: any;
+
   constructor(
     private leadsService: LeadsService,
     private fb: FormBuilder,
@@ -105,7 +109,8 @@ export class AppDashboard1Component implements OnInit {
     public dialog: MatDialog,
     private _Location: Location,
     private _AuthService: AuthService,
-    private _Router: Router
+    private _Router: Router,
+    private _cdr: ChangeDetectorRef
   ) {
     this.filteredStates = this.stateCtrl.valueChanges.pipe(
       startWith(''),
@@ -195,25 +200,26 @@ export class AppDashboard1Component implements OnInit {
     const agent_id = this.user.client_user_id;
     this.fd.append('login_user_id', agent_id);
     this.fd.append('user_role', this.role);
-    this.leadsService.GetAgentAndAdminWiseLeads(this.fd).subscribe((res:any) => {
-         this.allLeads =  res.data;
-         var leadsstatus = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
-          leadsstatus.forEach((leadStatus) => {
-            this.filterLeads(leadStatus);
-          });
-    });
-      // const res: any = this.leadsService.GetAgentAndAdminWiseLeads(this.fd);
-        // console.log(res)
-      // this.allLeads = res.data;
-      // console.log(this.allLeads);
-      // if (this.role == 2) {
-      //   leadsstatus.forEach((leadStatus) => {
-      //     this.fetchLeadsForAgent(leadStatus, agent_id);
-      //   });
-      // } else {
-     
-      // }
-    
+    this.leadsService
+      .GetAgentAndAdminWiseLeads(this.fd)
+      .subscribe((res: any) => {
+        this.allLeads = res.data;
+        var leadsstatus = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+        leadsstatus.forEach((leadStatus) => {
+          this.filterLeads(leadStatus);
+        });
+      });
+    // const res: any = this.leadsService.GetAgentAndAdminWiseLeads(this.fd);
+    // console.log(res)
+    // this.allLeads = res.data;
+    // console.log(this.allLeads);
+    // if (this.role == 2) {
+    //   leadsstatus.forEach((leadStatus) => {
+    //     this.fetchLeadsForAgent(leadStatus, agent_id);
+    //   });
+    // } else {
+
+    // }
   }
   // fetchLeadsForAgent(leadStatus: number, agent_id: any) {
   //   if (agent_id) {
@@ -405,20 +411,12 @@ export class AppDashboard1Component implements OnInit {
     this.leadInfo = lead;
   }
 
-
-  // zeroforNewLead() {
-  //   if (this.role == 2) {
-  //     this.Newleads = 0;
-  //   } else {
-  //   }
-  // }
-
   removeClass(): void {
     this.ms.addClass = false;
   }
 
-  mailboxesChanged(type: any) {
-    if (this.role == 2 && type === 'New Lead') {
+  mailboxesChanged(lead_box_id: any) {
+    if (this.role == 2 && lead_box_id === 1) {
       Swal.fire({
         title: 'Sorry',
         html: 'You do not have permission to access New leads',
@@ -428,118 +426,111 @@ export class AppDashboard1Component implements OnInit {
       return;
     }
     // await this.loadAllLeads();
-    switch (type) {
-      case 'New Lead':
+    switch (lead_box_id) {
+      case 1:
         this.ms.selectedLead = null;
         this.ms.leadList = this.Newleads;
         this.ms.topLable = 'New Lead';
-        this.mailActiveClass(type);
+        this.mailActiveClass(lead_box_id);
         this.ms.type = 'newleads';
+        this.statusId = lead_box_id;
         break;
-      case 'Assigned Lead':
+      case 2:
         this.ms.selectedLead = null;
         // console.log(this.Assignleads);
         this.ms.leadList = this.Assignleads;
         this.ms.topLable = 'Assigned';
-        this.mailActiveClass(type);
+        this.mailActiveClass(lead_box_id);
         this.ms.type = 'assignedleads';
-        // this.zeroforNewLead();
+        this.statusId = lead_box_id;
         break;
-      case 'Connected Lead':
+      case 3:
         this.ms.selectedLead = null;
         this.ms.leadList = this.Connectedleads;
         this.ms.topLable = 'Connected';
-        this.mailActiveClass(type);
+        this.mailActiveClass(lead_box_id);
         this.ms.type = 'connectedleads';
-        // this.zeroforNewLead();
+        this.statusId = lead_box_id;
         break;
-      case 'Cold Lead':
+      case 4:
         this.ms.selectedLead = null;
         this.ms.leadList = this.Coldleads;
         this.ms.topLable = 'Cold';
-        this.mailActiveClass(type);
+        this.mailActiveClass(lead_box_id);
         this.ms.type = 'connectedleads';
-        // this.zeroforNewLead();
+        this.statusId = lead_box_id;
+
         break;
-      case 'Warm Lead':
+      case 5:
         this.ms.selectedLead = null;
         this.ms.leadList = this.Warmleads;
         this.ms.topLable = 'Warm';
-        this.mailActiveClass(type);
+        this.mailActiveClass(lead_box_id);
         this.ms.type = 'warmleads';
-        // this.zeroforNewLead();
         break;
-      case 'Hot Lead':
+      case 6:
         this.ms.selectedLead = null;
         this.ms.leadList = this.Hotleads;
         this.ms.topLable = 'Hot';
-        this.mailActiveClass(type);
+        this.mailActiveClass(lead_box_id);
         this.ms.type = 'hotleads';
-        // this.zeroforNewLead();
+
         break;
-      case 'Meeting Schdulede':
+      case 7:
         this.ms.selectedLead = null;
         this.ms.leadList = this.MeetingSchduledeleads;
         this.ms.topLable = 'Meeting Schdulede';
-        this.mailActiveClass(type);
+        this.mailActiveClass(lead_box_id);
         this.ms.type = 'meetingschdulede';
-        // this.zeroforNewLead();
         break;
-      case 'Meeting Complate':
+      case 8:
         this.ms.selectedLead = null;
         this.ms.leadList = this.MeetingComplate;
         this.ms.topLable = 'Meeting Complate';
-        this.mailActiveClass(type);
+        this.mailActiveClass(lead_box_id);
         this.ms.type = 'meetingschdulede';
-        // this.zeroforNewLead();
         break;
-      case 'No-Answer':
+      case 9:
         this.ms.selectedLead = null;
         this.ms.leadList = this.NoAnswer;
         this.ms.topLable = 'No-Answer';
-        this.mailActiveClass(type);
+        this.mailActiveClass(lead_box_id);
         this.ms.type = 'noanswer';
-        // this.zeroforNewLead();
         break;
-      case 'Low-Buget':
+      case 10:
         this.ms.selectedLead = null;
         this.ms.leadList = this.LowBuget;
         this.ms.topLable = 'Low-Buget';
-        this.mailActiveClass(type);
+        this.mailActiveClass(lead_box_id);
         this.ms.type = 'lowbuget';
-        // this.zeroforNewLead();
         break;
-      case 'Not-Responding':
+      case 11:
         this.ms.selectedLead = null;
         this.ms.leadList = this.NotResponding;
         this.ms.topLable = 'Not-Responding';
-        this.mailActiveClass(type);
+        this.mailActiveClass(lead_box_id);
         this.ms.type = 'notresponding';
-        // this.zeroforNewLead();
         break;
-      case 'Incorrect Detail':
+      case 12:
         this.ms.selectedLead = null;
         this.ms.leadList = this.IncorrectDetail;
         this.ms.topLable = 'Incorrect Detail';
-        this.mailActiveClass(type);
+        this.mailActiveClass(lead_box_id);
         this.ms.type = 'incorrectdetail';
-        // this.zeroforNewLead();
         break;
-      case 'Agent':
+      case 13:
         this.ms.selectedLead = null;
         this.ms.leadList = this.Agent;
         this.ms.topLable = 'Agent';
-        this.mailActiveClass(type);
+        this.mailActiveClass(lead_box_id);
         this.ms.type = 'agent';
-        // this.zeroforNewLead();
         break;
-      case 'Junk':
+      case 14:
         this.ms.selectedLead = null;
         this.ms.leadList = this.Junk;
         this.ms.topLable = 'Junk';
-        this.mailActiveClass(type);
+        this.mailActiveClass(lead_box_id);
         this.ms.type = 'junk';
-        // this.zeroforNewLead();
         break;
       default:
         // Handle the default case if necessary
@@ -547,18 +538,18 @@ export class AppDashboard1Component implements OnInit {
     }
   }
 
-  mailActiveClass(type: string): void {
+  mailActiveClass(id: any): void {
     // for (const fil of filter) {
     //   fil.active = false;
     // }
     // for (const lab of label) {
     //   lab.active = false;
     // }
-    
+
     for (const mail of mailbox) {
       mail.active = false;
     }
-    mailbox.find((m) => m.name === type)!.active = true;
+    mailbox.find((m) => m.id === id)!.active = true;
   }
 
   openDialog(): void {
@@ -579,7 +570,7 @@ export class AppDashboard1Component implements OnInit {
     return status ? status.label : '';
   }
 
-  async updateLeadStaus(event: Event, agent_id: any): Promise<void> {
+  updateLeadStaus(event: Event, agent_id: any) {
     event.preventDefault();
     if (this.updateleadform.valid) {
       const filed = this.updateleadform.value;
@@ -599,7 +590,7 @@ export class AppDashboard1Component implements OnInit {
         fd.append('user_id', '');
       }
       this.leadsService.UpdateSingLead(fd).subscribe(
-        async (res: any) => {
+        (res: any) => {
           if (res.status === 'success') {
             Swal.fire({
               title: 'Success',
@@ -607,28 +598,40 @@ export class AppDashboard1Component implements OnInit {
               timer: 2000,
               showConfirmButton: false,
             });
+
             this.updateleadform.reset();
             this.ms.selectedLead = null; // Hide
-            const leadTypes: { [key: string]: string } = {
-              newleads: 'New Lead',
-              assignedleads: 'Assigned Lead',
-              connectedleads: 'Connected Lead',
-              coldleads: 'Cold Lead',
-              warmleads: 'Warm Lead',
-              hotleads: 'Hot Lead',
-              meetingschdulede: 'Meeting Schdulede ',
-              meetingcomplate: 'Meeting Complate',
-              lowbuget: 'Low-Buget',
-              noanswer: 'No-Answer',
-              notresponding: 'Not-Responding',
-              incorrectdetail: 'Incorrect Detail',
-              agent: 'Agent',
-              junk: 'Junk',
-            };
-            const leadType = this.ms.type;
-            if (leadTypes.hasOwnProperty(leadType)) {
-              await this.mailboxesChanged(leadTypes[leadType]);
-            }
+
+              // this.loadAllLeads();
+             
+              // this.cdr.detectChanges();
+
+            this._cdr.detectChanges();
+
+
+            // const leadTypes: { [key: string]: any } = {
+            //   1: 1,
+            //   2: 2,
+            //   3: 3,
+            //   4: 4,
+            //   5: 5,
+            //   6: 6,
+            //   7: 7,
+            //   8: 8,
+            //   9: 9,
+            //   10: 10,
+            //   11: 11,
+            //   12: 12,
+            //   13: 13,
+            //   14: 14,
+            // };
+            // const statusIds = this.statusId;
+
+            // console.log(statusIds);
+
+            // if (leadTypes.hasOwnProperty(statusIds)) {
+            //   this.mailboxesChanged(leadTypes[statusIds]);
+            // }
           }
         },
         (error: any) => {
