@@ -18,6 +18,8 @@ export class AppComponent implements OnInit {
       'EAAPKZC44rZA5kBO06ZBZAF8bCyGQQb1cdez6oj89BUWZAZCFP5F4CM4ZAmHm10xW7bbJT2LxLDkvDfE336oK5qoNZAb5ZA4lZAHJTpwADZCrxNQGYWnvQn45CJjO9as2UkSTJWuUUpCIaZBvxZCXe3EQnCWY5ZAsZA9hSIHgNnQGiz1jz7vbFH62R4xBsHbDK57Wt6ZAEzs2tgjIQd0iULyUAdfkbMnMUvcUk27RPMoZAMwZDZD|faketoken';
     FB.api('/me/conversations', {
       access_token: pageAccessToken,
+    }, function(response:any){
+      console.log(response);
     });
 
 
