@@ -13,8 +13,12 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.initFacebookSdk();
 
+    console.log('data');
 
     FB.api('/me', { fields: 'last_name' }, function (response: any) {
+
+      console.log('xyz')
+
       console.log(response);
     });
 
