@@ -28,7 +28,6 @@ export class AppComponent implements OnInit {
   initFacebookSdk(): void {
     FB.init({
       appId: '111856167337521',
-      autoLogAppEvents: true,
       xfbml: true,
       version: 'v19.0',
     });
