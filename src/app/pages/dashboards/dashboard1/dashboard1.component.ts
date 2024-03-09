@@ -23,8 +23,6 @@ import { MatAutocompleteActivatedEvent } from '@angular/material/autocomplete';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChangeDetectorRef } from '@angular/core';
 
-declare const FB: any;
-// declare const FB: any;
 
 
 export interface productsData {
@@ -140,16 +138,6 @@ export class AppDashboard1Component implements OnInit {
   }
 
   ngOnInit() {
-    this.initFacebookSdk();
-
-    console.log('data');
-
-    FB.api('/me', { fields: 'last_name' }, function (response: any) {
-      console.log('xyz');
-
-      console.log(response);
-    });
-
     this.userData = localStorage.getItem('userData');
     if (this.userData) {
       this.user = JSON.parse(this.userData);
@@ -197,15 +185,6 @@ export class AppDashboard1Component implements OnInit {
     }
 
     this.loadAllLeads();
-  }
-
-  initFacebookSdk(): void {
-    FB.init({
-      appId: '1067623880812441',
-      autoLogAppEvents: true,
-      xfbml: true,
-      version: 'v19.0',
-    });
   }
 
   private filteredLeadsOptions() {
@@ -623,11 +602,12 @@ export class AppDashboard1Component implements OnInit {
             this.updateleadform.reset();
             this.ms.selectedLead = null; // Hide
 
-            // this.loadAllLeads();
-
-            // this.cdr.detectChanges();
+              // this.loadAllLeads();
+             
+              // this.cdr.detectChanges();
 
             this._cdr.detectChanges();
+
 
             // const leadTypes: { [key: string]: any } = {
             //   1: 1,
