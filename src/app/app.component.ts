@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
     this.initFacebookSdk();
 
     var pageAccessToken =
-      'EAAPKZC44rZA5kBO06ZBZAF8bCyGQQb1cdez6oj89BUWZAZCFP5F4CM4ZAmHm10xW7bbJT2LxLDkvDfE336oK5qoNZAb5ZA4lZAHJTpwADZCrxNQGYWnvQn45CJjO9as2UkSTJWuUUpCIaZBvxZCXe3EQnCWY5ZAsZA9hSIHgNnQGiz1jz7vbFH62R4xBsHbDK57Wt6ZAEzs2tgjIQd0iULyUAdfkbMnMUvcUk27RPMoZAMwZDZD|faketoken';
+      'EAAPKZC44rZA5kBOzZBynMs020P7q6ftZCmploIruzEPEMHh5SZBXZCcg5rZAnY391lWmugafZC1QOUyL6Eq09jZA0m5skkZCVUOIolFFolOxJBfUVjglnCs5fnZCqTyubwarEz2gUASERUc1owdqZCapJIGFtMZAJ3WLCcZCBTgTuelYF4OnOlSyqgRSvt4TlYpZB0fWWsLQHcAJj7vpPIo4zZCGSqbRIsZCVUiFuj3MHhKNRPcgZD|faketoken';
     FB.api(
       '/me/conversations',
       {
@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
 
   initFacebookSdk(): void {
     FB.init({
-      appId: '1067623880812441',
+      appId: '1133926050803802',
       xfbml: true,
       version: 'v19.0',
     });
