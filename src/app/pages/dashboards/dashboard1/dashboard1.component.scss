@@ -76,3 +76,8 @@
   color: #fff !important;
   border: 1px solid #fff !important;
 }
+
+:host ::ng-deep .mat-mdc-menu-item .mat-icon{
+  
+  margin-right: 0px !important;
+}

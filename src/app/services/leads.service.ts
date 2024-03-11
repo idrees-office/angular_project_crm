@@ -1,8 +1,10 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { environment } from "src/environments/environments.dev";
+import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { Observable } from "rxjs";
+import Swal from "sweetalert2";
+
 
 @Injectable({
   providedIn: 'root',
@@ -29,9 +31,38 @@ export class LeadsService {
   getAgentInfo() {
     return this.http.get(this.getagenturl);
   }
+
   createLead(postData: any) {
-    return this.http.post(this.createleadurl, postData);
+    return this.http
+      .post(this.createleadurl, postData)
+      .pipe(catchError(this.handleError));
   }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+       Swal.fire({
+         toast: true,
+         position: 'top-end',
+         showConfirmButton: false,
+         timer: 3000,
+         timerProgressBar: true,
+         title: `An error occurred ${error.error.message}`,
+         icon: 'error',
+       });
+    } else {
+       Swal.fire({
+         toast: true,
+         position: 'top-end',
+         showConfirmButton: false,
+         timer: 3000,
+         timerProgressBar: true,
+         title: `Please run your backend server, then you can try again.`,
+         icon: 'error',
+       });
+    }
+    return throwError('Something bad happened; please try again later.');
+  }
+
   getleads(status: any) {
     const url = this.getleadsurl + '/' + status;
     return this.http.get(url);
@@ -40,9 +71,9 @@ export class LeadsService {
   fetchLeadsData() {
     return this.http.get(this.getUrl);
   }
-  
-  GetAgentAndAdminWiseLeads(PostData:any) {
-     return this.http.post(this.getallleads, PostData);
+
+  GetAgentAndAdminWiseLeads(PostData: any) {
+    return this.http.post(this.getallleads, PostData);
   }
 
   moveLead(source: any[], destination: any[], index: number) {

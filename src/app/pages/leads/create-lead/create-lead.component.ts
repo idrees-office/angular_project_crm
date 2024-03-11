@@ -59,7 +59,6 @@ export class CreateLeadComponent implements OnInit {
       formdata.append('customer_position', filed.customer_position);
       formdata.append('customer_phone2', filed.customer_phone2);
       formdata.append('lead_comments', filed.lead_comments);
-      // formdata.append('agent_name', this.selectedAgentName);
       this.LeadsService.createLead(formdata).subscribe((res:any) => {
         if(res.status === "success"){
           Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true, title: `Create Lead Successfully`, icon: 'success' });
@@ -69,6 +68,7 @@ export class CreateLeadComponent implements OnInit {
       })
     }
   }
+  
   onAgentChange(event: any) {
     const selectedAgentId = this.leadForm.get('agent_id')?.value;
     this.LeadsService.AgentNameById(selectedAgentId).subscribe(

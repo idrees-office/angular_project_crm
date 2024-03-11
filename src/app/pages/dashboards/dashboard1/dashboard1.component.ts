@@ -602,12 +602,11 @@ export class AppDashboard1Component implements OnInit {
             this.updateleadform.reset();
             this.ms.selectedLead = null; // Hide
 
-              // this.loadAllLeads();
-             
-              // this.cdr.detectChanges();
+            this.loadAllLeads();
+
+            // this.cdr.detectChanges();
 
             this._cdr.detectChanges();
-
 
             // const leadTypes: { [key: string]: any } = {
             //   1: 1,
@@ -677,6 +676,42 @@ export class AppDashboard1Component implements OnInit {
       date1.getMonth() === date2.getMonth() &&
       date1.getDate() === date2.getDate()
     );
+  }
+
+  copyPhoneNumber(phoneNumber: string) {
+    const el = document.createElement('textarea');
+    el.value = phoneNumber;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      title: `Phone Number is copied`,
+      icon: 'success',
+    });
+  }
+
+  copyEmail(email: any) {
+    const el = document.createElement('textarea');
+    el.value = email;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    Swal.fire({
+      toast: true,
+      position: 'bottom-end',
+      showConfirmButton: false,
+      timer: 2000,
+      timerProgressBar: true,
+      title: `Emial is copied`,
+      icon: 'success',
+    });
   }
 
   get f() {
