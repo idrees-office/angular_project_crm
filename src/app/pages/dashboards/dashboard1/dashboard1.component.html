@@ -51,7 +51,7 @@
           </div>
         </div> -->
         <div class="p-16">
-          <div *ngFor="let mail of mailboxes" (click)="mailboxesChanged(mail.id)">
+          <div *ngFor="let mail of mailboxes" (click)="mailboxesChanged(mail.id)" #triggerChnage>
             <div class="d-flex align-items-center inbox-list rounded p-16 cursor-pointer"
               [class.bg-light-primary]="mail.active">
               <i-tabler name="{{ mail.icon }}" class="m-r-12 icon-18"></i-tabler>
@@ -111,8 +111,7 @@
           </div>
           <mat-divider></mat-divider>
           <div class="position-relative">
-            <div *ngFor="let lead of ms.leadList | paginate : { itemsPerPage: 12, currentPage: p }; let i = index"
-              (click)="mailSelected(lead)">
+            <div *ngFor="let lead of ms.leadList | paginate : { itemsPerPage: 12, currentPage: p }; let i = index" (click)="mailSelected(lead)">
               <div class="mail-list p-y-20 p-x-16 p-l-10 cursor-pointer">
                 <div class="d-flex align-items-start w-100">
                   <mat-radio-button></mat-radio-button>

@@ -98,7 +98,7 @@ export class AppDashboard1Component implements OnInit {
   itemsPerPage: number = 12;
   fd = new FormData();
 
-  statusId: any;
+  leadBoxId: any;
 
   constructor(
     private leadsService: LeadsService,
@@ -415,6 +415,14 @@ export class AppDashboard1Component implements OnInit {
     this.ms.addClass = false;
   }
 
+  triggerChange() {
+    const mailboxChangeElement = document.querySelector('#triggerChange') as HTMLElement;
+
+    if (mailboxChangeElement) {
+      mailboxChangeElement.click(); // Trigger click event
+    }
+  }
+
   mailboxesChanged(lead_box_id: any) {
     if (this.role == 2 && lead_box_id === 1) {
       Swal.fire({
@@ -425,6 +433,7 @@ export class AppDashboard1Component implements OnInit {
       });
       return;
     }
+
     // await this.loadAllLeads();
     switch (lead_box_id) {
       case 1:
@@ -433,7 +442,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'New Lead';
         this.mailActiveClass(lead_box_id);
         this.ms.type = 'newleads';
-        this.statusId = lead_box_id;
+        this.leadBoxId = lead_box_id;
         break;
       case 2:
         this.ms.selectedLead = null;
@@ -442,7 +451,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Assigned';
         this.mailActiveClass(lead_box_id);
         this.ms.type = 'assignedleads';
-        this.statusId = lead_box_id;
+        this.leadBoxId = lead_box_id;
         break;
       case 3:
         this.ms.selectedLead = null;
@@ -450,7 +459,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Connected';
         this.mailActiveClass(lead_box_id);
         this.ms.type = 'connectedleads';
-        this.statusId = lead_box_id;
+        this.leadBoxId = lead_box_id;
         break;
       case 4:
         this.ms.selectedLead = null;
@@ -458,8 +467,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Cold';
         this.mailActiveClass(lead_box_id);
         this.ms.type = 'connectedleads';
-        this.statusId = lead_box_id;
-
+        this.leadBoxId = lead_box_id;
         break;
       case 5:
         this.ms.selectedLead = null;
@@ -467,6 +475,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Warm';
         this.mailActiveClass(lead_box_id);
         this.ms.type = 'warmleads';
+        this.leadBoxId = lead_box_id;
         break;
       case 6:
         this.ms.selectedLead = null;
@@ -474,6 +483,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Hot';
         this.mailActiveClass(lead_box_id);
         this.ms.type = 'hotleads';
+        this.leadBoxId = lead_box_id;
 
         break;
       case 7:
@@ -482,6 +492,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Meeting Schdulede';
         this.mailActiveClass(lead_box_id);
         this.ms.type = 'meetingschdulede';
+        this.leadBoxId = lead_box_id;
         break;
       case 8:
         this.ms.selectedLead = null;
@@ -489,6 +500,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Meeting Complate';
         this.mailActiveClass(lead_box_id);
         this.ms.type = 'meetingschdulede';
+        this.leadBoxId = lead_box_id;
         break;
       case 9:
         this.ms.selectedLead = null;
@@ -496,6 +508,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'No-Answer';
         this.mailActiveClass(lead_box_id);
         this.ms.type = 'noanswer';
+        this.leadBoxId = lead_box_id;
         break;
       case 10:
         this.ms.selectedLead = null;
@@ -503,6 +516,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Low-Buget';
         this.mailActiveClass(lead_box_id);
         this.ms.type = 'lowbuget';
+        this.leadBoxId = lead_box_id;
         break;
       case 11:
         this.ms.selectedLead = null;
@@ -510,6 +524,8 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Not-Responding';
         this.mailActiveClass(lead_box_id);
         this.ms.type = 'notresponding';
+        this.leadBoxId = lead_box_id;
+
         break;
       case 12:
         this.ms.selectedLead = null;
@@ -517,6 +533,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Incorrect Detail';
         this.mailActiveClass(lead_box_id);
         this.ms.type = 'incorrectdetail';
+        this.leadBoxId = lead_box_id;
         break;
       case 13:
         this.ms.selectedLead = null;
@@ -524,6 +541,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Agent';
         this.mailActiveClass(lead_box_id);
         this.ms.type = 'agent';
+        this.leadBoxId = lead_box_id;
         break;
       case 14:
         this.ms.selectedLead = null;
@@ -531,6 +549,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.topLable = 'Junk';
         this.mailActiveClass(lead_box_id);
         this.ms.type = 'junk';
+        this.leadBoxId = lead_box_id;
         break;
       default:
         // Handle the default case if necessary
@@ -539,13 +558,6 @@ export class AppDashboard1Component implements OnInit {
   }
 
   mailActiveClass(id: any): void {
-    // for (const fil of filter) {
-    //   fil.active = false;
-    // }
-    // for (const lab of label) {
-    //   lab.active = false;
-    // }
-
     for (const mail of mailbox) {
       mail.active = false;
     }
@@ -598,39 +610,15 @@ export class AppDashboard1Component implements OnInit {
               timer: 2000,
               showConfirmButton: false,
             });
-
             this.updateleadform.reset();
-            this.ms.selectedLead = null; // Hide
-
             this.loadAllLeads();
+             window.location.reload();
+            // this.router.navigate(['/dashboards/dashboard1']);
+            // this.mailboxesChanged(this.leadBoxId);
+            // this.mailboxesChanged(this.leadBoxId);
+            // this.mailActiveClass(this.leadBoxId);
 
-            // this.cdr.detectChanges();
 
-            this._cdr.detectChanges();
-
-            // const leadTypes: { [key: string]: any } = {
-            //   1: 1,
-            //   2: 2,
-            //   3: 3,
-            //   4: 4,
-            //   5: 5,
-            //   6: 6,
-            //   7: 7,
-            //   8: 8,
-            //   9: 9,
-            //   10: 10,
-            //   11: 11,
-            //   12: 12,
-            //   13: 13,
-            //   14: 14,
-            // };
-            // const statusIds = this.statusId;
-
-            // console.log(statusIds);
-
-            // if (leadTypes.hasOwnProperty(statusIds)) {
-            //   this.mailboxesChanged(leadTypes[statusIds]);
-            // }
           }
         },
         (error: any) => {
