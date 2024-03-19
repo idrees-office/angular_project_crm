@@ -100,8 +100,7 @@
                 </mat-card-header>
                 <mat-card-content>
                     <div class="mb-3">
-                        <!-- (change)="toggleRadio()" -->
-                         <mat-radio-group formControlName="selectedRole">
+                         <mat-radio-group formControlName="checkedItems" (change)="toggleRadio()">
                             <mat-radio-button *ngFor="let item of DefineRoles" [value]="item.id">
                                 {{ item.name }}
                             </mat-radio-button>

@@ -30,7 +30,8 @@ export class CreateuserComponent implements OnInit {
   client_user_id: any;
   loadingIndicator: any;
   userObj: any;
-  DefineRoles:any
+  DefineRoles: any;
+  roleId:any;
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -40,24 +41,18 @@ export class CreateuserComponent implements OnInit {
     private activeroute: ActivatedRoute
   ) {
     const paramMap = this.activeroute.snapshot.paramMap;
-
     this._UserService.GetUserRoles().subscribe(
       (res: any) => {
-        console.log(res);
         this.DefineRoles = res;
       },
       (error: any) => {
         // console.log('Error in the fetching roles');
         Swal.fire('Error in the fetching roles', 'error');
+        if(error.status == 403 || error.status === 403){
+          this.router.navigate(['error']);
+        }
       }
     );
-
-    // this.client_user_id = Number(paramMap.get('id'));
-    // if (this.client_user_id != '') {
-    //   this.userservice.edit(this.client_user_id).subscribe((res: any) => {
-    //     this.userObj = res;
-    //   });
-    // }
   }
 
   checkedItems: number[] = [];
@@ -87,7 +82,7 @@ export class CreateuserComponent implements OnInit {
     this.userFrom.valueChanges.subscribe((e) => {
       this.isNextDisabled = !this.userFrom.valid;
     });
-    
+
     this.options = OptionStatus.optionvalue;
   }
 
@@ -107,8 +102,9 @@ export class CreateuserComponent implements OnInit {
     }
   }
 
- 
-
+  toggleRadio() {
+    this.roleId = this.userFrom.value.checkedItems;
+  }
 
   get f() {
     return this.userFrom.controls;
@@ -126,49 +122,39 @@ export class CreateuserComponent implements OnInit {
     const formData = new FormData();
     const isUpdate = this.client_user_id !== 0;
     const filed = this.userFrom.value;
-    formData.append('role_id', this.checkedItems.join(','));
-    formData.append('client_user_name', filed.user_name);
-    formData.append('client_user_phone', filed.user_phone);
-    formData.append('client_user_designation', filed.user_designation);
-    formData.append('client_user_email', filed.user_email);
-    formData.append('password', filed.user_password);
-    formData.append('client_sort_order', filed.sort_order);
-    formData.append('client_user_status', filed.user_status);
-    formData.append('client_website_status', this.websitestatus);
-    if (this.userFile) {
-      formData.append('client_user_image', this.userFile);
-    }
-    this._UserService.create(formData).subscribe(
-      (res: any) => {
-        if (res.status == 'success') {
-          Swal.fire({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            title: 'Create User Successfully',
-            icon: 'success',
-          });
-          this.userFrom.reset();
-          // this.router.navigate(['/users/user-list']);
-        } else {
-          Swal.fire('Some Thing was wrong...', '', 'error');
-        }
-      },
-      (error: any) => {
-        if(error.status == 403 || error.status === 403){
-          this.router.navigate(['error']);
-        }
 
-      }
-    );
-    const serviceFunction =
-      isUpdate == true
-        ? this._UserService.create(formData)
-        : this._UserService.update(formData);
-    serviceFunction.subscribe((res: any) => {
-      console.log(res);
-    });
+    if (this.roleId) {
+      formData.append('role_id', this.roleId);
+    }
+
+    // formData.append('role_id', this.checkedItems.join(','));
+    // formData.append('client_user_name', filed.user_name);
+    // formData.append('client_user_phone', filed.user_phone);
+    // formData.append('client_user_designation', filed.user_designation);
+    // formData.append('client_user_email', filed.user_email);
+    // formData.append('password', filed.user_password);
+    // formData.append('client_sort_order', filed.sort_order);
+    // formData.append('client_user_status', filed.user_status);
+    // formData.append('client_website_status', this.websitestatus);
+    // if (this.userFile) {
+    //   formData.append('client_user_image', this.userFile);
+    // }
+    // this._UserService.create(formData).subscribe(
+    //   (res: any) => {
+    //     if (res.status == 'success') {
+    //       Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true, title: 'Create User Successfully', icon: 'success',
+    //       });
+    //       this.userFrom.reset();
+    //     } else {
+    //       Swal.fire('Some Thing was wrong...', '', 'error');
+    //     }
+    //   },
+    //   (error: any) => {
+    //     if(error.status == 403 || error.status === 403){
+    //       this.router.navigate(['error']);
+    //     }
+
+    //   }
+    // );
   }
 }
