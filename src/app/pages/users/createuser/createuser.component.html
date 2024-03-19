@@ -100,22 +100,28 @@
                 </mat-card-header>
                 <mat-card-content>
                     <div class="mb-3">
-                        <label *ngFor="let item of items" class="checkbox_container">
+                        <!-- (change)="toggleRadio()" -->
+                         <mat-radio-group formControlName="selectedRole">
+                            <mat-radio-button *ngFor="let item of DefineRoles" [value]="item.id">
+                                {{ item.name }}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                        <div *ngIf="f['checkedItems'].touched && f['checkedItems'].invalid">
+                            <div *ngIf="f['checkedItems'].errors && f['checkedItems'].errors?.['required']" class="text-danger">UserRole is required</div>
+                        </div>
+                        <!-- <label *ngFor="let item of DefineRoles" class="checkbox_container">
                             <mat-checkbox type="checkbox" formControlName="checkedItems" [checked]="isChecked(item)" (change)="toggleCheckbox(item)">
                                 {{ item.name }} <br />
-                                <small>{{ item.badge }}</small>
                             </mat-checkbox>
                             <span class="checkmark"></span>
                         </label>
                         <div *ngIf="f['checkedItems'].touched && f['checkedItems'].invalid">
                             <div *ngIf="f['checkedItems'].errors && f['checkedItems'].errors?.['required']" class="text-danger">UserRole is required</div>
-                        </div>
+                        </div> -->
                     </div>
                 </mat-card-content>
             </mat-card>
-
-
-            <mat-card>
+            <!-- <mat-card>
                 <mat-card-header>
                     <mat-card-title class="m-b-0">User Website Role</mat-card-title>
                 </mat-card-header>
@@ -128,7 +134,7 @@
                           <div *ngIf="f['checkedItemsforwebsite'].errors && f['checkedItemsforwebsite'].errors?.['required']" class="text-danger">Website-Role is required</div>
                       </div>
                 </mat-card-content>
-            </mat-card>
+            </mat-card> -->
         </div>
     </div>
 </form>

@@ -87,9 +87,9 @@ export const mailbox = [
     active: false,
   },
 
-  {
+  { 
     id: 11,
-    name: 'Not-Responding',
+    name: 'Not-Responding-Any-More',
     icon: 'info-circle',
     count: 0,
     active: false,

@@ -11,10 +11,11 @@ import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { environment } from 'src/environments/environments.dev';
+import { Router } from '@angular/router';
 export interface Lead {
   lead_id: any;
   agent_name: any;
-  client_user_designation: any;
+  client_user_designation: any; 
   client_user_email: any;
   imagePath: string;
   lead_title:any;
@@ -24,40 +25,61 @@ export interface Lead {
 @Component({
   selector: 'app-assign-lead',
   templateUrl: './assign-lead.component.html',
-  styleUrls: ['./assign-lead.component.scss']
+  styleUrls: ['./assign-lead.component.scss'],
 })
 export class AssignLeadComponent implements OnInit {
-  
-  displayedColumns   : string[] = ['lead_id', 'lead_title', 'customer_name', 'customer_phone', 'reassign', 'actions'];
-  exampleDatabase    : ExampleHttpDatabase | null = null;
-  leadsData          : Lead[] = [];
-  counter: number    = 1;
-  resultsLength      = 0;
-  isLoadingResults   = true;
+  displayedColumns: string[] = [
+    'lead_id',
+    'lead_title',
+    'customer_name',
+    'customer_phone',
+    'reassign',
+    'actions',
+  ];
+  exampleDatabase: ExampleHttpDatabase | null = null;
+  leadsData: Lead[] = [];
+  counter: number = 1;
+  resultsLength = 0;
+  isLoadingResults = true;
   isRateLimitReached = false;
   reassignLeadSelectedAgent: any;
-  allAgents   : any;
-  userData    : any;
-  user        : any;
-  loginuserId : any;
-  role        : any;
-  
-  @ViewChild(MatPaginator) paginator: MatPaginator ;
-  @ViewChild(MatSort) sort: MatSort ;
-  constructor(private _httpClient: HttpClient, private _LeadsService:LeadsService) {}
+  allAgents: any;
+  userData: any;
+  user: any;
+  loginuserId: any;
+  role: any;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  constructor(
+    private _httpClient: HttpClient,
+    private _LeadsService: LeadsService,
+    private _Router: Router) {}
   ngAfterViewInit(): void {
     this.exampleDatabase = new ExampleHttpDatabase(this._httpClient);
     if (this.sort && this.paginator) {
       this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
       merge(this.sort.sortChange, this.paginator.page)
-        .pipe(startWith({}),switchMap(() => {
+        .pipe(
+          startWith({}),
+          switchMap(() => {
             this.isLoadingResults = true;
-            return this.exampleDatabase!.getLeads(this.sort.active,this.sort.direction,this.paginator.pageIndex);
+            return this.exampleDatabase!.getLeads(
+              this.sort.active,
+              this.sort.direction,
+              this.paginator.pageIndex
+            );
           }),
-          map((data) => { this.isLoadingResults = false; this.isRateLimitReached = false; this.resultsLength = data.total_count;
+          map((data) => {
+            this.isLoadingResults = false;
+            this.isRateLimitReached = false;
+            this.resultsLength = data.total_count;
             return data.data;
           }),
-          catchError(() => { this.isLoadingResults = false; this.isRateLimitReached = true; return observableOf([]);
+          catchError(() => {
+            this.isLoadingResults = false;
+            this.isRateLimitReached = true;
+            return observableOf([]);
           })
         )
         .subscribe((data) => (this.leadsData = data));
@@ -68,28 +90,37 @@ export class AssignLeadComponent implements OnInit {
     this.userData = localStorage.getItem('userData');
     this.user = JSON.parse(this.userData);
     this.loginuserId = this.user.client_user_id;
-    this.role = this.user.client_user_role;
-
-
+    this.role = this.user.role_id;
     this.agents();
   }
-  Delete(e:Event, lead_id:any){
+
+  Delete(e: Event, lead_id: any) {
     Swal.fire({
       title: 'Are you sure want to remove?',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
     }).then((result) => {
-      if(result.isConfirmed){
-        this._LeadsService.DeleteLead(lead_id).subscribe((res:any) =>{
-          if(res.status === "delete"){
-            Swal.fire({ title: 'Success', html: 'Lead Delete Successfully', timer: 2000, showConfirmButton: false, });
-            this.reloadData();
+      if (result.isConfirmed) {
+        this._LeadsService.DeleteLead(lead_id).subscribe(
+          (res: any) => {
+            if (res.status === 'delete') {
+              Swal.fire({
+                title: 'Success',
+                html: 'Lead Delete Successfully',
+                timer: 2000,
+                showConfirmButton: false,
+              });
+              this.reloadData();
+            }
+          },
+          (error: any) => {
+            if (error.status == 430 || error.status === 430) {
+              this._Router.navigate(['error']);
+            }
           }
-        },(error:any) => {
-            console.log(error);
-        });
-      }else{
+        );
+      } else {
         // this.modalService.dismissAll();
         // this.selectedAgent = null;
       }
@@ -99,8 +130,17 @@ export class AssignLeadComponent implements OnInit {
   reloadData() {
     if (this.sort && this.paginator) {
       this.isLoadingResults = true;
-      this.exampleDatabase!.getLeads(this.sort.active, this.sort.direction, this.paginator.pageIndex)
-      .pipe( catchError(() => { this.isLoadingResults = false; this.isRateLimitReached = true; return observableOf([]); })
+      this.exampleDatabase!.getLeads(
+        this.sort.active,
+        this.sort.direction,
+        this.paginator.pageIndex
+      )
+        .pipe(
+          catchError(() => {
+            this.isLoadingResults = false;
+            this.isRateLimitReached = true;
+            return observableOf([]);
+          })
         )
         .subscribe((data) => {
           if ('data' in data) {
@@ -113,15 +153,20 @@ export class AssignLeadComponent implements OnInit {
     }
   }
 
-  agents(){
-    this._LeadsService.getAgentInfo().subscribe((res:any)=>{
+  agents() {
+    this._LeadsService.getAgentInfo().subscribe(
+      (res: any) => {
         this.allAgents = res;
-    },(error:any) => {
-      console.log(error);
-    })
+      },
+      (error: any) => {
+        if (error.status == 430 || error.status === 430) {
+          this._Router.navigate(['error']);
+        }
+      }
+    );
   }
-  
-  onOptionSelected(e: MatAutocompleteSelectedEvent, leads:any){
+
+  onOptionSelected(e: MatAutocompleteSelectedEvent, leads: any) {
     Swal.fire({
       html: `Are you sure want to Assign?`,
       showCloseButton: true,
@@ -129,31 +174,41 @@ export class AssignLeadComponent implements OnInit {
       confirmButtonText: `Yes`,
       cancelButtonText: `No`,
     }).then((result) => {
-      if(result.isConfirmed){
+      if (result.isConfirmed) {
         this.reassignLeadSelectedAgent = e.option.value;
         const leadid = leads.lead_id;
-        if(this.reassignLeadSelectedAgent != '' && leadid != ''){
+        if (this.reassignLeadSelectedAgent != '' && leadid != '') {
           var fd = new FormData();
-          fd.append('agent_id',this.reassignLeadSelectedAgent.client_user_id);
-          fd.append('lead_id',leadid);
-          if(this.loginuserId){
-            fd.append('login_user_id',this.loginuserId);
+          fd.append('agent_id', this.reassignLeadSelectedAgent.client_user_id);
+          fd.append('lead_id', leadid);
+          if (this.loginuserId) {
+            fd.append('login_user_id', this.loginuserId);
           }
-          this._LeadsService.AssignLeads(fd).subscribe((res:any) =>{
-            if(res.status === "success"){
-              Swal.fire({ title: 'Success', html: 'Lead Re-assigned Successfully', timer: 2000, showConfirmButton: false, });
-              this.reloadData();
+          this._LeadsService.AssignLeads(fd).subscribe(
+            (res: any) => {
+              if (res.status === 'success') {
+                Swal.fire({
+                  title: 'Success',
+                  html: 'Lead Re-assigned Successfully',
+                  timer: 2000,
+                  showConfirmButton: false,
+                });
+                this.reloadData();
+              }
+            },
+            (error: any) => {
+              if (error.status == 430 || error.status === 430) {
+                this._Router.navigate(['error']);
+              }
             }
-          },(error:any) => {
-              console.log(error);
-          });
-        }else{
-          alert('SomeThing Wrong')
+          );
+        } else {
+          alert('SomeThing Wrong');
         }
       }
     });
   }
-  
+
   displayLeadLabel(agent: any): string {
     return agent ? agent.client_user_name : '';
   }

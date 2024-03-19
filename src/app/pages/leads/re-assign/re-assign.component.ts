@@ -5,12 +5,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { LeadsService } from 'src/app/services/leads.service';
 import { MatSort } from '@angular/material/sort';
-import { merge, Observable, of as observableOf } from 'rxjs';
+import { merge, Observable, of as observableOf, throwError } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { environment } from 'src/environments/environments.dev';
+import { Router } from '@angular/router';
 
 export interface Lead {
   lead_id: any;
@@ -25,13 +26,20 @@ export interface Lead {
 @Component({
   selector: 'app-re-assign',
   templateUrl: './re-assign.component.html',
-  styleUrls: ['./re-assign.component.scss']
+  styleUrls: ['./re-assign.component.scss'],
 })
-
 export class ReAssignComponent implements OnInit {
   // reassign
-  // 'client_user_email', 'client_user_designation', 'imagePath'  
-  displayedColumns: string[] = ['lead_id', 'lead_title', 'agent_name', 'customer_name', 'customer_phone', 'reassign', 'actions'];
+  // 'client_user_email', 'client_user_designation', 'imagePath'
+  displayedColumns: string[] = [
+    'lead_id',
+    'lead_title',
+    'agent_name',
+    'customer_name',
+    'customer_phone',
+    'reassign',
+    'actions',
+  ];
   exampleDatabase: ExampleHttpDatabase | null = null;
   leadsData: Lead[] = [];
   counter: number = 1;
@@ -39,28 +47,47 @@ export class ReAssignComponent implements OnInit {
   isLoadingResults = true;
   isRateLimitReached = false;
   reassignLeadSelectedAgent: any;
-  allAgents:any;
-  userData:any;
-  user:any; 
-  loginuserId:any;
-  role:any;
-  @ViewChild(MatPaginator) paginator: MatPaginator ;
-  @ViewChild(MatSort) sort: MatSort ;
-  constructor(private _httpClient: HttpClient, private _LeadsService:LeadsService) {}
+  allAgents: any;
+  userData: any;
+  user: any;
+  loginuserId: any;
+  role: any;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  constructor(
+    private _httpClient: HttpClient,
+    private _LeadsService: LeadsService,
+    private _router: Router
+  ) {}
 
   ngAfterViewInit(): void {
-    this.exampleDatabase = new ExampleHttpDatabase(this._httpClient);
+    this.exampleDatabase = new ExampleHttpDatabase(
+      this._httpClient,
+      this._router
+    );
     if (this.sort && this.paginator) {
       this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
       merge(this.sort.sortChange, this.paginator.page)
-        .pipe(startWith({}),switchMap(() => {
+        .pipe(
+          startWith({}),
+          switchMap(() => {
             this.isLoadingResults = true;
-            return this.exampleDatabase!.getLeads(this.sort.active,this.sort.direction,this.paginator.pageIndex);
+            return this.exampleDatabase!.getLeads(
+              this.sort.active,
+              this.sort.direction,
+              this.paginator.pageIndex
+            );
           }),
-          map((data) => { this.isLoadingResults = false; this.isRateLimitReached = false; this.resultsLength = data.total_count;
+          map((data) => {
+            this.isLoadingResults = false;
+            this.isRateLimitReached = false;
+            this.resultsLength = data.total_count;
             return data.data;
           }),
-          catchError(() => { this.isLoadingResults = false; this.isRateLimitReached = true; return observableOf([]);
+          catchError(() => {
+            this.isLoadingResults = false;
+            this.isRateLimitReached = true;
+            return observableOf([]);
           })
         )
         .subscribe((data) => (this.leadsData = data));
@@ -70,29 +97,35 @@ export class ReAssignComponent implements OnInit {
     this.userData = localStorage.getItem('userData');
     this.user = JSON.parse(this.userData);
     this.loginuserId = this.user.client_user_id;
-    this.role = this.user.client_user_role;
+    this.role = this.user.role_id;
     this.agents();
   }
 
-
-
-  Delete(e:Event, lead_id:any){
+  Delete(e: Event, lead_id: any) {
     Swal.fire({
       title: 'Are you sure want to remove?',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'No',
     }).then((result) => {
-      if(result.isConfirmed){
-        this._LeadsService.DeleteLead(lead_id).subscribe((res:any) =>{
-          if(res.status === "delete"){
-            Swal.fire({ title: 'Success', html: 'Lead Delete Successfully', timer: 2000, showConfirmButton: false, });
-            this.reloadData();
-          }
-        },(error:any) => {
+      if (result.isConfirmed) {
+        this._LeadsService.DeleteLead(lead_id).subscribe(
+          (res: any) => {
+            if (res.status === 'delete') {
+              Swal.fire({
+                title: 'Success',
+                html: 'Lead Delete Successfully',
+                timer: 2000,
+                showConfirmButton: false,
+              });
+              this.reloadData();
+            }
+          },
+          (error: any) => {
             console.log(error);
-        });
-      }else{
+          }
+        );
+      } else {
         // this.modalService.dismissAll();
         // this.selectedAgent = null;
       }
@@ -102,8 +135,17 @@ export class ReAssignComponent implements OnInit {
   reloadData() {
     if (this.sort && this.paginator) {
       this.isLoadingResults = true;
-      this.exampleDatabase!.getLeads(this.sort.active, this.sort.direction, this.paginator.pageIndex)
-      .pipe( catchError(() => { this.isLoadingResults = false; this.isRateLimitReached = true; return observableOf([]); })
+      this.exampleDatabase!.getLeads(
+        this.sort.active,
+        this.sort.direction,
+        this.paginator.pageIndex
+      )
+        .pipe(
+          catchError(() => {
+            this.isLoadingResults = false;
+            this.isRateLimitReached = true;
+            return observableOf([]);
+          })
         )
         .subscribe((data) => {
           if ('data' in data) {
@@ -115,17 +157,19 @@ export class ReAssignComponent implements OnInit {
         });
     }
   }
-  
 
-  agents(){
-    this._LeadsService.getAgentInfo().subscribe((res:any)=>{
+  agents() {
+    this._LeadsService.getAgentInfo().subscribe(
+      (res: any) => {
         this.allAgents = res;
-    },(error:any) => {
-      console.log(error);
-    })
+      },
+      (error: any) => {
+        console.log(error);
+      }
+    );
   }
 
-  onOptionSelected(e: MatAutocompleteSelectedEvent, leads:any){
+  onOptionSelected(e: MatAutocompleteSelectedEvent, leads: any) {
     Swal.fire({
       html: `Are you sure want to Re-assign?`,
       showCloseButton: true,
@@ -133,39 +177,45 @@ export class ReAssignComponent implements OnInit {
       confirmButtonText: `Yes`,
       cancelButtonText: `No`,
     }).then((result) => {
-      if(result.isConfirmed){
+      if (result.isConfirmed) {
         this.reassignLeadSelectedAgent = e.option.value;
-        const leadid = leads.lead_id
-        if(this.reassignLeadSelectedAgent != '' && leadid != ''){
+        const leadid = leads.lead_id;
+        if (this.reassignLeadSelectedAgent != '' && leadid != '') {
           var fd = new FormData();
-          if(this.loginuserId){
-            fd.append('login_user_id',this.loginuserId);
+          if (this.loginuserId) {
+            fd.append('login_user_id', this.loginuserId);
           }
-          fd.append('agent_id',this.reassignLeadSelectedAgent.client_user_id);
-          fd.append('lead_id',leadid);
-          this._LeadsService.ReAssignLeads(fd).subscribe((res:any) =>{
-            if(res.status === "success"){
-              Swal.fire({ title: 'Success', html: 'Lead Re-assigned Successfully', timer: 2000, showConfirmButton: false, });
-              this.reloadData();
-            }
-          },(error:any) => {
+          fd.append('agent_id', this.reassignLeadSelectedAgent.client_user_id);
+          fd.append('lead_id', leadid);
+          this._LeadsService.ReAssignLeads(fd).subscribe(
+            (res: any) => {
+              if (res.status === 'success') {
+                Swal.fire({
+                  title: 'Success',
+                  html: 'Lead Re-assigned Successfully',
+                  timer: 2000,
+                  showConfirmButton: false,
+                });
+                this.reloadData();
+              }
+            },
+            (error: any) => {
               console.log(error);
-          });
-        }else{
-          alert('SomeThing Wrong')
+            }
+          );
+        } else {
+          alert('SomeThing Wrong');
         }
       }
     });
   }
-  
 
   displayLeadLabel(agent: any): string {
     return agent ? agent.client_user_name : '';
   }
 
-
-  Reassign(e:Event, lead_id:any){
-    if(lead_id != ''){
+  Reassign(e: Event, lead_id: any) {
+    if (lead_id != '') {
       Swal.fire({
         html: `Are you sure want to Re-assign?`,
         showCloseButton: true,
@@ -173,7 +223,7 @@ export class ReAssignComponent implements OnInit {
         confirmButtonText: `Yes`,
         cancelButtonText: `No`,
       }).then((result) => {
-        if(result.isConfirmed){
+        if (result.isConfirmed) {
           alert('Open Modal');
         }
       });
@@ -200,26 +250,26 @@ export class ReAssignComponent implements OnInit {
       // }).then((result) => {
       //   if(result.isConfirmed){
       //     alert('Open Modal');
-        //   var fd = new FormData();
-        //   fd.append('agent_id',this.reassigAgentId);
-        //   fd.append('lead_id',this.reassignleadid);
-        //   // fd.append('agent_name',this.reassigAgentName);
-        //   this.leadsService.ReAssignLeads(fd).subscribe((res:any) =>{
-        //     if(res.status === "success"){
-        //       Swal.fire({ title: 'Success', html: 'Lead Re-assigned Successfully', timer: 2000, showConfirmButton: false, });
-        //       this.fetch((data: any) => {
-        //         this.rows = data;
-        //         this.filteredRows = [...this.rows];
-        //       });
-        //       this.modalService.dismissAll();
-        //     }
-        //   },(error:any) => {
-        //       console.log(error);
-        //   });
-        // }else{
-        //   this.modalService.dismissAll();
-        //   this.selectedAgent = null;
-        // }
+      //   var fd = new FormData();
+      //   fd.append('agent_id',this.reassigAgentId);
+      //   fd.append('lead_id',this.reassignleadid);
+      //   // fd.append('agent_name',this.reassigAgentName);
+      //   this.leadsService.ReAssignLeads(fd).subscribe((res:any) =>{
+      //     if(res.status === "success"){
+      //       Swal.fire({ title: 'Success', html: 'Lead Re-assigned Successfully', timer: 2000, showConfirmButton: false, });
+      //       this.fetch((data: any) => {
+      //         this.rows = data;
+      //         this.filteredRows = [...this.rows];
+      //       });
+      //       this.modalService.dismissAll();
+      //     }
+      //   },(error:any) => {
+      //       console.log(error);
+      //   });
+      // }else{
+      //   this.modalService.dismissAll();
+      //   this.selectedAgent = null;
+      // }
       // });
     }
   }
@@ -235,18 +285,26 @@ export interface LeadsApi {
 
 
 export class ExampleHttpDatabase {
-  constructor(private _httpClient: HttpClient) {}
+  constructor(private _httpClient: HttpClient, private _router: Router) {}
   getLeads(sort: string, order: string, page: number): Observable<LeadsApi> {
     const baseUrl = environment.baseUrl;
     const leadsUrl = `${baseUrl}/leads/reassign-lead-list`;
     // Adjust query parameters based on your backend API
-    const requestUrl = `${leadsUrl}?sort=${sort}&order=${order}&page=${page + 1}`;
+    const requestUrl = `${leadsUrl}?sort=${sort}&order=${order}&page=${
+      page + 1
+    }`;
     return this._httpClient.get<LeadsApi>(requestUrl).pipe(
-      map(data => ({
+      map((data) => ({
         ...data,
-        data: data.data.map((lead, index) => ({...lead,counter: index + 1 + page * 10 // Assuming pageSize is 10, adjust accordingly if different
-        }))
-      }))
+        data: data.data.map((lead, index) => ({
+          ...lead,
+          counter: index + 1 + page * 10, // Assuming pageSize is 10, adjust accordingly if different
+        })),
+      })),
+      catchError((error) => {
+        this._router.navigate(['/error']);
+        return throwError(error);
+      })
     );
   }
 }

@@ -17,29 +17,7 @@ export const DashboardsRoutes: Routes = [
             { title: 'Analytical' },
           ],
         },
-      },
-      {
-        path: 'dashboard2',
-        component: AppDashboard2Component,
-        data: {
-          title: 'eCommerce',
-          urls: [
-            { title: 'Dashboard', url: '/dashboards/dashboard1' },
-            { title: 'eCommerce' },
-          ],
-        },
-      },
-      {
-        path: 'dashboard1/:type',
-        component: AppDashboard1Component,
-        data: {
-          title: 'Email',
-          urls: [
-            { title: 'Dashboard', url: '/dashboards/dashboard1' },
-            { title: 'Email' },
-          ],
-        },
-      },
+      },  
     ],
   },
 ];

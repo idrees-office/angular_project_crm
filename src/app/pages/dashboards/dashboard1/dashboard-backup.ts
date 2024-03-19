@@ -182,7 +182,7 @@ throw new Error('Method not implemented.');
     this.userData = localStorage.getItem('userData');
     this.user = JSON.parse(this.userData);
     const agent_id = this.user.client_user_id;
-    this.role = this.user.client_user_role;
+    this.role = this.user.role_id;
     var leadsstatus = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
     if (this.role == 2) {
       leadsstatus.forEach((leadStatus) => {
@@ -1117,7 +1117,7 @@ const PRODUCT_DATA: productsData[] = [
 //     this.userData = localStorage.getItem('userData');
 //     if (this.userData) {
 //       this.user = JSON.parse(this.userData);
-//       this.role = this.user?.client_user_role;
+//       this.role = this.user?.role_id;
 //       this.loginUserId = this.user?.client_user_id;
 //     } else {
 //       console.error('User data not found in localStorage');
@@ -1171,7 +1171,7 @@ const PRODUCT_DATA: productsData[] = [
 //   loadAllLeads() {
 //     this.userData = localStorage.getItem('userData');
 //     this.user = JSON.parse(this.userData);
-//     this.role = this.user.client_user_role;
+//     this.role = this.user.role_id;
 //     const agent_id = this.user.client_user_id;
 
 //     // fd = new FormData();

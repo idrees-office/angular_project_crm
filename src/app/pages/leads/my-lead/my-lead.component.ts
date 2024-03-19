@@ -5,11 +5,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 import { LeadsService } from 'src/app/services/leads.service';
 import { MatSort } from '@angular/material/sort';
-import { merge, Observable, of as observableOf } from 'rxjs';
+import { merge, Observable, of as observableOf, throwError } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environments.dev';
+import { Router } from '@angular/router';
 
 export interface Lead {
   lead_id: any;
@@ -57,10 +58,12 @@ export class MyLeadComponent implements OnInit {
   constructor(
     private _httpClient: HttpClient,
     private _LeadsService: LeadsService,
-    private _http: HttpClient
-  ) {}
+    private _http: HttpClient,
+    private _router: Router
+  ) 
+  {}
   ngAfterViewInit(): void {
-    this.exampleDatabase = new ExampleHttpDatabase(this._httpClient);
+    this.exampleDatabase = new ExampleHttpDatabase(this._httpClient, this._router);
     if (this.sort && this.paginator) {
       this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
       merge(this.sort.sortChange, this.paginator.page)
@@ -87,6 +90,9 @@ export class MyLeadComponent implements OnInit {
           catchError(() => {
             this.isLoadingResults = false;
             this.isRateLimitReached = true;
+
+            
+
             return observableOf([]);
           })
         )
@@ -98,7 +104,7 @@ export class MyLeadComponent implements OnInit {
     this.userData = localStorage.getItem('userData');
     this.user = JSON.parse(this.userData);
     this.loginuserId = this.user.client_user_id;
-    this.role = this.user.client_user_role;
+    this.role = this.user.role_id;
     this.agents();
   }
 
@@ -123,7 +129,9 @@ export class MyLeadComponent implements OnInit {
             }
           },
           (error: any) => {
-            console.log(error);
+            if(error.status == 403 || error.status === 403){
+              this._router.navigate(['error']);
+            }
           }
         );
       } else {
@@ -169,14 +177,25 @@ export class MyLeadComponent implements OnInit {
   exportToCSV(startDate?: any, endDate?: any) {
     if (this.leadsData && this.leadsData.length > 0) {
       const fd = new FormData();
-      if (startDate !== '') { fd.append('startDate', startDate); }
-      if (endDate !== '') { fd.append('endDate', endDate); }
-       if (this.loginuserId !== '') { fd.append('login_user_id', this.loginuserId); }
-       if (this.role !== '') { fd.append('user_role', this.role); }
+      if (startDate !== '') {
+        fd.append('startDate', startDate);
+      }
+      if (endDate !== '') {
+        fd.append('endDate', endDate);
+      }
+      if (this.loginuserId !== '') {
+        fd.append('login_user_id', this.loginuserId);
+      }
+      if (this.role !== '') {
+        fd.append('user_role', this.role);
+      }
       this._LeadsService.FilterCsv(fd).subscribe((res: any) => {
-
         window.open(res.data);
         // const url = ' http://127.0.0.1:8000/crmproject/public/csv';
+      }, (error:any) => {
+          if (error.status == 403 || error.status === 403) {
+            this._router.navigate(['error']);
+          }
       });
     }
   }
@@ -187,7 +206,9 @@ export class MyLeadComponent implements OnInit {
         this.allAgents = res;
       },
       (error: any) => {
-        console.log(error);
+         if (error.status == 403 || error.status === 403) {
+           this._router.navigate(['error']);
+         }
       }
     );
   }
@@ -209,13 +230,23 @@ export interface LeadsApi {
 }
 
 export class ExampleHttpDatabase {
-  constructor(private _httpClient: HttpClient) {}
-  getLeads(role:any,loginuserId: any, sort: string, order: string, page: number,startDate:any, endDate:any): Observable<LeadsApi> {
+
+  constructor(private _httpClient: HttpClient, private _router: Router) {}
+  getLeads(
+    role: any,
+    loginuserId: any,
+    sort: string,
+    order: string,
+    page: number,
+    startDate: any,
+    endDate: any
+  ): Observable<LeadsApi> {
     const baseUrl = environment.baseUrl;
     let leadsUrl = `${baseUrl}/leads/get-my-lead`;
-    if (role == 2 || role === 2) {
-      leadsUrl += `/${loginuserId}`;
-    }
+
+    // if (role == 2 || role === 2) {
+    //   leadsUrl += `/${loginuserId}`;
+    // }
     let params = new HttpParams()
       .set('sort', sort)
       .set('order', order)
@@ -233,7 +264,10 @@ export class ExampleHttpDatabase {
           ...lead,
           counter: index + 1 + page * 10,
         })),
-      }))
+      })),
+      catchError(
+        (error) => { this._router.navigate(['/error']); return throwError(error);}
+      )
     );
   }
 }

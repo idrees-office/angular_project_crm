@@ -9,12 +9,6 @@ export const navItems: NavItem[] = [
     iconName: 'aperture',
     route: '/dashboards/dashboard1',
   },
-  // {
-  //   displayName: 'Dashboard2',
-  //   iconName: 'shopping-cart',
-  //   route: '/dashboards/dashboard2',
-  // },
-
   {
     navCap: 'Leads Managements',
   },

@@ -51,7 +51,7 @@
           </div>
         </div> -->
         <div class="p-16">
-          <div *ngFor="let mail of mailboxes" (click)="mailboxesChanged(mail.id)" #triggerChnage>
+          <div *ngFor="let mail of mailboxes" (click)="mailboxesChanged(mail.id)">
             <div class="d-flex align-items-center inbox-list rounded p-16 cursor-pointer"
               [class.bg-light-primary]="mail.active">
               <i-tabler name="{{ mail.icon }}" class="m-r-12 icon-18"></i-tabler>
@@ -72,7 +72,7 @@
                     'Meeting Complate' : MeetingComplate,
                     'Low-Buget' : LowBuget,
                     'No-Answer' : NoAnswer,
-                    'Not-Responding' : NotResponding,
+                    'Not-Responding-Any-More' : NotResponding,
                     'Incorrect Detail' : IncorrectDetail,
                     'Agent' : Agent,
                     'Junk' : Junk
@@ -182,22 +182,15 @@
                     <mat-card-content>
                       <div class="table-responsive m-t-30">
                         <table mat-table [dataSource]="dataSource1" class="w-100">
-                          <ng-container matColumnDef="Responsible-User">
-                            <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 p-l-0">
-                              Responsible </th>
-                            <td mat-cell *matCellDef="let element" class="p-l-0">
-                              <div class="d-flex align-items-center">
-                                <!-- <img [src]="element.imagePath" alt="users" width="40" class="rounded-circle"/> -->
-                                <div class="m-l-16">
-                                  <h6 class="mat-subtitle-1 f-s-14 f-w-600"> {{ leadInfo.agents?.client_user_name ||
-                                    'Unknow' }} </h6> <span class="mat-body-1 f-s-12">
-                                    {{ leadInfo.agents?.client_user_designation || 'Unknow' }} </span>
-                                </div>
-                              </div>
-                            </td>
+
+                            <ng-container matColumnDef="Client-Name">
+                             <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Client-Name </th>
+                             <td mat-cell *matCellDef="let element" class="mat-body-1"> {{ leadInfo.customer_name ||'Invalid Clinet Name' }}  </td>
                           </ng-container>
+
+                          
                           <ng-container matColumnDef="Mobile">
-                            <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Mobile</th>
+                            <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Mobile-1</th>
                             <td mat-cell *matCellDef="let element" class="mat-body-1" [matMenuTriggerFor]="menu" style="cursor: pointer;"> {{ leadInfo.customer_phone || 'Unknow' }} </td>
                             <mat-menu #menu="matMenu" class="cardWithShadow">
                               <a mat-menu-item href="tel:{{leadInfo.customer_phone||'Unknow'}}">
@@ -206,7 +199,7 @@
                            </mat-menu>
                           </ng-container>
                           <ng-container matColumnDef="Whatsapp">
-                            <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Whatsapp</th>
+                            <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Mobile-2</th>
                             <td mat-cell *matCellDef="let element" class="mat-body-1" [matMenuTriggerFor]="menu2" style="cursor: pointer;"> {{ leadInfo.customer_phone2 ||  'Unknow' }}</td>
                              <mat-menu #menu2="matMenu" class="cardWithShadow">
                               <button mat-menu-item (click)="copyPhoneNumber(leadInfo.customer_phone2)">
@@ -221,12 +214,19 @@
                               <button mat-menu-item (click)="copyEmail(leadInfo.customer_email)">
                               <mat-icon style="font-size: 20px;">content_copy</mat-icon>  Copy </button>
                            </mat-menu>
-
                           </ng-container>
-                          <ng-container matColumnDef="Name/Position">
-                            <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Client/Name </th>
-                            <td mat-cell *matCellDef="let element" class="mat-body-1">
-                            {{ leadInfo.customer_name ||'Invalid Emial' }} / <small> {{ leadInfo.customer_position ||'Invalid Emial' }} </small> 
+                          <ng-container matColumnDef="Responsible-User">
+                            <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14 p-l-0">
+                              Responsible </th>
+                            <td mat-cell *matCellDef="let element" class="p-l-0">
+                              <div class="d-flex align-items-center">
+                                <!-- <img [src]="element.imagePath" alt="users" width="40" class="rounded-circle"/> -->
+                                <div class="m-l-16">
+                                  <h6 class="mat-subtitle-1 f-s-14 f-w-600"> {{ leadInfo.agents?.client_user_name ||
+                                    'Unknow' }} </h6> <span class="mat-body-1 f-s-12">
+                                    {{ leadInfo.agents?.client_user_designation || 'Unknow' }} </span>
+                                </div>
+                              </div>
                             </td>
                           </ng-container>
                           <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>

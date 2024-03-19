@@ -3,12 +3,14 @@ import { CreateLeadComponent } from './create-lead/create-lead.component';
 import { ReAssignComponent } from './re-assign/re-assign.component';
 import { AssignLeadComponent } from './assign-lead/assign-lead.component';
 import { MyLeadComponent } from './my-lead/my-lead.component';
+import { permissionGuardGuard } from 'src/app/core/permission-guard.guard';
 
 
 
 export const LeadsRoutes: Routes = [
   {
     path: '',
+    // canActivate: [permissionGuardGuard],
     children: [
       {
         path: 'create-lead',
@@ -43,7 +45,6 @@ export const LeadsRoutes: Routes = [
           ],
         },
       },
-
       {
         path: 'my-lead',
         component: MyLeadComponent,
@@ -55,8 +56,6 @@ export const LeadsRoutes: Routes = [
           ],
         },
       },
-
-
     ],
   },
 ];

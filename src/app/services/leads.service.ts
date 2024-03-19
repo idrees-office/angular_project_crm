@@ -28,41 +28,15 @@ export class LeadsService {
   exportcsvurl = environment.baseUrl + '/leads/export-csv';
 
   constructor(private http: HttpClient) {}
+
   getAgentInfo() {
     return this.http.get(this.getagenturl);
   }
 
+  // pipe(catchError(this.handleError)
   createLead(postData: any) {
-    return this.http
-      .post(this.createleadurl, postData)
-      .pipe(catchError(this.handleError));
+    return this.http.post(this.createleadurl, postData);
   }
-
-  private handleError(error: HttpErrorResponse) {
-    if (error.error instanceof ErrorEvent) {
-       Swal.fire({
-         toast: true,
-         position: 'top-end',
-         showConfirmButton: false,
-         timer: 3000,
-         timerProgressBar: true,
-         title: `An error occurred ${error.error.message}`,
-         icon: 'error',
-       });
-    } else {
-       Swal.fire({
-         toast: true,
-         position: 'top-end',
-         showConfirmButton: false,
-         timer: 3000,
-         timerProgressBar: true,
-         title: `Please run your backend server, then you can try again.`,
-         icon: 'error',
-       });
-    }
-    return throwError('Something bad happened; please try again later.');
-  }
-
   getleads(status: any) {
     const url = this.getleadsurl + '/' + status;
     return this.http.get(url);
@@ -120,4 +94,29 @@ export class LeadsService {
   FilterCsv(postData: any) {
     return this.http.post(this.exportcsvurl, postData);
   }
+
+  // private handleError(error: HttpErrorResponse) {
+  //   if (error.error instanceof ErrorEvent) {
+  //     Swal.fire({
+  //       toast: true,
+  //       position: 'top-end',
+  //       showConfirmButton: false,
+  //       timer: 3000,
+  //       timerProgressBar: true,
+  //       title: `An error occurred ${error.error.message}`,
+  //       icon: 'error',
+  //     });
+  //   } else {
+  //     Swal.fire({
+  //       toast: true,
+  //       position: 'top-end',
+  //       showConfirmButton: false,
+  //       timer: 3000,
+  //       timerProgressBar: true,
+  //       title: `Please run your backend server, then you can try again.`,
+  //       icon: 'error',
+  //     });
+  //   }
+  //   return throwError('Something bad happened; please try again later.');
+  // }
 }

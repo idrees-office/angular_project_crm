@@ -5,14 +5,11 @@ import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 // icons
 import { TablerIconsModule } from 'angular-tabler-icons';
 import * as TablerIcons from 'angular-tabler-icons/icons';
-
 // perfect scrollbar
 import { NgScrollbarModule } from 'ngx-scrollbar';
-
 //Import all material modules
 import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -26,10 +23,8 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AuthGuard } from './core/auth.guard';
 import { AuthenticationModule } from './pages/authentication/authentication.module';
-
 // import { HttpClientModule,  } from '@angular/common/http';
 import { AuthInterceptorService } from 'src/app/services/auth-interceptor.service';
-
 
 export function HttpLoaderFactory(http: HttpClient): any {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');

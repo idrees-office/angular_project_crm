@@ -1,0 +1,74 @@
+<form [formGroup]="AssignPermissionFrom" (ngSubmit)="AssignPermission($event)" id="users" enctype="multipart/form-data">
+    <mat-card class="cardWithShadow theme-card">
+        <mat-card-header>
+            <mat-card-title class="m-b-0">Assign Permission</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="b-t-1">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-sm-12 custom_lable_col">
+                            <mat-label class="d-block custom_lable" style="font-size: 10px; margin-left: 10px;">User-Role</mat-label>
+                            <mat-form-field appearance="outline" class="w-100">
+                                <input type="text" placeholder="Select Role" aria-label="Number" matInput [matAutocomplete]="auto3" formControlName="roles" />
+                                <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displayLeadLabel" (optionSelected)="userRole($event.option.value)">
+                                    <mat-option *ngFor="let role of AllRole" [value]="role"> {{ role.name }}</mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-sm-12 custom_lable_col">
+                            <mat-label class="d-block custom_lable" style="font-size: 10px; margin-left: 10px;">Users</mat-label>
+                            <mat-form-field appearance="outline" class="w-100">
+                            <input type="text" placeholder="Select Agent" aria-label="Number" matInput  [matAutocomplete]="auto4" formControlName="clients"/>
+                            <mat-autocomplete #auto4="matAutocomplete" [displayWith]="displayLeadLabel2" (optionSelected)="users($event.option.value.client_user_id)">
+                            <mat-option *ngFor="let agent of allAgents"  [value]="agent"> {{ agent.client_user_name }}</mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">  
+                <div class="table-responsive m-t-30">
+                <mat-table [dataSource]="dataSource" matSort>
+                    <ng-container matColumnDef="id">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="f-w-600 mat-subtitle-1 f-s-16 p-l-0"> ID </mat-header-cell>
+                        <mat-cell *matCellDef="let row" class="p-l-0"> 
+                             <label class="checkbox_container">
+                                  <mat-checkbox (change)="toggleCheckbox(row)" [checked]="isChecked(row)" formControlName="checkedItems" [value]="row.id"></mat-checkbox>
+                                 <span class="checkmark"></span>
+                              </label>
+                               {{ row.counter }}
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="f-w-600 mat-subtitle-1 f-s-16"> Role </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <div class="d-flex align-items-center gap-12">
+                                <span class="f-s-16">{{ row.name || 'Invalid Role' }}</span>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <!-- <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="f-w-600 mat-subtitle-1 f-s-16"> Actions </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <div class="d-flex align-items-center gap-12">
+                                <a class="m-r-10 cursor-pointer" (click)="Delete($event, row.id)"><i-tabler style="color:red" name="trash" class="icon-18"></i-tabler> </a>
+                                <a class="m-r-10 cursor-pointer" routerLink="/users/edit-role/{{row.id}}"><i-tabler style="color:green" name="edit" class="icon-18"></i-tabler> </a>
+                            </div>
+                        </mat-cell>
+                    </ng-container> -->
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                     <mat-row *matRowDef="let row; columns: displayedColumns"> </mat-row>
+                    </mat-table>
+                    <mat-paginator [pageSizeOptions]="[20, 25, 50, 100]"></mat-paginator>
+                    <button style="border-radius: 0px;" type="submit" type="submit" [disabled]="this.AssignPermissionFrom.invalid || isNextDisabled" mat-flat-button color="primary">Assign</button>
+                 </div>
+              </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</form>

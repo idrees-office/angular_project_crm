@@ -4,6 +4,8 @@ import { Observable, map, startWith } from 'rxjs';
 import { LeadsService } from 'src/app/services/leads.service';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-create-lead',
@@ -37,7 +39,7 @@ export class CreateLeadComponent implements OnInit {
     this.userData = localStorage.getItem('userData');
     this.user = JSON.parse(this.userData);
     this.loginuserId = this.user.client_user_id;
-    this.role = this.user.client_user_role;
+    this.role = this.user.role_id;
   }
 
   submitForm(event:any){
@@ -65,6 +67,19 @@ export class CreateLeadComponent implements OnInit {
           this.leadForm.reset();
           this.router.navigate(['/leads/assign-lead']);
         }
+      }, (error: any) => {
+           if (error.status === 403 || error.status == 403) {
+             Swal.fire({
+               toast: true,
+               position: 'top-end',
+               showConfirmButton: false,
+               timer: 3000,
+               timerProgressBar: true,
+               title: `You Don't Save Pemission to Add Leads`,
+               icon: 'success',
+             });
+             this.router.navigate(['error']);
+           }
       })
     }
   }
@@ -84,8 +99,9 @@ export class CreateLeadComponent implements OnInit {
         }
       },
       (error) => {
-        console.error('Error fetching agent name:', error);
-        alert('An error occurred while fetching agent name');
+         if (error.status == 430 || error.status === 430) {
+           this.router.navigate(['error']);
+         }
       }
     );
   }

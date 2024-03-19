@@ -141,7 +141,7 @@ export class AppDashboard1Component implements OnInit {
     this.userData = localStorage.getItem('userData');
     if (this.userData) {
       this.user = JSON.parse(this.userData);
-      this.role = this.user?.client_user_role;
+      this.role = this.user?.role_id;
       this.loginUserId = this.user?.client_user_id;
     } else {
       console.error('User data not found in localStorage');
@@ -196,7 +196,7 @@ export class AppDashboard1Component implements OnInit {
   loadAllLeads() {
     this.userData = localStorage.getItem('userData');
     this.user = JSON.parse(this.userData);
-    this.role = this.user.client_user_role;
+    this.role = this.user.role_id;
     const agent_id = this.user.client_user_id;
     this.fd.append('login_user_id', agent_id);
     this.fd.append('user_role', this.role);
@@ -581,7 +581,7 @@ export class AppDashboard1Component implements OnInit {
   displayLeadLabel(status: any): string {
     return status ? status.label : '';
   }
-
+  
   updateLeadStaus(event: Event, agent_id: any) {
     event.preventDefault();
     if (this.updateleadform.valid) {
@@ -591,11 +591,9 @@ export class AppDashboard1Component implements OnInit {
       fd.append('lead_id', filed.lead_id);
       fd.append('lead_comment', filed.lead_comment);
       fd.append('agent_id', agent_id);
-
       if (this.loginUserId) {
         fd.append('login_user_id', this.loginUserId);
       }
-
       if (this.role == 1) {
         fd.append('user_id', this.loginUserId);
       } else {
@@ -604,12 +602,7 @@ export class AppDashboard1Component implements OnInit {
       this.leadsService.UpdateSingLead(fd).subscribe(
         (res: any) => {
           if (res.status === 'success') {
-            Swal.fire({
-              title: 'Success',
-              html: 'Lead Update Successfully',
-              timer: 2000,
-              showConfirmButton: false,
-            });
+            Swal.fire({ title: 'Success', html: 'Lead Update Successfully', timer: 2000, showConfirmButton: false,});
             this.updateleadform.reset();
             this.loadAllLeads();
              window.location.reload();
@@ -617,8 +610,6 @@ export class AppDashboard1Component implements OnInit {
             // this.mailboxesChanged(this.leadBoxId);
             // this.mailboxesChanged(this.leadBoxId);
             // this.mailActiveClass(this.leadBoxId);
-
-
           }
         },
         (error: any) => {
@@ -633,7 +624,7 @@ export class AppDashboard1Component implements OnInit {
     'Mobile',
     'Whatsapp',
     'Email',
-    'Name/Position',
+    'Client-Name',
   ];
   dataSource1 = PRODUCT_DATA;
 

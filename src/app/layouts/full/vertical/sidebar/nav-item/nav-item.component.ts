@@ -48,7 +48,7 @@ export class AppNavItemComponent implements OnChanges, OnInit {
   ngOnInit(): void {
     this.userData    = localStorage.getItem('userData');
     this.user        = JSON.parse(this.userData);
-    this.role        = this.user.client_user_role;
+    this.role        = this.user.role_id;
     const id         = this.user.client_user_id;
   }
 
@@ -88,9 +88,7 @@ export class AppNavItemComponent implements OnChanges, OnInit {
   }
 
   onSubItemSelected(item: NavItem) {
-
-    // console.log(item);
-
+    
     if (!item.children || !item.children.length){
       if (this.expanded && window.innerWidth < 1024) {
         this.notify.emit();

@@ -22,7 +22,6 @@ import { AppBreadcrumbComponent } from './shared/breadcrumb/breadcrumb.component
 import { CustomizerComponent } from './shared/customizer/customizer.component';
 import { AuthService } from 'src/app/services/auth.service';
 
-
 const MOBILE_VIEW = 'screen and (max-width: 768px)';
 const TABLET_VIEW = 'screen and (min-width: 769px) and (max-width: 1024px)';
 const MONITOR_VIEW = 'screen and (min-width: 1024px)';
@@ -36,7 +35,6 @@ interface apps {
   subtitle: string;
   link: string;
 }
-
 
 
 interface quicklinks {
@@ -238,8 +236,9 @@ export class FullComponent implements OnInit {
       this.LoginUserName  = this.currentUser.client_user_name;
       this.LoginUserEmail  = this.currentUser.client_user_email;
       this.LoginUserDesignation  = this.currentUser.client_user_designation;
-      this.LoginUserRole = this.currentUser.client_user_role;
+      this.LoginUserRole = this.currentUser.role_id;
       if (this.LoginUserRole == 1 || this.LoginUserRole === 1) {
+        
         this.navItems = [
           { navCap: 'Home' },
           {
@@ -270,13 +269,11 @@ export class FullComponent implements OnInit {
                 iconName: 'point',
                 route: 'leads/re-assign',
               },
-              
               {
                 displayName: 'All Leads',
                 iconName: 'point',
                 route: 'leads/my-lead',
               },
-
             ],
           },
           {
@@ -288,13 +285,13 @@ export class FullComponent implements OnInit {
             route: 'excel',
             children: [
               {
-                displayName: 'Import File', 
+                displayName: 'Import File',
                 iconName: 'point',
                 route: 'excel/import-excel',
               },
             ],
           },
-          
+
           {
             navCap: 'Sale-PipeLine',
           },
@@ -304,20 +301,17 @@ export class FullComponent implements OnInit {
             route: 'excel',
             children: [
               {
-                displayName: 'Genrate Sale Offer', 
+                displayName: 'Genrate Sale Offer',
                 iconName: 'point',
                 route: 'sale/sale-offer',
               },
-
               {
-                displayName: 'Create Pdf', 
+                displayName: 'Create Pdf',
                 iconName: 'point',
                 route: 'sale/list-sale-offer',
               },
-
             ],
           },
-
 
           {
             navCap: 'Account Setting',
@@ -328,7 +322,7 @@ export class FullComponent implements OnInit {
             route: 'theme-pages',
             children: [
               {
-                displayName: 'Profile', 
+                displayName: 'Profile',
                 iconName: 'point',
                 route: 'theme-pages/account-setting',
               },
@@ -344,14 +338,38 @@ export class FullComponent implements OnInit {
             route: 'users',
             children: [
               {
-                displayName: 'Add a User', 
+                displayName: 'Add a User',
                 iconName: 'point',
                 route: 'users/create-user',
+              },
+              {
+                displayName: 'Create Role',
+                iconName: 'point',
+                route: 'users/create-role',
+              },
+              {
+                displayName: 'Assign Permission',
+                iconName: 'point',
+                route: 'users/assign-permission',
               },
             ],
           },
 
-
+          {
+            navCap: 'Teams',
+          },
+          {
+            displayName: 'Team',
+            iconName: 'apps',
+            route: 'team',
+            children: [
+              {
+                displayName: 'Add Team',
+                iconName: 'point',
+                route: 'team/create-team',
+              },
+            ],
+          },
         ];
       } else if (this.LoginUserRole == 2 || this.LoginUserRole === 2) {
         this.navItems = [
@@ -360,7 +378,6 @@ export class FullComponent implements OnInit {
             iconName: 'aperture',
             route: '/dashboards/dashboard1',
           },
-
           {
             navCap: 'Leads Management',
           },

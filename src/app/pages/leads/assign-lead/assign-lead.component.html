@@ -5,12 +5,6 @@
     </mat-card-header>
     <mat-card-content>
       <div class="example-container m-t-30">
-
-
-        
-
-
-
         <div class="example-loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
           <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
           <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
@@ -65,5 +59,5 @@
         <mat-paginator [length]="resultsLength" [pageSize]="10"></mat-paginator>
       </div>
     </mat-card-content>
-  </mat-card>
+</mat-card>
   
