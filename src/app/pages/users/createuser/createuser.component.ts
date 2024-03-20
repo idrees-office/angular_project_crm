@@ -2,9 +2,12 @@ import { Component, OnInit,Renderer2, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Option, OptionStatus } from 'src/app/core/status';
 import Swal from 'sweetalert2';
-import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs/internal/Observable';
+import { LeadsService } from 'src/app/services/leads.service';
+import { map, startWith } from 'rxjs';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 
 
@@ -31,14 +34,20 @@ export class CreateuserComponent implements OnInit {
   loadingIndicator: any;
   userObj: any;
   DefineRoles: any;
-  roleId:any;
+  roleId: any;
+  allAgents: any[] = [];
+  filteredOptions: Observable<any[]>;
+  firstControl = new FormControl('');
+  team_id:any;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private _UserService: UserService,
     private renderer: Renderer2,
     private el: ElementRef,
-    private activeroute: ActivatedRoute
+    private activeroute: ActivatedRoute,
+    private _LeadsService: LeadsService
   ) {
     const paramMap = this.activeroute.snapshot.paramMap;
     this._UserService.GetUserRoles().subscribe(
@@ -48,7 +57,7 @@ export class CreateuserComponent implements OnInit {
       (error: any) => {
         // console.log('Error in the fetching roles');
         Swal.fire('Error in the fetching roles', 'error');
-        if(error.status == 403 || error.status === 403){
+        if (error.status == 403 || error.status === 403) {
           this.router.navigate(['error']);
         }
       }
@@ -77,6 +86,7 @@ export class CreateuserComponent implements OnInit {
       user_status: new FormControl('', [Validators.required]),
       sort_order: new FormControl('', [Validators.required]),
       checkedItems: new FormControl('', [Validators.required]),
+      // team_id : new FormControl('')
     });
 
     this.userFrom.valueChanges.subscribe((e) => {
@@ -84,6 +94,39 @@ export class CreateuserComponent implements OnInit {
     });
 
     this.options = OptionStatus.optionvalue;
+
+    this.agents();
+
+    this.filteredOptions = this.firstControl.valueChanges.pipe(
+      startWith(''),
+      map((value: any) => this._filter(value))
+    );
+  }
+
+  private _filter(value: any): any[] {
+    return this.allAgents
+      .filter((agent) => agent.client_user_name.includes(value))
+      .map((agent) => ({
+        name: agent.client_user_name,
+        id: agent.client_user_id,
+      }));
+  }
+
+  displaySelectedAgent(agent: any): string {
+    return agent ? agent.name : '';
+  }
+
+  agents() {
+    this._LeadsService.getAgentInfo().subscribe(
+      (res: any) => {
+        this.allAgents = res;
+      },
+      (error: any) => {
+        if (error.status == 430 || error.status === 430) {
+          this.router.navigate(['error']);
+        }
+      }
+    );
   }
 
   userImage(event: any) {
@@ -114,6 +157,14 @@ export class CreateuserComponent implements OnInit {
     return phone.substr(5);
   }
 
+  onOptionSelected(e: MatAutocompleteSelectedEvent) {
+    var team = e.option.value;
+    const id = team.id;
+    if (id != ''){ 
+      this.team_id = id;
+    };
+  }
+
   create(event: any) {
     if (!this.userFrom.valid) {
       Swal.fire('Something Went Wrong. Please Check All the Fields', 'error');
@@ -122,39 +173,41 @@ export class CreateuserComponent implements OnInit {
     const formData = new FormData();
     const isUpdate = this.client_user_id !== 0;
     const filed = this.userFrom.value;
-
-    if (this.roleId) {
-      formData.append('role_id', this.roleId);
+    if (this.team_id){
+        formData.append('team_id', this.team_id);
     }
 
+    if (this.roleId) {
+        formData.append('role_id', this.roleId);
+     }
     // formData.append('role_id', this.checkedItems.join(','));
-    // formData.append('client_user_name', filed.user_name);
-    // formData.append('client_user_phone', filed.user_phone);
-    // formData.append('client_user_designation', filed.user_designation);
-    // formData.append('client_user_email', filed.user_email);
-    // formData.append('password', filed.user_password);
-    // formData.append('client_sort_order', filed.sort_order);
-    // formData.append('client_user_status', filed.user_status);
+    formData.append('client_user_name', filed.user_name);
+    formData.append('client_user_phone', filed.user_phone);
+    formData.append('client_user_designation', filed.user_designation);
+    formData.append('client_user_email', filed.user_email);
+    formData.append('password', filed.user_password);
+    formData.append('client_sort_order', filed.sort_order);
+    formData.append('client_user_status', filed.user_status);
     // formData.append('client_website_status', this.websitestatus);
-    // if (this.userFile) {
-    //   formData.append('client_user_image', this.userFile);
-    // }
-    // this._UserService.create(formData).subscribe(
-    //   (res: any) => {
-    //     if (res.status == 'success') {
-    //       Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true, title: 'Create User Successfully', icon: 'success',
-    //       });
-    //       this.userFrom.reset();
-    //     } else {
-    //       Swal.fire('Some Thing was wrong...', '', 'error');
-    //     }
-    //   },
-    //   (error: any) => {
-    //     if(error.status == 403 || error.status === 403){
-    //       this.router.navigate(['error']);
-    //     }
+    if (this.userFile) {
+      formData.append('client_user_image', this.userFile);
+    }
+    this._UserService.create(formData).subscribe(
+      (res: any) => {
+        if (res.status == 'success') {
+          Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true, title: 'Create User Successfully', icon: 'success',
+          });
+          this.userFrom.reset();
+        } else {
+          Swal.fire('Some Thing was wrong...', '', 'error');
+        }
+      },
+      (error: any) => {
+        if(error.status == 403 || error.status === 403){
+          this.router.navigate(['error']);
+        }
 
-    //   }
-    // );
+      }
+    );
   }
 }

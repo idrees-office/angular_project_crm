@@ -28,7 +28,7 @@
                             </mat-form-field>
                         </div>
 
-                        <div class="col-sm-12 custom_lable_col">
+                        <div class="col-sm-6 custom_lable_col">
                             <mat-label class="d-block custom_lable" style="font-size: 10px;">Designation</mat-label>
                             <mat-form-field appearance="outline" class="w-100">
                                 <input matInput placeholder="Designation...." formControlName="user_designation" style="border-radius: 0px;" />
@@ -38,6 +38,25 @@
                                 </mat-hint>
                             </mat-form-field>
                         </div>
+
+
+                         <div class="col-sm-6 custom_lable_col">
+                            <mat-label class="d-block custom_lable" style="font-size: 10px;">Users</mat-label>
+                            <mat-form-field appearance="outline" class="custom-width mt-5">
+                            <input type="text" placeholder="Select Agent" aria-label="Number"  [formControl]="firstControl" matInput [matAutocomplete]="auto3" />
+                            <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displaySelectedAgent" (optionSelected)="onOptionSelected($event)">
+                            <mat-option *ngFor="let agent of filteredOptions | async" [value]="agent">
+                                {{ agent.name }}
+                            </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        </div>
+
+                        
+
+                        
+
+
                         <div class="col-sm-6 custom_lable_col">
                             <mat-label class="d-block custom_lable" style="font-size: 10px;">Email</mat-label>
                             <mat-form-field appearance="outline" class="w-100">
@@ -108,15 +127,6 @@
                         <div *ngIf="f['checkedItems'].touched && f['checkedItems'].invalid">
                             <div *ngIf="f['checkedItems'].errors && f['checkedItems'].errors?.['required']" class="text-danger">UserRole is required</div>
                         </div>
-                        <!-- <label *ngFor="let item of DefineRoles" class="checkbox_container">
-                            <mat-checkbox type="checkbox" formControlName="checkedItems" [checked]="isChecked(item)" (change)="toggleCheckbox(item)">
-                                {{ item.name }} <br />
-                            </mat-checkbox>
-                            <span class="checkmark"></span>
-                        </label>
-                        <div *ngIf="f['checkedItems'].touched && f['checkedItems'].invalid">
-                            <div *ngIf="f['checkedItems'].errors && f['checkedItems'].errors?.['required']" class="text-danger">UserRole is required</div>
-                        </div> -->
                     </div>
                 </mat-card-content>
             </mat-card>

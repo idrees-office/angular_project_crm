@@ -12,6 +12,10 @@ import Swal from 'sweetalert2';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { environment } from 'src/environments/environments.dev';
 import { Router } from '@angular/router';
+import { FilterPipe } from 'src/app/pipe/filter.pipe';
+import { FormControl } from '@angular/forms';
+import { ChangeDetectorRef } from '@angular/core';
+
 export interface Lead {
   lead_id: any;
   agent_name: any;
@@ -43,18 +47,24 @@ export class AssignLeadComponent implements OnInit {
   isLoadingResults = true;
   isRateLimitReached = false;
   reassignLeadSelectedAgent: any;
-  allAgents: any;
+  allAgents: any[] = [];
+  filteredOptions: Observable<any[]>;
   userData: any;
   user: any;
   loginuserId: any;
   role: any;
-
+  searchText: string;
+  filteredAgents: any[];
+  firstControl = new FormControl('');
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor(
     private _httpClient: HttpClient,
     private _LeadsService: LeadsService,
-    private _Router: Router) {}
+    private _Router: Router,
+    private _ChangeDetectorRef: ChangeDetectorRef
+  ) {}
+
   ngAfterViewInit(): void {
     this.exampleDatabase = new ExampleHttpDatabase(this._httpClient);
     if (this.sort && this.paginator) {
@@ -92,6 +102,37 @@ export class AssignLeadComponent implements OnInit {
     this.loginuserId = this.user.client_user_id;
     this.role = this.user.role_id;
     this.agents();
+
+    this.filteredOptions = this.firstControl.valueChanges.pipe(
+      startWith(''),
+      map((value: any) => this._filter(value))
+    );
+  }
+  
+  private _filter(value: any): any[] {
+    return this.allAgents
+      .filter((agent) => agent.client_user_name.includes(value))
+      .map((agent) => ({
+        name: agent.client_user_name,
+        id: agent.client_user_id,
+      }));
+  }
+
+  displaySelectedAgent(agent: any): string {
+    return agent ? agent.name : '';
+  }
+
+  agents() {
+    this._LeadsService.getAgentInfo().subscribe(
+      (res: any) => {
+        this.allAgents = res;
+      },
+      (error: any) => {
+        if (error.status == 430 || error.status === 430) {
+          this._Router.navigate(['error']);
+        }
+      }
+    );
   }
 
   Delete(e: Event, lead_id: any) {
@@ -153,20 +194,12 @@ export class AssignLeadComponent implements OnInit {
     }
   }
 
-  agents() {
-    this._LeadsService.getAgentInfo().subscribe(
-      (res: any) => {
-        this.allAgents = res;
-      },
-      (error: any) => {
-        if (error.status == 430 || error.status === 430) {
-          this._Router.navigate(['error']);
-        }
-      }
-    );
-  }
-
   onOptionSelected(e: MatAutocompleteSelectedEvent, leads: any) {
+    //  this.firstControl.setValue(e.option.value.name);
+    const selectedAgent = e.option.value;
+    this.firstControl.setValue(selectedAgent.name);
+    this._ChangeDetectorRef.detectChanges(); // Manually trigger change detection
+
     Swal.fire({
       html: `Are you sure want to Assign?`,
       showCloseButton: true,

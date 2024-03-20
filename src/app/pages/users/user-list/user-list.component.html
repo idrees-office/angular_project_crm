@@ -1,0 +1,59 @@
+<div class="row">>
+        <div class="col-lg-12">
+
+
+           
+
+
+            <div class="table-responsive m-t-30">
+                <mat-table [dataSource]="dataSource" matSort>
+                    <ng-container matColumnDef="id">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="f-w-600 mat-subtitle-1 f-s-16 p-l-0"> ID </mat-header-cell>
+                        <mat-cell *matCellDef="let row" class="p-l-0">
+                            {{ row.counter }}
+
+                            
+                        </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="f-w-600 mat-subtitle-1 f-s-16"> Name </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <div class="d-flex align-items-center gap-12">
+                                <span class="f-s-16">{{ row.client_user_name || 'Invalid Role' }}</span>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                     <ng-container matColumnDef="email">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="f-w-600 mat-subtitle-1 f-s-16"> Email </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <div class="d-flex align-items-center gap-12">
+                                <span class="f-s-16">{{ row.client_user_email || 'Invalid Role' }}</span>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                     <ng-container matColumnDef="designation">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="f-w-600 mat-subtitle-1 f-s-16"> Des </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <div class="d-flex align-items-center gap-12">
+                                <span class="f-s-16">{{ row.client_user_designation || 'Invalid Role' }}</span>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="actions">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="f-w-600 mat-subtitle-1 f-s-16"> Actions </mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <div class="d-flex align-items-center gap-12">
+                                <a class="m-r-10 cursor-pointer" (click)="Delete($event, row.client_user_id)"><i-tabler style="color:red" name="trash" class="icon-18"></i-tabler> </a>
+                                <!-- <a class="m-r-10 cursor-pointer" routerLink="/users/edit-role/{{row.id}}"><i-tabler style="color:green" name="edit" class="icon-18"></i-tabler> </a> -->
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns"> </mat-row>
+                </mat-table>
+                <mat-paginator [pageSizeOptions]="[3, 10, 25, 100]"></mat-paginator>
+            </div>
+        </div>
+    </div>

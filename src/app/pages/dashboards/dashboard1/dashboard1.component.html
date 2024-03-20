@@ -262,7 +262,7 @@
                     <form [formGroup]="updateleadform" (ngSubmit)="updateLeadStaus($event,leadInfo.agent_id)" id="updateleadform">
                       <mat-form-field appearance="outline" class="mt-5" class="w-100 border-0">
                         <input type="hidden" [(ngModel)]="leadInfo.lead_id" formControlName="lead_id" />
-                        <input type="text" placeholder="Pick One" aria-label="Pick One" matInput
+                        <input type="text" placeholder="Lead Status" aria-label="Lead Status" matInput
                           [matAutocomplete]="auto3" formControlName="lead_status" />
                         <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displayLeadLabel">
                           <mat-option *ngFor="let lead of leadoptions2" [value]="lead"> {{ lead.label }}</mat-option>

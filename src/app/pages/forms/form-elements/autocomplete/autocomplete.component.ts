@@ -43,8 +43,11 @@ export interface State {
 })
 export class AppAutocompleteComponent implements OnInit {
   // first option
+
   firstControl = new FormControl('');
+
   firstoption: string[] = ['One', 'Two', 'Three'];
+
   filteredOptions: Observable<string[]>;
 
   // option group
@@ -212,9 +215,7 @@ export class AppAutocompleteComponent implements OnInit {
 
     // option group
     this.stateGroupOptions = this.stateForm
-      .get('stateGroup')!
-      .valueChanges.pipe(
-        startWith(''),
+      .get('stateGroup')!.valueChanges.pipe( startWith(''),
         map((value) => this._filterGroup(value || ''))
       );
 

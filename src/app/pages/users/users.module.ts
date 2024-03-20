@@ -16,10 +16,13 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
+
+
 import { CreateuserComponent } from './createuser/createuser.component';
 import { CreateroleComponent } from './createrole/createrole.component';
 import { AssignPermissionComponent } from './assign-permission/assign-permission.component';
 import { ListRoleComponent } from './list-role/list-role.component';
+import { UserListComponent } from './user-list/user-list.component';
 
 const router: Routes = [
   {
@@ -70,6 +73,18 @@ const router: Routes = [
           ],
         },
       },
+
+      {
+        path: 'user-list',
+        component: UserListComponent,
+        data: {
+          title: 'User List',
+          urls: [
+            { title: 'Dashboard', url: 'users/user-list' },
+            { title: 'User List' },
+          ],
+        },
+      },
     ],
   },
 ];
@@ -81,6 +96,7 @@ const router: Routes = [
     CreateroleComponent,
     AssignPermissionComponent,
     ListRoleComponent,
+    UserListComponent,
   ],
   imports: [
     CommonModule,

@@ -61,6 +61,8 @@ export class CreateroleComponent implements OnInit {
     this.fetchRoles();
   }
 
+
+  
   fetchRoles() {
     this._UserService.GetUserRoles().subscribe(
       (res: any) => {
