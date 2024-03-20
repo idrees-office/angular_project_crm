@@ -352,6 +352,12 @@ export class FullComponent implements OnInit {
                 iconName: 'point',
                 route: 'users/assign-permission',
               },
+
+              {
+                displayName: 'List',
+                iconName: 'point',
+                route: 'users/user-list',
+              },
             ],
           },
 

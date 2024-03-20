@@ -129,11 +129,13 @@ export class HeaderComponent implements OnInit {
       this.LoginUserDesignation  = this.currentUser.client_user_designation;
         this._LeadsService.LeadNotoficationAgentWise(this.LoginUserId).subscribe((res:any) => {
           if(res != 0){
+
             this.totalLeads = res;
-            Swal.fire({
-              text: `Hurry! you got `+this.totalLeads+` new lead.`,
-              icon: "success"
-            });
+            // Swal.fire({
+            //   text: `Hurry! you got `+this.totalLeads+` new lead.`,
+            //   icon: "success"
+            // });
+
           }else{  
             console.log('Sorry no New leads')
             
