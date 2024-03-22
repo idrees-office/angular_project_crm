@@ -8,7 +8,6 @@ export interface Category {
 }
 
 export const mailbox = [
-
   // {
   //   id: 1,
   //   name: 'New Lead',
@@ -23,6 +22,7 @@ export const mailbox = [
     icon: 'send',
     count: 0,
     active: false,
+    color: '#8c3f9d',
   },
   {
     id: 3,
@@ -30,6 +30,7 @@ export const mailbox = [
     icon: 'note',
     count: 0,
     active: false,
+    color: '#7e7e39',
   },
   {
     id: 4,
@@ -37,6 +38,7 @@ export const mailbox = [
     icon: 'flag',
     count: 0,
     active: false,
+    color: '#3680cc',
   },
   {
     id: 5,
@@ -44,6 +46,7 @@ export const mailbox = [
     icon: 'star',
     count: 0,
     active: false,
+    color: '#cc6464',
   },
 
   {
@@ -52,8 +55,8 @@ export const mailbox = [
     icon: 'star',
     count: 0,
     active: false,
+    color: '#cc6464',
   },
-
 
   {
     id: 7,
@@ -61,6 +64,7 @@ export const mailbox = [
     icon: 'info-circle',
     count: 0,
     active: false,
+    color: '#90b12e',
   },
 
   {
@@ -69,6 +73,7 @@ export const mailbox = [
     icon: 'folder',
     count: 0,
     active: false,
+    color: '#90b12e',
   },
 
   {
@@ -77,6 +82,7 @@ export const mailbox = [
     icon: 'info-circle',
     count: 0,
     active: false,
+    color: '#abb9c8',
   },
 
   {
@@ -85,31 +91,34 @@ export const mailbox = [
     icon: 'info-circle',
     count: 0,
     active: false,
+    color: '#eb93ff',
   },
 
-  { 
+  {
     id: 11,
-    name: 'Not-Responding-Any-More',
+    name: 'Not-Responding',
     icon: 'info-circle',
     count: 0,
     active: false,
+    color: '#74457e',
   },
-
 
   {
     id: 12,
     name: 'Incorrect Detail',
-    icon: 'info-circle',
+    icon: 'file',
     count: 0,
     active: false,
+    color: '#90b12e',
   },
 
   {
     id: 13,
     name: 'Agent',
-    icon: 'info-circle',
+    icon: 'man',
     count: 0,
     active: false,
+    color: '#8806a5',
   },
 
   {
@@ -118,10 +127,8 @@ export const mailbox = [
     icon: 'trash',
     count: 0,
     active: false,
+    color: 'red',
   },
-
-
-
 
   // {
   //   id: 7,
@@ -130,9 +137,6 @@ export const mailbox = [
   //   count: 0,
   //   active: false,
   // },
-
- 
-
 ];
 
 export const filter = [

@@ -255,12 +255,12 @@ export class FullComponent implements OnInit {
             route: 'leads',
             children: [
               {
-                displayName: 'Add New Lead',
+                displayName: 'Add-Lead',
                 iconName: 'point',
                 route: 'leads/create-lead',
               },
               {
-                displayName: 'New Leads',
+                displayName: 'New-Leads',
                 iconName: 'point',
                 route: 'leads/assign-lead',
               },
@@ -270,7 +270,7 @@ export class FullComponent implements OnInit {
                 route: 'leads/re-assign',
               },
               {
-                displayName: 'All Leads',
+                displayName: 'All-Leads',
                 iconName: 'point',
                 route: 'leads/my-lead',
               },
@@ -330,20 +330,26 @@ export class FullComponent implements OnInit {
           },
 
           {
-            navCap: 'Users',
+            navCap: 'Team Management',
           },
           {
-            displayName: 'Users',
+            displayName: 'Manage Team',
             iconName: 'apps',
             route: 'users',
             children: [
               {
-                displayName: 'Add a User',
+                displayName: 'Add-User',
                 iconName: 'point',
                 route: 'users/create-user',
               },
+
               {
-                displayName: 'Create Role',
+                displayName: 'User-List',
+                iconName: 'point',
+                route: 'users/user-list',
+              },
+              {
+                displayName: 'Add-Role',
                 iconName: 'point',
                 route: 'users/create-role',
               },
@@ -352,30 +358,23 @@ export class FullComponent implements OnInit {
                 iconName: 'point',
                 route: 'users/assign-permission',
               },
-
-              {
-                displayName: 'List',
-                iconName: 'point',
-                route: 'users/user-list',
-              },
             ],
           },
-
-          {
-            navCap: 'Teams',
-          },
-          {
-            displayName: 'Team',
-            iconName: 'apps',
-            route: 'team',
-            children: [
-              {
-                displayName: 'Add Team',
-                iconName: 'point',
-                route: 'team/create-team',
-              },
-            ],
-          },
+          // {
+          //   navCap: 'Teams',
+          // },
+          // {
+          //   displayName: 'Team',
+          //   iconName: 'apps',
+          //   route: 'team',
+          //   children: [
+          //     {
+          //       displayName: 'Add Team',
+          //       iconName: 'point',
+          //       route: 'team/create-team',
+          //     },
+          //   ],
+          // },
         ];
       } else if (this.LoginUserRole == 2 || this.LoginUserRole === 2) {
         this.navItems = [

@@ -81,3 +81,8 @@
   
   margin-right: 0px !important;
 }
+
+
+:host ::ng-deep .mail-sidebar{
+  width: 250px !important;
+}

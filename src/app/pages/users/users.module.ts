@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule, Routes } from '@angular/router';
-
 import { MaterialModule } from 'src/app/material.module';
 import { FormModule } from '../forms/forms.module';
 import { FormsModule } from '@angular/forms';
@@ -12,12 +11,8 @@ import { MatInputModule } from '@angular/material/input';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
-
-
-
 import { CreateuserComponent } from './createuser/createuser.component';
 import { CreateroleComponent } from './createrole/createrole.component';
 import { AssignPermissionComponent } from './assign-permission/assign-permission.component';
@@ -73,7 +68,6 @@ const router: Routes = [
           ],
         },
       },
-
       {
         path: 'user-list',
         component: UserListComponent,
@@ -88,7 +82,6 @@ const router: Routes = [
     ],
   },
 ];
-
 
 @NgModule({
   declarations: [

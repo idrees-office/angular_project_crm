@@ -4,6 +4,8 @@ import { FormGroup, FormControl, Validators, FormsModule, ReactiveFormsModule } 
 import { Router, RouterModule } from '@angular/router';
 import { MaterialModule } from '../../../material.module';
 import { NgIf } from '@angular/common';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-boxed-forgot-password',

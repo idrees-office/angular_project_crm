@@ -23,7 +23,6 @@ export interface Lead {
   client_user_email: any;
   imagePath: string;
   lead_title:any;
-  // Add any other properties you need for leads
 }
 
 @Component({
@@ -37,7 +36,8 @@ export class AssignLeadComponent implements OnInit {
     'lead_title',
     'customer_name',
     'customer_phone',
-    'reassign',
+    'lead_source',
+    'assign',
     'actions',
   ];
   exampleDatabase: ExampleHttpDatabase | null = null;
@@ -108,7 +108,7 @@ export class AssignLeadComponent implements OnInit {
       map((value: any) => this._filter(value))
     );
   }
-  
+
   private _filter(value: any): any[] {
     return this.allAgents
       .filter((agent) => agent.client_user_name.includes(value))
@@ -212,7 +212,7 @@ export class AssignLeadComponent implements OnInit {
         const leadid = leads.lead_id;
         if (this.reassignLeadSelectedAgent != '' && leadid != '') {
           var fd = new FormData();
-          fd.append('agent_id', this.reassignLeadSelectedAgent.client_user_id);
+          fd.append('agent_id', this.reassignLeadSelectedAgent.id);
           fd.append('lead_id', leadid);
           if (this.loginuserId) {
             fd.append('login_user_id', this.loginuserId);

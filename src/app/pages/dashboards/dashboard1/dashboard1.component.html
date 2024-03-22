@@ -54,7 +54,7 @@
           <div *ngFor="let mail of mailboxes" (click)="mailboxesChanged(mail.id)">
             <div class="d-flex align-items-center inbox-list rounded p-16 cursor-pointer"
               [class.bg-light-primary]="mail.active">
-              <i-tabler name="{{ mail.icon }}" class="m-r-12 icon-18"></i-tabler>
+              <i-tabler [style.color]="mail.color" name="{{ mail.icon }}" class="m-r-12 icon-18"></i-tabler>
               <span class="f-w-400 f-s-14">{{ mail.name }}</span>
               <div class="m-l-auto d-sm-flex align-items-center gap-4">
                 <ng-container
@@ -72,7 +72,7 @@
                     'Meeting Complate' : MeetingComplate,
                     'Low-Buget' : LowBuget,
                     'No-Answer' : NoAnswer,
-                    'Not-Responding-Any-More' : NotResponding,
+                    'Not-Responding' : NotResponding,
                     'Incorrect Detail' : IncorrectDetail,
                     'Agent' : Agent,
                     'Junk' : Junk
@@ -106,7 +106,6 @@
                   >
                 </button>
               </div>
-              <!-- <pagination-controls (pageChange)="p = $event" previousLabel="" nextLabel="" class="mail-pagination"></pagination-controls> -->
             </div>
           </div>
           <mat-divider></mat-divider>
@@ -136,10 +135,6 @@
             </div>
           </div>
         </div>
-
-        
-
-
         <!-- ------------------------------------------------------ -->
         <!-- Details of Email  -->
         <!-- ------------------------------------------------------ -->
@@ -147,20 +142,17 @@
           <div *ngIf="ms.selectedLead === null" class="h-100 welcome-app">
             <div class="d-flex align-items-center justify-content-center w-100">
               <div>
-                <h3 class="mat-subtitle-1 f-w-600">Please Select Any Leads which lead your want see info</h3> <img
-                  src="/assets/images/breadcrumb/emailSv.png" width="250px" />
+                <h3 style="margin-top: 30px;" class="mat-subtitle-1">Please Select Any Leads which lead your want see info</h3>
+                <img  src="/assets/images/breadcrumb/emailSv.png" width="250px" />
               </div>
             </div>
           </div>
           <div *ngIf="ms.selectedLead !== null" class="w-100">
             <!-- <app-maildetail></app-maildetail>    [matMenuTriggerFor]="menu" -->
             <div class="w-100 position-relative">
-              <div class="d-flex align-items-center p-x-16 p-y-16" style="padding-top: 19px !important;">
+              <!-- style="padding-top: 19px !important;" -->
+              <div class="d-flex align-items-center p-x-16" style="padding-top: 12px; padding-bottom: 13px;">
                 {{ leadInfo.lead_title | slice : 0 : 45 || 'Lead Title Can not found' }}
-                <!-- <button mat-icon-button (click)="removeClass()" class="d-block d-lg-none"><mat-icon>arrow_back</mat-icon></button>
-                      <button mat-icon-button [matMenuTriggerFor]="menu">
-                        <i-tabler name="arrow-badge-right" class="icon-20"></i-tabler>
-                      </button> -->
               </div>
               <mat-menu #menu="matMenu" class="cardWithShadow">
                 <!-- <button mat-menu-item class="p-l-0">
@@ -182,7 +174,6 @@
                     <mat-card-content>
                       <div class="table-responsive m-t-30">
                         <table mat-table [dataSource]="dataSource1" class="w-100">
-
                             <ng-container matColumnDef="Client-Name">
                              <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Client-Name </th>
                              <td mat-cell *matCellDef="let element" class="mat-body-1"> {{ leadInfo.customer_name ||'Invalid Clinet Name' }}  </td>

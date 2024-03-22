@@ -173,14 +173,8 @@ export class CreateuserComponent implements OnInit {
     const formData = new FormData();
     const isUpdate = this.client_user_id !== 0;
     const filed = this.userFrom.value;
-    if (this.team_id){
-        formData.append('team_id', this.team_id);
-    }
-
-    if (this.roleId) {
-        formData.append('role_id', this.roleId);
-     }
-    // formData.append('role_id', this.checkedItems.join(','));
+    if (this.team_id){ formData.append('team_id', this.team_id); }
+    if (this.roleId) { formData.append('role_id', this.roleId); }
     formData.append('client_user_name', filed.user_name);
     formData.append('client_user_phone', filed.user_phone);
     formData.append('client_user_designation', filed.user_designation);
@@ -188,7 +182,6 @@ export class CreateuserComponent implements OnInit {
     formData.append('password', filed.user_password);
     formData.append('client_sort_order', filed.sort_order);
     formData.append('client_user_status', filed.user_status);
-    // formData.append('client_website_status', this.websitestatus);
     if (this.userFile) {
       formData.append('client_user_image', this.userFile);
     }
@@ -198,6 +191,7 @@ export class CreateuserComponent implements OnInit {
           Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true, title: 'Create User Successfully', icon: 'success',
           });
           this.userFrom.reset();
+          this.firstControl.reset();
         } else {
           Swal.fire('Some Thing was wrong...', '', 'error');
         }
