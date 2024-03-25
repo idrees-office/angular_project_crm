@@ -1,9 +1,23 @@
 <mat-card class="cardWithShadow">
-    <mat-card-header>
-      <!-- <mat-card-title>HTTP table</mat-card-title> -->
-      <!-- <mat-card-subtitle class="mat-body-1">get data with http</mat-card-subtitle> -->
-    </mat-card-header>
     <mat-card-content>
+        <div class="row" *ngIf="assigemultipleleadtoagent">
+            <div class="offset-6 col-lg-3">
+              </div>
+              <div class="col-lg-3"> 
+                <div class="btnDiv" style="margin-top: 4px;">
+                    <mat-form-field appearance="outline" class="custom-width mt-5">
+                    <input type="text" placeholder="Select Agent" aria-label="Number" [formControl]="firstControl2" matInput [matAutocomplete]="auto3"  style="padding-top: 10px; padding-bottom: 10px;"/>
+                     <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displaySelectedAgent" (optionSelected)="AssigMultipleLeadstoAgent($event)">
+                       <mat-option *ngFor="let agent of filteredOptions2 | async" [value]="agent">
+                         {{ agent.name }}
+                       </mat-option>
+                      </mat-autocomplete>
+                      </mat-form-field>
+                      &nbsp;
+                      <a class="m-r-10 cursor-pointer m-t-2"><i-tabler name="trash" class="icon-18" style="color: red;"></i-tabler></a>
+                </div>
+            </div>
+        </div>
       <div class="example-container m-t-30">
         <div class="example-loading-shade" *ngIf="isLoadingResults || isRateLimitReached">
           <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
@@ -14,8 +28,11 @@
         <div class="example-table-container responsive-table">
           <table mat-table [dataSource]="leadsData" class="example-table" matSort matSortActive="created" matSortDisableClear matSortDirection="desc">
             <ng-container matColumnDef="lead_id">
-              <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-16"> # </th>
-              <td mat-cell *matCellDef="let row" > {{ row.counter }} </td>
+              <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-16"> ?? </th>
+              <td mat-cell *matCellDef="let row" >
+
+               <mat-checkbox #checkbox (change)="onLeadSelectionChange(row)"></mat-checkbox>
+              </td>
             </ng-container>
             <ng-container matColumnDef="lead_title">
                 <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-16"> Lead Title </th>
@@ -51,13 +68,21 @@
                <ng-container matColumnDef="lead_source">
                 <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-16">Source</th>
                 <td mat-cell *matCellDef="let row">
-                   <span class="badge bg-success" style="color:#fff; padding-bottom: 5px; padding-left: 7px; padding-right: 7px; border-radius: 7px;"><small>{{ row.lead_source  || 'Invalid Name' }}</small> </span>
+                  <ng-template [ngIf]="row.lead_source== 'created own' || row.lead_source === 'created own'">
+                        <span class="bg-light-accent text-accent rounded f-w-600 p-6 p-y-4 f-s-12"> {{ row.lead_source || 'Invalid Source' }} </span>
+                  </ng-template>
+                  <ng-template [ngIf]="row.lead_source== 'Facebook' || row.lead_source === 'Facebook'">
+                        <span class="bg-light-primary text-primary rounded f-w-600 p-6 p-y-4 f-s-12"> {{ row.lead_source || 'Invalid Source' }} </span>
+                  </ng-template>
+                  <ng-template [ngIf]="row.lead_source== 'Instagram' || row.lead_source === 'Instagram'">
+                        <span class="bg-light-error text-error rounded f-w-600 p-6 p-y-4 f-s-12"> {{ row.lead_source || 'Invalid Source' }} </span>
+                  </ng-template>
                 </td>
               </ng-container>
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-16"> Actions </th>
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-16"> Date </th>
                 <td mat-cell *matCellDef="let row">
-                   <a class="m-r-10 cursor-pointer" (click)="Delete($event, row.lead_id)"><i-tabler name="trash" class="icon-18"></i-tabler> </a>
+                     {{row.created_at | date: 'dd-MM-yyyy'}}
                 </td>
               </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

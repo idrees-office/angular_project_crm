@@ -26,6 +26,7 @@ export class LeadsService {
   assignlead = environment.baseUrl + '/leads/assign-lead';
   leadnotification = environment.baseUrl + '/leads/lead-notifcation';
   exportcsvurl = environment.baseUrl + '/leads/export-csv';
+  assignmultipleleadsurl = environment.baseUrl + '/leads/assign-multiple-lead';
 
   constructor(private http: HttpClient) {}
 
@@ -95,6 +96,9 @@ export class LeadsService {
     return this.http.post(this.exportcsvurl, postData);
   }
 
+  AssignMultipleLead(postData:any){
+    return this.http.post(this.assignmultipleleadsurl, postData);
+  }
   // private handleError(error: HttpErrorResponse) {
   //   if (error.error instanceof ErrorEvent) {
   //     Swal.fire({

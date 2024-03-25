@@ -18,7 +18,7 @@
                             </mat-form-field>
                         </div>
                         <div class="col-sm-6 custom_lable_col">
-                            <mat-label class="d-block custom_lable" style="font-size: 10px;">UserPhone</mat-label>
+                            <mat-label class="d-block custom_lable">UserPhone</mat-label>
                             <mat-form-field appearance="outline" class="w-100">
                                 <input matInput type="" number placeholder="UserPhone" formControlName="user_phone" style="border-radius: 0px;" />
                                 <mat-icon matPrefix class="op-5"> <i-tabler name="user" class="icon-20 d-flex"></i-tabler></mat-icon>
@@ -27,9 +27,8 @@
                                 </mat-hint>
                             </mat-form-field>
                         </div>
-
                         <div class="col-sm-6 custom_lable_col">
-                            <mat-label class="d-block custom_lable" style="font-size: 10px;">Designation</mat-label>
+                            <mat-label class="d-block custom_lable">Designation</mat-label>
                             <mat-form-field appearance="outline" class="w-100">
                                 <input matInput placeholder="Designation...." formControlName="user_designation" style="border-radius: 0px;" />
                                 <mat-icon matPrefix class="op-5"> <i-tabler name="user" class="icon-20 d-flex"></i-tabler></mat-icon>
@@ -39,7 +38,7 @@
                             </mat-form-field>
                         </div>
                          <div class="col-sm-6 custom_lable_col">
-                            <mat-label class="d-block custom_lable" style="font-size: 10px;">Users</mat-label>
+                            <mat-label class="d-block custom_lable">Users</mat-label>
                             <mat-form-field appearance="outline" class="custom-width mt-5">
                             <input type="text" placeholder="Select Agent" aria-label="Number"  [formControl]="firstControl" matInput [matAutocomplete]="auto3" />
                             <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displaySelectedAgent" (optionSelected)="onOptionSelected($event)">
@@ -50,7 +49,7 @@
                         </mat-form-field>
                         </div>
                         <div class="col-sm-6 custom_lable_col">
-                            <mat-label class="d-block custom_lable" style="font-size: 10px;">Email</mat-label>
+                            <mat-label class="d-block custom_lable">Email</mat-label>
                             <mat-form-field appearance="outline" class="w-100">
                                 <input matInput type="email" placeholder="Email" formControlName="user_email" style="border-radius: 0px;" />
                                 <mat-icon matPrefix class="op-5"> <i-tabler name="user" class="icon-20 d-flex"></i-tabler></mat-icon>
@@ -60,7 +59,7 @@
                             </mat-form-field>
                         </div>
                         <div class="col-sm-6 custom_lable_col">
-                            <mat-label class="d-block custom_lable" style="font-size: 10px;">Password</mat-label>
+                            <mat-label class="d-block custom_lable">Password</mat-label>
                             <mat-form-field appearance="outline" class="w-100">
                                 <input matInput type="password" placeholder="Password" formControlName="user_password" style="border-radius: 0px;" />
                                 <mat-icon matPrefix class="op-5"> <i-tabler name="password" class="icon-20 d-flex"></i-tabler></mat-icon>
@@ -74,8 +73,7 @@
                             <mat-form-field appearance="outline">
                                 <mat-label class="d-block custom_lable">Status</mat-label>
                                 <mat-select placeholder="Type to Search" formControlName="user_status">
-                                    <mat-option *ngFor="let option of options" [value]="option.value">
-                                        {{ option.name }}
+                                    <mat-option *ngFor="let option of options" [value]="option.value"> {{ option.name }}
                                     </mat-option>
                                 </mat-select>
                             </mat-form-field>
@@ -99,7 +97,7 @@
                     </div>
                     <br>
                     <div class="row d-flex justify-content-end ">
-                        <div class="col-sm-12"><button type="submit" type="submit" [disabled]="this.userFrom.invalid || isNextDisabled" mat-flat-button color="primary">Send</button></div>
+                        <div class="col-sm-12"><button style="border-radius: 0px;" type="submit" type="submit" [disabled]="this.userFrom.invalid || isNextDisabled" mat-flat-button color="primary">Send</button></div>
                     </div>
                 </mat-card-content>
             </mat-card>
@@ -113,7 +111,7 @@
                     <div class="mb-3">
                          <mat-radio-group formControlName="checkedItems" (change)="toggleRadio()">
                             <mat-radio-button *ngFor="let item of DefineRoles" [value]="item.id">
-                                {{ item.name }}
+                                {{ item.name | titlecase  }}
                             </mat-radio-button>
                         </mat-radio-group>
                         <div *ngIf="f['checkedItems'].touched && f['checkedItems'].invalid">
@@ -122,20 +120,6 @@
                     </div>
                 </mat-card-content>
             </mat-card>
-            <!-- <mat-card>
-                <mat-card-header>
-                    <mat-card-title class="m-b-0">User Website Role</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <label *ngFor="let item of items2" class="checkbox_container"> {{ item.label }}
-                        <mat-checkbox type="checkbox" formControlName="checkedItemsforwebsite" [checked]="item.selected" (change)="toggleSelection(item)"></mat-checkbox>
-                        <span class="checkmark"></span>
-                      </label>
-                      <div *ngIf="f['checkedItemsforwebsite'].touched && f['checkedItemsforwebsite'].invalid">
-                          <div *ngIf="f['checkedItemsforwebsite'].errors && f['checkedItemsforwebsite'].errors?.['required']" class="text-danger">Website-Role is required</div>
-                      </div>
-                </mat-card-content>
-            </mat-card> -->
         </div>
     </div>
 </form>

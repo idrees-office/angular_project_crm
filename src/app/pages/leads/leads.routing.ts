@@ -27,7 +27,7 @@ export const LeadsRoutes: Routes = [
         path: 'assign-lead',
         component: AssignLeadComponent,
         data: {
-          title: 'Assign Leads',
+          title: 'These Are the New Leads',
           urls: [
             { title: 'Dashboard', url: '/leads/assign-lead' },
             { title: 'Assign Leads' },

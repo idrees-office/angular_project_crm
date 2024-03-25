@@ -13,7 +13,6 @@ import { TablerIconsModule } from 'angular-tabler-icons';
 import * as TablerIcons from 'angular-tabler-icons/icons';
 import { ListSaleOfferComponent } from './list-sale-offer/list-sale-offer.component';
 
-
 const router : Routes = [
   {
     path : '',
@@ -22,10 +21,10 @@ const router : Routes = [
         path: 'sale-offer',
         component: SaleOfferComponent,
         data: {
-          title: 'Create Sale Offer',
+          title: 'Sale Offer',
           urls: [
             { title: 'Dashboard', url: '/sale/sale-offer' },
-            { title: 'Create Sale Offer' },
+            { title: 'Sale Offer' },
           ],
         },
       },

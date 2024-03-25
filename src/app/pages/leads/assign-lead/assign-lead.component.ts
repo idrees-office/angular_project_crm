@@ -38,7 +38,7 @@ export class AssignLeadComponent implements OnInit {
     'customer_phone',
     'lead_source',
     'assign',
-    'actions',
+    'date',
   ];
   exampleDatabase: ExampleHttpDatabase | null = null;
   leadsData: Lead[] = [];
@@ -49,6 +49,7 @@ export class AssignLeadComponent implements OnInit {
   reassignLeadSelectedAgent: any;
   allAgents: any[] = [];
   filteredOptions: Observable<any[]>;
+  filteredOptions2: Observable<any[]>;
   userData: any;
   user: any;
   loginuserId: any;
@@ -56,8 +57,11 @@ export class AssignLeadComponent implements OnInit {
   searchText: string;
   filteredAgents: any[];
   firstControl = new FormControl('');
+  firstControl2 = new FormControl('');
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  assigemultipleleadtoagent = false;
+  selectedLeads: any[] = [];
   constructor(
     private _httpClient: HttpClient,
     private _LeadsService: LeadsService,
@@ -104,6 +108,11 @@ export class AssignLeadComponent implements OnInit {
     this.agents();
 
     this.filteredOptions = this.firstControl.valueChanges.pipe(
+      startWith(''),
+      map((value: any) => this._filter(value))
+    );
+
+    this.filteredOptions2 = this.firstControl2.valueChanges.pipe(
       startWith(''),
       map((value: any) => this._filter(value))
     );
@@ -195,11 +204,9 @@ export class AssignLeadComponent implements OnInit {
   }
 
   onOptionSelected(e: MatAutocompleteSelectedEvent, leads: any) {
-    //  this.firstControl.setValue(e.option.value.name);
     const selectedAgent = e.option.value;
     this.firstControl.setValue(selectedAgent.name);
-    this._ChangeDetectorRef.detectChanges(); // Manually trigger change detection
-
+    this._ChangeDetectorRef.detectChanges();
     Swal.fire({
       html: `Are you sure want to Assign?`,
       showCloseButton: true,
@@ -244,6 +251,37 @@ export class AssignLeadComponent implements OnInit {
 
   displayLeadLabel(agent: any): string {
     return agent ? agent.client_user_name : '';
+  }
+
+  onLeadSelectionChange(lead: any) {
+    const index = this.selectedLeads.findIndex(
+      (selectedLead) => selectedLead.lead_id === lead.lead_id
+    );
+    if (index === -1) {
+      this.selectedLeads.push(lead);
+    } else {
+      this.selectedLeads.splice(index, 1);
+    }
+
+    this.assigemultipleleadtoagent = this.selectedLeads.length > 0;
+  }
+
+  isSelected(lead: any): boolean {
+    return this.selectedLeads.some(
+      (selectedLead) => selectedLead.lead_id === lead.lead_id
+    );
+  }
+
+  AssigMultipleLeadstoAgent(event: any) {
+    const fd = new FormData();
+    const _selectedAgent = event.option.value;
+    fd.append('agent_id', _selectedAgent.id);
+    this.selectedLeads.forEach((lead) => {
+      fd.append('lead_id[]', lead.lead_id);
+    });
+    this._LeadsService.AssignMultipleLead(fd).subscribe((res: any) => {
+      console.log(res);
+    });
   }
 }
 

@@ -11,17 +11,12 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 
 
-// interface Item {
-//   id: any;
-//   label: any;
-//   selected: any;
-// }
 
 @Component({
   selector: 'appcreate-user',
   templateUrl: './createuser.component.html',
-  // styleUrls: ['./create-user.component.scss']
-  styleUrls: [],
+  styleUrls: ['./createuser.component.scss'],
+  // styleUrls: [],
 })
 export class CreateuserComponent implements OnInit {
   userFrom: FormGroup;
