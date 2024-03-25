@@ -144,7 +144,13 @@ export class AssignLeadComponent implements OnInit {
     );
   }
 
-  Delete(e: Event, lead_id: any) {
+  Delete(e: Event) {
+
+    var fd = new FormData();
+       this.selectedLeads.forEach((lead) => {
+        console.log(lead.lead_id)
+         fd.append('lead_id[]', lead.lead_id);
+       });
     Swal.fire({
       title: 'Are you sure want to remove?',
       showCancelButton: true,
@@ -152,7 +158,7 @@ export class AssignLeadComponent implements OnInit {
       cancelButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
-        this._LeadsService.DeleteLead(lead_id).subscribe(
+        this._LeadsService.DeleteLead(fd).subscribe(
           (res: any) => {
             if (res.status === 'delete') {
               Swal.fire({

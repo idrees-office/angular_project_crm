@@ -124,10 +124,11 @@ export class CreateuserComponent implements OnInit {
     );
   }
 
-  userImage(event: any) {
-    this.userFile = event.target.files[0]; // For Create
-    this.userFile2 = event.target.files[0]; // For update
-  }
+
+  // userImage(event: any) {
+  //   this.userFile = event.target.files[0]; 
+  //   this.userFile2 = event.target.files[0]; 
+  // }
 
   isChecked(item: any): boolean {
     return this.checkedItems.includes(item.id);
@@ -177,9 +178,10 @@ export class CreateuserComponent implements OnInit {
     formData.append('password', filed.user_password);
     formData.append('client_sort_order', filed.sort_order);
     formData.append('client_user_status', filed.user_status);
-    if (this.userFile) {
-      formData.append('client_user_image', this.userFile);
-    }
+
+    // if (this.userFile) {
+    //   formData.append('client_user_image', this.userFile);
+    // }
     this._UserService.create(formData).subscribe(
       (res: any) => {
         if (res.status == 'success') {

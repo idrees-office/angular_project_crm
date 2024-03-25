@@ -80,9 +80,13 @@ export class LeadsService {
     return this.http.get(this.getagentnamebyid + '/' + id);
   }
 
-  DeleteLead(id: any) {
-    return this.http.get(this.deleteleadsurl + '/' + id);
+  DeleteLead(Postdata: any) {
+    return this.http.post(this.deleteleadsurl, Postdata);
   }
+
+  // DeleteLead(id: any) {
+  //   return this.http.get(this.deleteleadsurl + '/' + id);
+  // }
 
   AssignLeads(postData: any) {
     return this.http.post(this.assignlead, postData);
@@ -96,7 +100,7 @@ export class LeadsService {
     return this.http.post(this.exportcsvurl, postData);
   }
 
-  AssignMultipleLead(postData:any){
+  AssignMultipleLead(postData: any) {
     return this.http.post(this.assignmultipleleadsurl, postData);
   }
   // private handleError(error: HttpErrorResponse) {

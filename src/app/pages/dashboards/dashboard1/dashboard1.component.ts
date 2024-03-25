@@ -205,6 +205,8 @@ export class AppDashboard1Component implements OnInit {
       .subscribe((res: any) => {
         this.allLeads = res.data;
         var leadsstatus = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
+        console.log('sdds')
+        
         leadsstatus.forEach((leadStatus) => {
           this.filterLeads(leadStatus);
         });
@@ -456,6 +458,7 @@ export class AppDashboard1Component implements OnInit {
       case 3:
         this.ms.selectedLead = null;
         this.ms.leadList = this.Connectedleads;
+        console.log(this.Connectedleads);
         this.ms.topLable = 'Connected';
         this.mailActiveClass(lead_box_id);
         this.ms.type = 'connectedleads';
@@ -604,8 +607,11 @@ export class AppDashboard1Component implements OnInit {
           if (res.status === 'success') {
             Swal.fire({ title: 'Success', html: 'Lead Update Successfully', timer: 2000, showConfirmButton: false,});
             this.updateleadform.reset();
+
             this.loadAllLeads();
-             window.location.reload();
+            this.mailboxesChanged(3);
+            console.log(filed.lead_status.lead_status);
+            //  window.location.reload();
             // this.router.navigate(['/dashboards/dashboard1']);
             // this.mailboxesChanged(this.leadBoxId);
             // this.mailboxesChanged(this.leadBoxId);
