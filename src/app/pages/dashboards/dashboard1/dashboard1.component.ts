@@ -506,8 +506,9 @@ export class AppDashboard1Component implements OnInit {
               showConfirmButton: false,
             });
             this.updateleadform.reset();
-            this.loadAllLeads();
-            this.mailboxesChanged(3);
+            // this.loadAllLeads();
+            // this.mailboxesChanged(3);
+            window.location.reload();
           }
         },
         (error: any) => {
