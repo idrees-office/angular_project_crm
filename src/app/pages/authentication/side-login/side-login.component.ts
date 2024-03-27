@@ -34,8 +34,7 @@ export class AppSideLoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.returnUrl =
-      this.ActivatedRoute.snapshot.queryParams['returnUrl'] || '/';
+    // this.returnUrl = this.ActivatedRoute.snapshot.queryParams['returnUrl'] || '/';
     this.loginForm = this.fb.group({
       client_user_email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
@@ -66,7 +65,7 @@ export class AppSideLoginComponent implements OnInit {
           this.loginForm.reset();
           localStorage.setItem('isLoggedin', 'true');
           if (localStorage.getItem('isLoggedin')) {
-            this.router.navigate([this.returnUrl]);
+            this.router.navigate(['dashboards/dashboard1']);
           }
         } else if (res.status == 'false') {
           Swal.fire('Invalid Username And Password ', '', 'error');

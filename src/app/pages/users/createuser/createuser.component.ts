@@ -29,7 +29,7 @@ export class CreateuserComponent implements OnInit {
   loadingIndicator: any;
   userObj: any;
   DefineRoles: any;
-  roleId: any;
+  adminagentsuperadmindeveloper: any;
   allAgents: any[] = [];
   filteredOptions: Observable<any[]>;
   firstControl = new FormControl('');
@@ -142,7 +142,11 @@ export class CreateuserComponent implements OnInit {
   }
 
   toggleRadio() {
-    this.roleId = this.userFrom.value.checkedItems;
+
+    this.adminagentsuperadmindeveloper = this.userFrom.value.checkedItems;
+
+    console.log(this.adminagentsuperadmindeveloper);
+
   }
 
   get f() {
@@ -170,7 +174,11 @@ export class CreateuserComponent implements OnInit {
     const isUpdate = this.client_user_id !== 0;
     const filed = this.userFrom.value;
     if (this.team_id){ formData.append('team_id', this.team_id); }
-    if (this.roleId) { formData.append('role_id', this.roleId); }
+
+    if (this.adminagentsuperadmindeveloper) {
+      formData.append('role_id', this.adminagentsuperadmindeveloper);
+    }
+
     formData.append('client_user_name', filed.user_name);
     formData.append('client_user_phone', filed.user_phone);
     formData.append('client_user_designation', filed.user_designation);

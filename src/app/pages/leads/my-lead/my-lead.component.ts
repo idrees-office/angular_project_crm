@@ -19,7 +19,7 @@ export interface Lead {
   client_user_email: any;
   imagePath: string;
   lead_title:any;
-  // Add any other properties you need for leads
+  
 }
 
 @Component({
@@ -36,7 +36,6 @@ export class MyLeadComponent implements OnInit {
     'customer_phone',
     // 'customer_phone2',
     'date',
-    'actions',
   ];
   exampleDatabase: ExampleHttpDatabase | null = null;
   leadsData: Lead[] = [];
@@ -72,7 +71,6 @@ export class MyLeadComponent implements OnInit {
           switchMap(() => {
             this.isLoadingResults = true;
             return this.exampleDatabase!.getLeads(
-              this.role,
               this.loginuserId,
               this.sort.active,
               this.sort.direction,
@@ -104,48 +102,13 @@ export class MyLeadComponent implements OnInit {
     this.userData = localStorage.getItem('userData');
     this.user = JSON.parse(this.userData);
     this.loginuserId = this.user.client_user_id;
-    this.role = this.user.role_id;
     this.agents();
-  }
-
-  Delete(e: Event, lead_id: any, startDate?: any, endDate?: any) {
-    Swal.fire({
-      title: 'Are you sure want to remove?',
-      showCancelButton: true,
-      confirmButtonText: 'Yes',
-      cancelButtonText: 'No',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this._LeadsService.DeleteLead(lead_id).subscribe(
-          (res: any) => {
-            if (res.status === 'delete') {
-              Swal.fire({
-                title: 'Success',
-                html: 'Lead Delete Successfully',
-                timer: 2000,
-                showConfirmButton: false,
-              });
-              this.reloadData(startDate, endDate);
-            }
-          },
-          (error: any) => {
-            if(error.status == 403 || error.status === 403){
-              this._router.navigate(['error']);
-            }
-          }
-        );
-      } else {
-        // this.modalService.dismissAll();
-        // this.selectedAgent = null;
-      }
-    });
   }
 
   reloadData(startDate?: any, endDate?: any) {
     if (this.sort && this.paginator) {
       this.isLoadingResults = true;
       this.exampleDatabase!.getLeads(
-        this.role,
         this.loginuserId,
         this.sort.active,
         this.sort.direction,
@@ -185,9 +148,6 @@ export class MyLeadComponent implements OnInit {
       }
       if (this.loginuserId !== '') {
         fd.append('login_user_id', this.loginuserId);
-      }
-      if (this.role !== '') {
-        fd.append('user_role', this.role);
       }
       this._LeadsService.FilterCsv(fd).subscribe((res: any) => {
         window.open(res.data);
@@ -233,7 +193,6 @@ export class ExampleHttpDatabase {
 
   constructor(private _httpClient: HttpClient, private _router: Router) {}
   getLeads(
-    role: any,
     loginuserId: any,
     sort: string,
     order: string,

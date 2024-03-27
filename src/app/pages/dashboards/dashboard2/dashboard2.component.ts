@@ -73,7 +73,7 @@ export class AppDashboard2Component implements OnInit {
     this.userData = localStorage.getItem('userData');
     this.user = JSON.parse(this.userData);
     this.loginuserId = this.user.client_user_id;
-    this.role = this.user.role_id;
+    
 
 
     this.agents();

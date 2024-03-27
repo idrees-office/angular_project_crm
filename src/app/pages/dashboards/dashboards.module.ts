@@ -23,11 +23,17 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { LeaddetailmodalComponent } from './leaddetailmodal/leaddetailmodal.component';
+
+
+
+
 
 @NgModule({
   declarations: [
     AppDashboard1Component,
     AppDashboard2Component,
+    LeaddetailmodalComponent,
 
   ],
   imports: [
@@ -52,7 +58,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     NgScrollbarModule,
     NgxPaginationModule,
     MatAutocompleteModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    
     
 
   ]

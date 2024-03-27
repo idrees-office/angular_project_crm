@@ -53,6 +53,6 @@ export interface Option {
         { lead_status: '12', label: 'Incorrect Detail', role: '' },
         { lead_status: '13', label: 'Agent', role: '' },
         { lead_status: '14', label: 'Junk', role: '' },
-        { lead_status: '2', label: 'Re-Assign', role: '1' },
+        // { lead_status: '2', label: 'Re-Assign', role: '1' },
       ];
     }

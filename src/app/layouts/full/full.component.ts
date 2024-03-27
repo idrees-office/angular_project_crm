@@ -227,7 +227,7 @@ export class FullComponent implements OnInit {
   LoginUserDesignation : any;
   public currentUser: any;
   role: any;
-  LoginUserRole:any;
+  
   
   ngOnInit(): void {
     this.currentUser = JSON.parse(localStorage.getItem('userData') || '{}');
@@ -236,9 +236,8 @@ export class FullComponent implements OnInit {
       this.LoginUserName  = this.currentUser.client_user_name;
       this.LoginUserEmail  = this.currentUser.client_user_email;
       this.LoginUserDesignation  = this.currentUser.client_user_designation;
-      this.LoginUserRole = this.currentUser.role_id;
-      if (this.LoginUserRole == 1 || this.LoginUserRole === 1) {
-        
+      // this.LoginUserRole = this.currentUser.role_id;
+      // if (this.LoginUserRole == 1 || this.LoginUserRole === 1) {
         this.navItems = [
           { navCap: 'Home' },
           {
@@ -376,48 +375,50 @@ export class FullComponent implements OnInit {
           //   ],
           // },
         ];
-      } else if (this.LoginUserRole == 2 || this.LoginUserRole === 2) {
-        this.navItems = [
-          {
-            displayName: 'Dashboard',
-            iconName: 'aperture',
-            route: '/dashboards/dashboard1',
-          },
-          {
-            navCap: 'Leads Management',
-          },
 
-          {
-            displayName: 'Leads Management',
-            iconName: 'apps',
-            route: 'theme-pages',
-            children: [
-              {
-                displayName: 'My Leads', 
-                iconName: 'point',
-                route: 'leads/my-lead',
-              },
-            ],
-          },
 
-          {
-            navCap: 'Account Setting',
-          },
-          {
-            displayName: 'Account Setting',
-            iconName: 'apps',
-            route: 'theme-pages',
-            children: [
-              {
-                displayName: 'Profile', 
-                iconName: 'point',
-                route: 'theme-pages/account-setting',
-              },
-            ],
-          },
+      // } else if (this.LoginUserRole == 2 || this.LoginUserRole === 2) {
+        // this.navItems = [
+        //   {
+        //     displayName: 'Dashboard',
+        //     iconName: 'aperture',
+        //     route: '/dashboards/dashboard1',
+        //   },
+        //   {
+        //     navCap: 'Leads Management',
+        //   },
 
-        ];
-      }
+        //   {
+        //     displayName: 'Leads Management',
+        //     iconName: 'apps',
+        //     route: 'theme-pages',
+        //     children: [
+        //       {
+        //         displayName: 'My Leads', 
+        //         iconName: 'point',
+        //         route: 'leads/my-lead',
+        //       },
+        //     ],
+        //   },
+
+        //   {
+        //     navCap: 'Account Setting',
+        //   },
+        //   {
+        //     displayName: 'Account Setting',
+        //     iconName: 'apps',
+        //     route: 'theme-pages',
+        //     children: [
+        //       {
+        //         displayName: 'Profile', 
+        //         iconName: 'point',
+        //         route: 'theme-pages/account-setting',
+        //       },
+        //     ],
+        //   },
+
+        // ];
+      // }
     }
   }
   

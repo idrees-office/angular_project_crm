@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Complate Information of the leads</h2>
+<mat-dialog-content class="mat-typography">
+    <div class="table-responsive m-t-30">
+        <table mat-table class="w-100" [dataSource]="data">
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">Question</th>
+                <td mat-cell *matCellDef="let element" class="mat-body-1">{{ element.name | titlecase }}</td>
+            </ng-container>
+            <ng-container matColumnDef="values">
+                <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14">Answer</th>
+                <td mat-cell *matCellDef="let element" class="mat-body-1">
+                    <ng-container *ngIf="element.values; else empty">
+                        {{ element.values.join(', ') }}
+                    </ng-container>
+                    <ng-template #empty>No values</ng-template>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="['name', 'values']"></tr>
+            <tr mat-row *matRowDef="let row; columns: ['name', 'values']"></tr>
+        </table>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button color="warn" mat-dialog-close>Close</button>
+  <!-- <button mat-flat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>Install</button> -->
+</mat-dialog-actions>

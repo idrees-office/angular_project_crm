@@ -122,11 +122,13 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = JSON.parse(localStorage.getItem('userData') || '{}');
     if (this.currentUser) {
-      
+
+      // console.log(this.currentUser?.roles[0]);
+
       this.LoginUserId     = this.currentUser.client_user_id;
       this.LoginUserName   = this.currentUser.client_user_name;
       this.LoginUserEmail  = this.currentUser.client_user_email;
-      this.LoginUserDesignation  = this.currentUser.client_user_designation;
+      this.LoginUserDesignation = this.currentUser.roles[0].name;
         this._LeadsService.LeadNotoficationAgentWise(this.LoginUserId).subscribe((res:any) => {
           if(res != 0){
 

@@ -68,7 +68,7 @@ export class AssignLeadComponent implements OnInit {
     private _Router: Router,
     private _ChangeDetectorRef: ChangeDetectorRef
   ) {}
-
+  
   ngAfterViewInit(): void {
     this.exampleDatabase = new ExampleHttpDatabase(this._httpClient);
     if (this.sort && this.paginator) {
@@ -104,7 +104,6 @@ export class AssignLeadComponent implements OnInit {
     this.userData = localStorage.getItem('userData');
     this.user = JSON.parse(this.userData);
     this.loginuserId = this.user.client_user_id;
-    this.role = this.user.role_id;
     this.agents();
 
     this.filteredOptions = this.firstControl.valueChanges.pipe(
@@ -145,12 +144,11 @@ export class AssignLeadComponent implements OnInit {
   }
 
   Delete(e: Event) {
-
     var fd = new FormData();
-       this.selectedLeads.forEach((lead) => {
-        console.log(lead.lead_id)
-         fd.append('lead_id[]', lead.lead_id);
-       });
+    this.selectedLeads.forEach((lead) => {
+      console.log(lead.lead_id);
+      fd.append('lead_id[]', lead.lead_id);
+    });
     Swal.fire({
       title: 'Are you sure want to remove?',
       showCancelButton: true,
@@ -279,16 +277,43 @@ export class AssignLeadComponent implements OnInit {
   }
 
   AssigMultipleLeadstoAgent(event: any) {
-    const fd = new FormData();
-    const _selectedAgent = event.option.value;
-    fd.append('agent_id', _selectedAgent.id);
-    this.selectedLeads.forEach((lead) => {
-      fd.append('lead_id[]', lead.lead_id);
-    });
-    this._LeadsService.AssignMultipleLead(fd).subscribe((res: any) => {
-      console.log(res);
-    });
-  }
+    Swal.fire({
+      html: `Are you sure want to Assign multple leads?`,
+      showCloseButton: true,
+      showCancelButton: true,
+      confirmButtonText: `Yes`,
+      cancelButtonText: `No`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const fd = new FormData();
+        const _selectedAgent = event.option.value;
+        fd.append('agent_id', _selectedAgent.id);
+        this.selectedLeads.forEach((lead) => {
+          fd.append('lead_id[]', lead.lead_id);
+        });
+        this._LeadsService.AssignMultipleLead(fd).subscribe(
+          (res: any) => {
+            if (res.status === 'success') {
+              Swal.fire({
+                title: 'Success',
+                html: 'Multiple Lead assign Successfully',
+                timer: 2000,
+                showConfirmButton: false,
+              });
+              this.reloadData();
+            }
+          },
+          (error: any) => {
+            if (error.status == 430 || error.status === 430) {
+              this._Router.navigate(['error']);
+            } else {
+              this._Router.navigate(['/authentication/side-login']);
+            }
+          }
+        );
+      }
+    }); 
+  } 
 }
 
 export interface LeadsApi {

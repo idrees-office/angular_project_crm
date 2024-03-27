@@ -64,7 +64,7 @@
                     {
                     'New Lead' :Newleads,
                     'Assigned Lead' : Assignleads,
-                    'Connected Lead' : Connectedleads,
+                    'Contacted Lead' : Connectedleads,
                     'Cold Lead' : Coldleads,
                     'Warm Lead' : Warmleads,
                     'Hot Lead' : Hotleads,
@@ -168,9 +168,10 @@
               <div *ngIf="ms.selectedLead" class="position-relative" style="height: calc(100vh - 247px)">
                 <div class="p-24">
                   <mat-card class="cardWithShadow">
-                    <mat-card-header class="d-flex">
-                      <mat-card-title> Details of the lead </mat-card-title>
-                    </mat-card-header>
+                  <mat-card-header class="d-flex justify-content-between align-items-center">
+                      <mat-card-title>Details of the lead</mat-card-title>
+                      <button style="border-radius: 0px;" (click)="ShwoLeadDetail(leadInfo.field_data)" *ngIf="leadInfo && (leadInfo.lead_source === 'Facebook' || leadInfo.lead_source === 'Instagram')" mat-flat-button color="accent" class="m-l-10">??</button>
+                  </mat-card-header>
                     <mat-card-content>
                       <div class="table-responsive m-t-30">
                         <table mat-table [dataSource]="dataSource1" class="w-100">
@@ -178,8 +179,6 @@
                              <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Client-Name </th>
                              <td mat-cell *matCellDef="let element" class="mat-body-1"> {{ leadInfo.customer_name ||'Invalid Clinet Name' }}  </td>
                           </ng-container>
-
-                          
                           <ng-container matColumnDef="Mobile">
                             <th mat-header-cell *matHeaderCellDef class="f-w-600 mat-subtitle-1 f-s-14"> Mobile-1</th>
                             <td mat-cell *matCellDef="let element" class="mat-body-1" [matMenuTriggerFor]="menu" style="cursor: pointer;"> {{ leadInfo.customer_phone || 'Unknow' }} </td>

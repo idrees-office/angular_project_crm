@@ -22,7 +22,7 @@ import { Location } from '@angular/common';
 import { MatAutocompleteActivatedEvent } from '@angular/material/autocomplete';
 import { AuthService } from 'src/app/services/auth.service';
 import { ChangeDetectorRef } from '@angular/core';
-
+import { LeaddetailmodalComponent } from '../leaddetailmodal/leaddetailmodal.component';
 
 
 export interface productsData {
@@ -141,7 +141,6 @@ export class AppDashboard1Component implements OnInit {
     this.userData = localStorage.getItem('userData');
     if (this.userData) {
       this.user = JSON.parse(this.userData);
-      this.role = this.user?.role_id;
       this.loginUserId = this.user?.client_user_id;
     } else {
       console.error('User data not found in localStorage');
@@ -150,11 +149,9 @@ export class AppDashboard1Component implements OnInit {
     this._AuthService.checkUserDataExists(this.loginUserId).subscribe(
       (res: any) => {},
       (error: any) => {
-        // console.log(error.status);
         if (error.status == 404 || error.status === 404) {
           localStorage.removeItem('userData');
           this._Router.navigate(['/authentication/side-login']);
-          //add swall
         }
       }
     );
@@ -166,124 +163,26 @@ export class AppDashboard1Component implements OnInit {
     });
 
     this.leadoptions = LeadStatus.leads;
-    this.leadoptions2 = this.filteredLeadsOptions();
-
-    if (this.role == 1) {
-      if (this.ms.type == '' || this.ms.type === '') {
-        // this.mailboxesChanged('Assigned Lead');
-      } else {
-        // this.mailboxesChanged('Assigned Lead');
-      }
-    } else if (this.role == 2) {
-      if (this.ms.type == '' || this.ms.type === '') {
-        // this.mailboxesChanged('Assigned Lead');
-      } else {
-        // this.mailboxesChanged('Assigned Lead');
-      }
-      // this.Newleads = [];
-      // this.Newleads.length = 0;
-    }
-
+    this.leadoptions2 = LeadStatusDropdown.leadsoption;
     this.loadAllLeads();
-  }
-
-  private filteredLeadsOptions() {
-    return LeadStatusDropdown.leadsoption.filter(
-      (lead) => lead.role === this.role || lead.role === ''
-    );
   }
 
   loadAllLeads() {
     this.userData = localStorage.getItem('userData');
     this.user = JSON.parse(this.userData);
-    this.role = this.user.role_id;
     const agent_id = this.user.client_user_id;
     this.fd.append('login_user_id', agent_id);
-    this.fd.append('user_role', this.role);
     this.leadsService
       .GetAgentAndAdminWiseLeads(this.fd)
       .subscribe((res: any) => {
         this.allLeads = res.data;
         var leadsstatus = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
-        console.log('sdds')
-        
+
         leadsstatus.forEach((leadStatus) => {
           this.filterLeads(leadStatus);
         });
       });
-    // const res: any = this.leadsService.GetAgentAndAdminWiseLeads(this.fd);
-    // console.log(res)
-    // this.allLeads = res.data;
-    // console.log(this.allLeads);
-    // if (this.role == 2) {
-    //   leadsstatus.forEach((leadStatus) => {
-    //     this.fetchLeadsForAgent(leadStatus, agent_id);
-    //   });
-    // } else {
-
-    // }
   }
-  // fetchLeadsForAgent(leadStatus: number, agent_id: any) {
-  //   if (agent_id) {
-  //     if (leadStatus === 1) {
-  //       this.Newleads = this.allLeads.filter(
-  //         (lead) => lead.lead_status == 1 && lead.agent_id == agent_id
-  //       );
-  //     } else if (leadStatus === 2) {
-  //       this.Assignleads = this.allLeads.filter(
-  //         (lead) => lead.lead_status == 2 && lead.agent_id == agent_id
-  //       );
-  //     } else if (leadStatus === 3) {
-  //       this.Connectedleads = this.allLeads.filter(
-  //         (lead) => lead.lead_status == 3 && lead.agent_id == agent_id
-  //       );
-  //     } else if (leadStatus === 4) {
-  //       this.Coldleads = this.allLeads.filter(
-  //         (lead) => lead.lead_status == 4 && lead.agent_id == agent_id
-  //       );
-  //     } else if (leadStatus === 5) {
-  //       this.Warmleads = this.allLeads.filter(
-  //         (lead) => lead.lead_status == 5 && lead.agent_id == agent_id
-  //       );
-  //     } else if (leadStatus === 6) {
-  //       this.Hotleads = this.allLeads.filter(
-  //         (lead) => lead.lead_status == 6 && lead.agent_id == agent_id
-  //       );
-  //     } else if (leadStatus === 7) {
-  //       this.MeetingSchduledeleads = this.allLeads.filter(
-  //         (lead) => lead.lead_status == 7 && lead.agent_id == agent_id
-  //       );
-  //     } else if (leadStatus === 8) {
-  //       this.MeetingComplate = this.allLeads.filter(
-  //         (lead) => lead.lead_status == 8 && lead.agent_id == agent_id
-  //       );
-  //     } else if (leadStatus === 9) {
-  //       this.NoAnswer = this.allLeads.filter(
-  //         (lead) => lead.lead_status == 9 && lead.agent_id == agent_id
-  //       );
-  //     } else if (leadStatus === 10) {
-  //       this.LowBuget = this.allLeads.filter(
-  //         (lead) => lead.lead_status == 10 && lead.agent_id == agent_id
-  //       );
-  //     } else if (leadStatus === 11) {
-  //       this.NotResponding = this.allLeads.filter(
-  //         (lead) => lead.lead_status == 11 && lead.agent_id == agent_id
-  //       );
-  //     } else if (leadStatus === 12) {
-  //       this.IncorrectDetail = this.allLeads.filter(
-  //         (lead) => lead.lead_status == 12 && lead.agent_id == agent_id
-  //       );
-  //     } else if (leadStatus === 13) {
-  //       this.Agent = this.allLeads.filter(
-  //         (lead) => lead.lead_status == 13 && lead.agent_id == agent_id
-  //       );
-  //     } else if (leadStatus === 14) {
-  //       this.Junk = this.allLeads.filter(
-  //         (lead) => lead.lead_status == 14 && lead.agent_id == agent_id
-  //       );
-  //     }
-  //   }
-  // }
 
   filterLeads(leadStatus: number) {
     if (leadStatus === 1) {
@@ -418,7 +317,9 @@ export class AppDashboard1Component implements OnInit {
   }
 
   triggerChange() {
-    const mailboxChangeElement = document.querySelector('#triggerChange') as HTMLElement;
+    const mailboxChangeElement = document.querySelector(
+      '#triggerChange'
+    ) as HTMLElement;
 
     if (mailboxChangeElement) {
       mailboxChangeElement.click(); // Trigger click event
@@ -426,7 +327,7 @@ export class AppDashboard1Component implements OnInit {
   }
 
   mailboxesChanged(lead_box_id: any) {
-    if (this.role == 2 && lead_box_id === 1) {
+    if (lead_box_id === 1) {
       Swal.fire({
         title: 'Sorry',
         html: 'You do not have permission to access New leads',
@@ -436,7 +337,6 @@ export class AppDashboard1Component implements OnInit {
       return;
     }
 
-    // await this.loadAllLeads();
     switch (lead_box_id) {
       case 1:
         this.ms.selectedLead = null;
@@ -448,7 +348,6 @@ export class AppDashboard1Component implements OnInit {
         break;
       case 2:
         this.ms.selectedLead = null;
-        // console.log(this.Assignleads);
         this.ms.leadList = this.Assignleads;
         this.ms.topLable = 'Assigned';
         this.mailActiveClass(lead_box_id);
@@ -459,7 +358,7 @@ export class AppDashboard1Component implements OnInit {
         this.ms.selectedLead = null;
         this.ms.leadList = this.Connectedleads;
         console.log(this.Connectedleads);
-        this.ms.topLable = 'Connected';
+        this.ms.topLable = 'Contacted Lead';
         this.mailActiveClass(lead_box_id);
         this.ms.type = 'connectedleads';
         this.leadBoxId = lead_box_id;
@@ -584,7 +483,7 @@ export class AppDashboard1Component implements OnInit {
   displayLeadLabel(status: any): string {
     return status ? status.label : '';
   }
-  
+
   updateLeadStaus(event: Event, agent_id: any) {
     event.preventDefault();
     if (this.updateleadform.valid) {
@@ -597,25 +496,18 @@ export class AppDashboard1Component implements OnInit {
       if (this.loginUserId) {
         fd.append('login_user_id', this.loginUserId);
       }
-      if (this.role == 1) {
-        fd.append('user_id', this.loginUserId);
-      } else {
-        fd.append('user_id', '');
-      }
       this.leadsService.UpdateSingLead(fd).subscribe(
         (res: any) => {
           if (res.status === 'success') {
-            Swal.fire({ title: 'Success', html: 'Lead Update Successfully', timer: 2000, showConfirmButton: false,});
+            Swal.fire({
+              title: 'Success',
+              html: 'Lead Update Successfully',
+              timer: 2000,
+              showConfirmButton: false,
+            });
             this.updateleadform.reset();
-
             this.loadAllLeads();
             this.mailboxesChanged(3);
-            console.log(filed.lead_status.lead_status);
-            //  window.location.reload();
-            // this.router.navigate(['/dashboards/dashboard1']);
-            // this.mailboxesChanged(this.leadBoxId);
-            // this.mailboxesChanged(this.leadBoxId);
-            // this.mailActiveClass(this.leadBoxId);
           }
         },
         (error: any) => {
@@ -697,6 +589,19 @@ export class AppDashboard1Component implements OnInit {
       title: `Emial is copied`,
       icon: 'success',
     });
+  }
+
+
+  openModal(data: any[]): void {
+    this.dialog.open(LeaddetailmodalComponent, {
+      width: '70%',
+      data: data,
+    });
+  }
+
+  ShwoLeadDetail(filed_data: any): void {
+    this.openModal(filed_data);
+
   }
 
   get f() {

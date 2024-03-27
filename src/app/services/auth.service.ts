@@ -38,7 +38,7 @@ export class AuthService {
   }
 
   sendResetLink(postData: any) {
-    return this.http.get(this.get, postData);
+    return this.http.post(this.get, postData);
   }
 
   // checkUserExistOrNotFun(id: any) {

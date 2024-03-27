@@ -26,7 +26,7 @@ export const mailbox = [
   },
   {
     id: 3,
-    name: 'Connected Lead',
+    name: 'Contacted Lead', 
     icon: 'note',
     count: 0,
     active: false,

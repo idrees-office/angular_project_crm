@@ -38,7 +38,7 @@ export class ReAssignComponent implements OnInit {
     'customer_name',
     'customer_phone',
     'reassign',
-    'actions',
+    // 'actions',
   ];
   exampleDatabase: ExampleHttpDatabase | null = null;
   leadsData: Lead[] = [];
@@ -51,7 +51,6 @@ export class ReAssignComponent implements OnInit {
   userData: any;
   user: any;
   loginuserId: any;
-  role: any;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   constructor(
@@ -97,7 +96,6 @@ export class ReAssignComponent implements OnInit {
     this.userData = localStorage.getItem('userData');
     this.user = JSON.parse(this.userData);
     this.loginuserId = this.user.client_user_id;
-    this.role = this.user.role_id;
     this.agents();
   }
 

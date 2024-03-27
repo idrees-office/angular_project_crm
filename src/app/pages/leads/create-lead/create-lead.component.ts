@@ -39,7 +39,6 @@ export class CreateLeadComponent implements OnInit {
     this.userData = localStorage.getItem('userData');
     this.user = JSON.parse(this.userData);
     this.loginuserId = this.user.client_user_id;
-    this.role = this.user.role_id;
   }
 
   submitForm(event:any){
@@ -48,11 +47,8 @@ export class CreateLeadComponent implements OnInit {
       const formdata = new FormData();
       const filed    = this.leadForm.value;
       
-      if(this.role == 1 || this.role === 1){
-        formdata.append('login_user_id', this.loginuserId);
-      }else{
-        formdata.append('login_user_id', 'empty');
-      }
+    
+       formdata.append('login_user_id', this.loginuserId);
       formdata.append('lead_title', filed.lead_title);
       formdata.append('agent_id', filed.agent_id);
       formdata.append('customer_name', filed.customer_name);

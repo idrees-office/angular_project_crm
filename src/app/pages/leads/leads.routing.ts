@@ -3,23 +3,19 @@ import { CreateLeadComponent } from './create-lead/create-lead.component';
 import { ReAssignComponent } from './re-assign/re-assign.component';
 import { AssignLeadComponent } from './assign-lead/assign-lead.component';
 import { MyLeadComponent } from './my-lead/my-lead.component';
-import { permissionGuardGuard } from 'src/app/core/permission-guard.guard';
-
-
 
 export const LeadsRoutes: Routes = [
   {
     path: '',
-    // canActivate: [permissionGuardGuard],
     children: [
       {
         path: 'create-lead',
         component: CreateLeadComponent,
         data: {
-          title: 'Lead Managements',
+          title: 'Add New Lead',
           urls: [
             { title: 'Dashboard', url: '/leads/create-lead' },
-            { title: 'Lead Managements' },
+            { title: 'Add New Lead' },
           ],
         },
       },
@@ -27,7 +23,7 @@ export const LeadsRoutes: Routes = [
         path: 'assign-lead',
         component: AssignLeadComponent,
         data: {
-          title: 'These Are the New Leads',
+          title: 'Here are the latest leads',
           urls: [
             { title: 'Dashboard', url: '/leads/assign-lead' },
             { title: 'Assign Leads' },
@@ -49,10 +45,10 @@ export const LeadsRoutes: Routes = [
         path: 'my-lead',
         component: MyLeadComponent,
         data: {
-          title: 'My Leads',
+          title: 'My All Leads',
           urls: [
             { title: 'Dashboard', url: '/leads/my-lead' },
-            { title: 'My Leads' },
+            { title: 'My All Leads' },
           ],
         },
       },

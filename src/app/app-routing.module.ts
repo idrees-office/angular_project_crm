@@ -3,8 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { BlankComponent } from './layouts/blank/blank.component';
 import { FullComponent } from './layouts/full/full.component';
 import { AuthGuard } from './core/auth.guard';
-import { TeamModule } from './pages/team/team.module';
-
 const routes: Routes = [
   {
     path: '',
@@ -47,12 +45,6 @@ const routes: Routes = [
         path: 'users',
         loadChildren: () =>
           import('./pages/users/users.module').then((m) => m.UsersModule),
-      },
-
-      {
-        path: 'team',
-        loadChildren: () =>
-          import('./pages/team/team.module').then((m) => TeamModule),
       },
 
       {
@@ -118,6 +110,8 @@ const routes: Routes = [
   },
 
   // { path: '', redirectTo: '/dashboards/dashboard1', pathMatch: 'full' },
+
+ 
 
   { path: '**', redirectTo: 'authentication/error' },
 ]; 

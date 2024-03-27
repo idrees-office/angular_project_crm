@@ -23,6 +23,10 @@ export class AppSideResetPasswordComponent implements OnInit {
   ngOnInit(): void {  
     const paramMap = this._ActivatedRoute.snapshot.paramMap;
     this.Email = paramMap.get('email');
+
+    console.log(this.Email);
+    
+
     this.ResetPasswordForm = this.fb.group({
       password            : new FormControl('', [Validators.required, Validators.minLength(8)]),
       confirm_password    : new FormControl('', [Validators.required]),

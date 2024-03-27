@@ -48,7 +48,6 @@ export class AppNavItemComponent implements OnChanges, OnInit {
   ngOnInit(): void {
     this.userData    = localStorage.getItem('userData');
     this.user        = JSON.parse(this.userData);
-    this.role        = this.user.role_id;
     const id         = this.user.client_user_id;
   }
 
